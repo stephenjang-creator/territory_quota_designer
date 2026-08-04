@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+
+# Node / web (Vite dashboard, when added)
+web/node_modules/
+web/dist/
+
+# OS
+.DS_Store

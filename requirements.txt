@@ -1,0 +1,13 @@
+# Core engine + data
+pandas>=2.0
+# API
+fastapi>=0.110
+uvicorn[standard]>=0.29
+# Optional narrative (LLM explanations); the app runs fine without a key
+anthropic>=0.40
+# MCP server (agent interface)
+mcp>=1.2,<2
+# Dev
+pytest>=8.0
+ruff>=0.5
+black>=24.0
