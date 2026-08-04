@@ -141,6 +141,8 @@ Interactive docs at `/docs`.
 
 | Endpoint | Purpose |
 | --- | --- |
+| `GET /` | the **interactive dashboard** (self-contained HTML, served same-origin) |
+| `GET /api` | JSON service index; `GET /health` liveness probe |
 | `GET /data/summary` | counts, total potential, segment/region mix |
 | `POST /balance` | Stage 1 — territories + balance scores for given weights |
 | `POST /quota` | Stage 2 — quotas + fairness for a company target |
@@ -205,8 +207,9 @@ parameters) or come from the loaded CSVs — nothing is hardcoded mid-logic.
 `0.0.0.0:$PORT` (nothing hardcodes a port) and read the committed `data/` CSVs, so
 there's no build-time data step:
 
-- **`territory-quota-designer-api`** — `uvicorn api.main:app`. `ANTHROPIC_API_KEY`
-  is declared `sync:false` (optional; leave unset to run offline).
+- **`territory-quota-designer-api`** — `uvicorn api.main:app`; its root URL serves
+  the interactive dashboard. `ANTHROPIC_API_KEY` is declared `sync:false`
+  (optional; leave unset to run offline).
 - **`territory-quota-designer-mcp`** — `python mcp_server.py --http`. Render
   generates `MCP_AUTH_TOKEN`; every request needs `Authorization: Bearer <token>`.
 
@@ -231,7 +234,8 @@ core/
   evaluate.py                baseline-vs-optimized scorecard (make plan)
   plan.py                    run_plan orchestrator (the whole chain)
   views.py                   JSON-safe roll-up views (shared by API + MCP)
-api/main.py                  FastAPI app
+api/main.py                  FastAPI app (serves the dashboard + JSON endpoints)
+api/static/index.html        self-contained interactive dashboard (served at /)
 mcp_server.py                MCP server (10 read-only tools over core)
 narrative.py                 optional LLM explanations (Anthropic)
 EXAMPLES.md                  natural-language questions → MCP tool calls

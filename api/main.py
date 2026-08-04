@@ -11,7 +11,10 @@ and it degrades cleanly with no key.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException, Response
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 import config
@@ -21,6 +24,7 @@ from core.dataio import load_all
 from core.plan import PlanSettings, run_plan
 
 app = FastAPI(title="Territory & Quota Designer", version="0.1.0")
+_STATIC = Path(__file__).parent / "static"
 
 ACCOUNTS, REPS, CONVERSIONS = load_all()
 REP_BY_ID = {r.rep_id: r for r in REPS}
@@ -60,15 +64,22 @@ def _plan(req: PlanRequest):
 # ----------------------------------------------------------------------
 # Root / health (so the base URL and platform probes return 200, not 404)
 # ----------------------------------------------------------------------
-@app.api_route("/", methods=["GET", "HEAD"])
-def root():
-    """Landing index — points at the interactive docs and the stage endpoints."""
+@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
+def dashboard():
+    """The interactive dashboard (self-contained HTML served same-origin)."""
+    return FileResponse(_STATIC / "index.html")
+
+
+@app.get("/api")
+def api_index():
+    """JSON index — the service description + endpoint map (also see /docs)."""
     return {
         "service": "Territory & Quota Designer",
         "description": "Balance territories, derive quotas, prove coverage via a "
         "reverse waterfall, and model comp — deterministic core, human-in-the-loop LLM.",
         "units": config.UNITS,
         "docs": "/docs",
+        "dashboard": "/",
         "endpoints": [
             "/data/summary",
             "/balance",
@@ -224,6 +235,16 @@ def territory_detail(rep_id: str):
     if rep_id not in REP_BY_ID:
         raise HTTPException(status_code=404, detail=f"unknown rep_id {rep_id!r}")
     plan = run_plan(ACCOUNTS, REPS, CONVERSIONS)
+    terr = next(t for t in plan.territories if t.rep_id == rep_id)
+    return views.territory_detail(terr, REP_BY_ID[rep_id], ACC_BY_ID)
+
+
+@app.post("/territory/{rep_id}")
+def territory_detail_for_settings(rep_id: str, req: PlanRequest):
+    """Full single-territory view under the given settings (dashboard funnel drill-in)."""
+    if rep_id not in REP_BY_ID:
+        raise HTTPException(status_code=404, detail=f"unknown rep_id {rep_id!r}")
+    plan = _plan(req)
     terr = next(t for t in plan.territories if t.rep_id == rep_id)
     return views.territory_detail(terr, REP_BY_ID[rep_id], ACC_BY_ID)
 
