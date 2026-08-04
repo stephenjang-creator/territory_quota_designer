@@ -1,0 +1,16 @@
+segment,transition,rate
+Enterprise,Discovery->Qualification,0.45
+Enterprise,Qualification->Proposal,0.55
+Enterprise,Proposal->Negotiation,0.6
+Enterprise,Negotiation->Won,0.3
+Enterprise,avg_deal_size,120000.0
+Mid-Market,Discovery->Qualification,0.5
+Mid-Market,Qualification->Proposal,0.55
+Mid-Market,Proposal->Negotiation,0.62
+Mid-Market,Negotiation->Won,0.33
+Mid-Market,avg_deal_size,45000.0
+SMB,Discovery->Qualification,0.55
+SMB,Qualification->Proposal,0.6
+SMB,Proposal->Negotiation,0.65
+SMB,Negotiation->Won,0.38
+SMB,avg_deal_size,12000.0

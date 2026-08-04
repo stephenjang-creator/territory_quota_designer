@@ -1,0 +1,186 @@
+# Territory & Quota Designer
+
+Carve a book of accounts into balanced sales territories, derive fair quotas,
+**prove each territory is big enough to hit its quota via a reverse waterfall**,
+and model the resulting comp cost — as one connected chain. Change anything
+upstream (a balance weight, the company target, a conversion rate) and everything
+downstream recomputes.
+
+**AI-first, human-in-the-loop RevOps.** A deterministic optimizer and the
+waterfall/comp math own every number a planner sees. The optional LLM layer only
+*explains* — "why did rep R-101 get these accounts", "why is this territory
+under-covered", "what's driving this cost-of-sale". The model never allocates an
+account, sets a quota, or picks a number. The engine makes zero network calls and
+is reproducible given the data seed; only the optional narrative endpoint touches
+the Anthropic API, and it degrades gracefully with no key.
+
+> All data is **synthetic** (`generate_territory_data.py`). No real customer or
+> company data, ever — this is a portfolio project.
+
+## The four-stage chain
+
+```
+accounts + firmographics + reps
+  → ① Balance     weighted multi-factor optimization (potential / geo / whitespace)
+  → ② Quota       fair, proportional to potential, sums to a company target
+  → ③ Reverse     work backward quota → won → … → required SQLs; is there enough pipeline?
+     waterfall
+  → ④ Comp        payout curves, cost-of-sale, attainment scenarios
+```
+
+## Quickstart
+
+```bash
+pip install -r requirements.txt      # or: make install
+make data                            # regenerate data/ (seed 42) — optional, it's committed
+make test                            # pytest — the OR core is fully unit-tested
+make plan                            # print the baseline-vs-optimized scorecard
+make api                             # FastAPI on $PORT (default 8000); see /docs
+```
+
+Everything runs offline. To enable the optional explanations, set
+`ANTHROPIC_API_KEY` (and `pip install anthropic`); without it the app runs end to
+end and `/explain` returns a clear "narrative disabled" message.
+
+## Baseline vs. optimized — the scorecard
+
+The credibility artifact: the naive equal-account carve vs. the optimizer, run
+through the **same** quota and the same waterfall. Because segment focus is
+respected (an Enterprise account never goes to an SMB rep), the team is really
+three segment-locked pools — so the honest headline is **within-segment**
+balance, which the optimizer controls. The whole-team CoV is dominated by the
+structural gap between a ~$25M Enterprise book and a ~$3.7M SMB book and is
+reported as the floor it is.
+
+Company target: **$45,487,231** (0.27 × total opportunity potential).
+
+| Metric | Baseline (naive) | Optimized | Change |
+| --- | ---: | ---: | ---: |
+| **Within-segment potential balance** — mean CoV (lower better) | 0.056 | 0.024 | **−57.0%** |
+| **Geo — off-home-region share** (lower = compact) | 0.82 | 0.47 | **−42.7%** |
+| Geo — Σ distinct regions (lower better) | 47 | 28 | −40.4% |
+| Whitespace balance — CoV (lower better) | 0.609 | 0.601 | −1.4% |
+| Whole-team potential CoV *(structural floor)* | 0.608 | 0.603 | −0.8% |
+| Under-covered territories | 3 | 3 | 0 flipped |
+
+The **off-home-region floor is 0.45** — 358 of 800 accounts have no rep of their
+segment *in their region*, so they must be sold cross-region no matter what. The
+optimizer captures nearly all of the discretionary remainder. Turn the geo weight
+up and it compacts further at the cost of balance — that trade-off is the point
+of the sliders.
+
+Coverage is **segment-structural** here: because quota is proportional to
+potential, a territory's coverage ratio is set mostly by its segment's win rate,
+not by which accounts it holds — so re-carving doesn't flip it. The tool surfaces
+that as an honest signal: at this target the three full-time Enterprise reps are
+under-covered (lowest win rate), and the what-if tools let a planner explore it.
+
+## Worked reverse-waterfall example (R-101, Enterprise)
+
+Work **backward** from the quota up the funnel, then ask: does the territory hold
+enough addressable pipeline to support it?
+
+```
+quota                 $7,422,488
+avg deal size         $120,000        (Enterprise default, from conversions.csv)
+
+won deals    = 7,422,488 / 120,000                    =    61.9
+at negotiation = 61.9 / 0.30  (Negotiation→Won)       =   206.2
+at proposal    = 206.2 / 0.60 (Proposal→Negotiation)  =   343.6
+at qualification = 343.6 / 0.55 (Qualification→Prop)  =   624.8
+at discovery   = 624.8 / 0.45 (Discovery→Qual)        = 1,388.4   ← required SQLs
+
+required_pipeline = at_negotiation × avg_deal = $24,741,625   ( = quota / 0.30 )
+available_pipeline = Σ (whitespace + open_pipeline)  = $22,595,100
+coverage_ratio     = 22,595,100 / 24,741,625         = 0.91      → UNDER-COVERED
+```
+
+`available_pipeline` is the addressable portion (whitespace + open pipeline); it
+excludes installed ARR, which isn't new pipeline you can close against a
+new-bookings quota. Coverage is an **adequacy / risk** signal, not a guarantee of
+attainment. Levers the engine surfaces to close this gap:
+
+- lower quota to ~$6,778,530 (makes coverage = 1.0), or
+- reassign ~$2,146,525 of addressable potential into this book, or
+- source ~120 more SQLs.
+
+## The override hierarchy (a first-class feature)
+
+Every conversion rate and average deal size the waterfall reads resolves as:
+
+```
+rep override  >  segment override  >  global default (conversions.csv)
+```
+
+The waterfall never reads a rate directly — it asks `core.overrides.resolve()`,
+which also records *which tier* supplied each number, so `assess_territory` (and
+the `/territory` endpoint) can show the audit trail. Example overrides payload:
+
+```json
+{
+  "global":  {"Negotiation->Won": 0.28},
+  "segment": {"Enterprise": {"Negotiation->Won": 0.25}},
+  "rep":     {"R-104": {"avg_deal_size": 15000}}
+}
+```
+
+With this, `R-104` uses its own deal size, every other Enterprise rep uses the
+0.25 win rate, and everyone else falls back to the CSV default (reported as
+`global`). "If enterprise win-rates drop to 25%, who breaks?" is exactly this.
+
+## API
+
+Load the CSVs once at startup; each endpoint recomputes from a settings payload.
+Interactive docs at `/docs`.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /data/summary` | counts, total potential, segment/region mix |
+| `POST /balance` | Stage 1 — territories + balance scores for given weights |
+| `POST /quota` | Stage 2 — quotas + fairness for a company target |
+| `POST /waterfall` | Stage 3 — coverage results + under-covered roll-up |
+| `POST /comp` | Stage 4 — payouts, cost-of-sale, scenarios, payout curve |
+| `POST /plan` | the whole chain in one call (the dashboard's hot path) |
+| `GET /territory/{rep_id}` | full single-territory detail (the assess view) |
+| `POST /explain` | optional LLM rationale; skips cleanly with no API key |
+
+## Configuration
+
+All tunable knobs live in `config.py` (weights, potential mix, segment-focus and
+cap constraints, quota target multiple, ramp haircut, coverage band, comp
+parameters) or come from the loaded CSVs — nothing is hardcoded mid-logic.
+
+## Project layout
+
+```
+generate_territory_data.py   synthetic data generator (do not rewrite)
+data/                        accounts.csv · reps.csv · conversions.csv
+config.py                    all tunable knobs
+core/
+  models.py                  Account · Rep · Territory · PlanResult
+  dataio.py                  CSV → typed models
+  potential.py               per-account opportunity value + coverage numerator
+  overrides.py               rep > segment > global rate resolution
+  balance.py                 Stage 1 optimizer + focus-respecting baseline
+  quota.py                   Stage 2 quota derivation + fairness
+  waterfall.py               Stage 3 reverse waterfall + coverage + gap analysis
+  comp.py                    Stage 4 comp simulation
+  evaluate.py                baseline-vs-optimized scorecard (make plan)
+  plan.py                    run_plan orchestrator (the whole chain)
+  views.py                   JSON-safe roll-up views (shared by API + MCP)
+api/main.py                  FastAPI app
+narrative.py                 optional LLM explanations (Anthropic)
+tests/                       one file per core module + a /plan integration test
+```
+
+## Design principles
+
+- **Deterministic core, explainable everywhere.** Every assignment, quota, and
+  ratio is traceable to inputs a planner can verify.
+- **Config over magic numbers.** Weights, constraints, conversion defaults, and
+  comp parameters live in `config.py` or the CSVs.
+- **Override hierarchy is first-class** — built explicitly, with the resolution
+  tier reported alongside every number.
+- **Baseline vs. optimized is the eval** — the before/after above is the artifact.
+- **Pure, testable functions.** The OR core is unit-tested; a fixed seed → a
+  reproducible carve.
