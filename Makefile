@@ -22,7 +22,7 @@ data:
 	python generate_territory_data.py --accounts 800 --reps 12 --seed 42 --outdir data
 
 test:
-	pytest -q
+	python -m pytest -q
 
 plan:
 	python -m core.evaluate

@@ -199,6 +199,20 @@ All tunable knobs live in `config.py` (weights, potential mix, segment-focus and
 cap constraints, quota target multiple, ramp haircut, coverage band, comp
 parameters) or come from the loaded CSVs — nothing is hardcoded mid-logic.
 
+## Deploy (Render)
+
+`render.yaml` is a Blueprint defining two native-Python web services — both bind
+`0.0.0.0:$PORT` (nothing hardcodes a port) and read the committed `data/` CSVs, so
+there's no build-time data step:
+
+- **`territory-quota-designer-api`** — `uvicorn api.main:app`. `ANTHROPIC_API_KEY`
+  is declared `sync:false` (optional; leave unset to run offline).
+- **`territory-quota-designer-mcp`** — `python mcp_server.py --http`. Render
+  generates `MCP_AUTH_TOKEN`; every request needs `Authorization: Bearer <token>`.
+
+Point Render at the repo (New → Blueprint) and it provisions both from
+`render.yaml`. Pushing to `main` triggers a redeploy.
+
 ## Project layout
 
 ```

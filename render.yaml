@@ -1,0 +1,38 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Two web services, both native Python buildpack, both bind 0.0.0.0:$PORT.
+#   - api: the FastAPI four-stage engine (/plan, /docs, per-stage endpoints)
+#   - mcp: the MCP server over streamable HTTP (bearer-auth'd)
+# The synthetic CSVs are committed under data/, so no build-time data step is
+# needed; the optional narrative endpoint is off unless ANTHROPIC_API_KEY is set.
+services:
+  - type: web
+    name: territory-quota-designer-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: TERRITORY_DATA
+        value: data
+      # Optional — enables /explain when set (leave unset to run offline):
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+  - type: web
+    name: territory-quota-designer-mcp
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python mcp_server.py --http
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: MCP_TRANSPORT
+        value: http
+      - key: TERRITORY_DATA
+        value: data
+      # Bearer token required on every request; Render generates a strong value.
+      - key: MCP_AUTH_TOKEN
+        generateValue: true
