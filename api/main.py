@@ -11,7 +11,7 @@ and it degrades cleanly with no key.
 
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel, Field
 
 import config
@@ -55,6 +55,42 @@ class ExplainRequest(BaseModel):
 
 def _plan(req: PlanRequest):
     return run_plan(ACCOUNTS, REPS, CONVERSIONS, req.to_settings())
+
+
+# ----------------------------------------------------------------------
+# Root / health (so the base URL and platform probes return 200, not 404)
+# ----------------------------------------------------------------------
+@app.api_route("/", methods=["GET", "HEAD"])
+def root():
+    """Landing index — points at the interactive docs and the stage endpoints."""
+    return {
+        "service": "Territory & Quota Designer",
+        "description": "Balance territories, derive quotas, prove coverage via a "
+        "reverse waterfall, and model comp — deterministic core, human-in-the-loop LLM.",
+        "units": config.UNITS,
+        "docs": "/docs",
+        "endpoints": [
+            "/data/summary",
+            "/balance",
+            "/quota",
+            "/waterfall",
+            "/comp",
+            "/plan",
+            "/territory/{rep_id}",
+            "/explain",
+        ],
+    }
+
+
+@app.get("/health")
+def health():
+    """Liveness probe for the platform health check."""
+    return {"status": "ok"}
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    return Response(status_code=204)
 
 
 # ----------------------------------------------------------------------
