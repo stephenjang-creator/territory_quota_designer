@@ -150,6 +150,49 @@ Interactive docs at `/docs`.
 | `GET /territory/{rep_id}` | full single-territory detail (the assess view) |
 | `POST /explain` | optional LLM rationale; skips cleanly with no API key |
 
+## Agent / MCP
+
+The same engine is exposed as an **MCP server** (`mcp_server.py`) so an agent can
+interrogate a carve conversationally — "which territories can't hit quota and
+why", "if I weight geo at 85%, who wins and loses", "if enterprise win-rates drop
+to 25%, who breaks", "what does this cost at 85% attainment". The tools are thin,
+**read-only** wrappers over the same `core` functions (JSON in, JSON out, zero LLM
+calls, nothing persists — what-ifs recompute in memory). See **[EXAMPLES.md](EXAMPLES.md)**
+for natural-language questions mapped to the tools they trigger.
+
+Ten tools: `plan_summary`, `list_territories`, `assess_territory`, `coverage_gaps`,
+`whatif_weights`, `whatif_conversions`, `comp_scenario`, `get_scorecard`,
+`list_reps`, `list_segments`.
+
+```bash
+make mcp        # stdio (for Claude Desktop / claude mcp)
+make mcp-http   # HTTP on $PORT, MCP_AUTH_TOKEN bearer auth (hosted use)
+```
+
+**Register with Claude Code** (stdio):
+
+```bash
+claude mcp add territory-designer -- /abs/path/to/.venv/bin/python /abs/path/to/mcp_server.py
+```
+
+**Claude Desktop** (`claude_desktop_config.json`) — use the venv's Python and an
+absolute path; point `TERRITORY_DATA` at the CSV dir:
+
+```json
+{
+  "mcpServers": {
+    "territory-designer": {
+      "command": "/abs/path/to/.venv/bin/python",
+      "args": ["/abs/path/to/mcp_server.py"],
+      "env": { "TERRITORY_DATA": "/abs/path/to/data" }
+    }
+  }
+}
+```
+
+**Hosted (HTTP):** set `MCP_TRANSPORT=http` (or pass `--http`), bind to `$PORT`,
+and set `MCP_AUTH_TOKEN` to require a `Authorization: Bearer <token>` header.
+
 ## Configuration
 
 All tunable knobs live in `config.py` (weights, potential mix, segment-focus and
@@ -175,8 +218,10 @@ core/
   plan.py                    run_plan orchestrator (the whole chain)
   views.py                   JSON-safe roll-up views (shared by API + MCP)
 api/main.py                  FastAPI app
+mcp_server.py                MCP server (10 read-only tools over core)
 narrative.py                 optional LLM explanations (Anthropic)
-tests/                       one file per core module + a /plan integration test
+EXAMPLES.md                  natural-language questions → MCP tool calls
+tests/                       one file per core module + /plan + MCP tool tests
 ```
 
 ## Design principles

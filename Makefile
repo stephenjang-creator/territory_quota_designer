@@ -1,4 +1,4 @@
-.PHONY: help install data test plan api web lint fmt
+.PHONY: help install data test plan api web mcp mcp-http lint fmt
 
 PORT ?= 8000
 
@@ -10,6 +10,8 @@ help:
 	@echo "  make plan      print the baseline-vs-optimized scorecard"
 	@echo "  make api       run the FastAPI app (uvicorn, reads \$$PORT)"
 	@echo "  make web       run the React dashboard (Vite dev server)"
+	@echo "  make mcp       run the MCP server over stdio (for Claude Desktop / claude mcp)"
+	@echo "  make mcp-http  run the MCP server over HTTP on \$$PORT (MCP_AUTH_TOKEN bearer)"
 	@echo "  make lint      ruff + black --check"
 	@echo "  make fmt       ruff --fix + black format"
 
@@ -31,8 +33,16 @@ api:
 web:
 	cd web && npm run dev
 
+mcp:
+	python mcp_server.py
+
+mcp-http:
+	MCP_TRANSPORT=http python mcp_server.py --http
+
+SRC = core config.py api narrative.py mcp_server.py tests
+
 lint:
-	ruff check core config.py api tests && black --check core config.py api tests
+	ruff check $(SRC) && black --check $(SRC)
 
 fmt:
-	ruff check --fix core config.py api tests && black core config.py api tests
+	ruff check --fix $(SRC) && black $(SRC)
