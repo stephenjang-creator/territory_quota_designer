@@ -68,13 +68,14 @@ def data_summary():
     seg = Counter(a.segment for a in ACCOUNTS)
     region = Counter(a.region for a in ACCOUNTS)
     return {
+        "units": config.UNITS,
         "n_accounts": len(ACCOUNTS),
         "n_reps": len(REPS),
         "segments": dict(seg),
         "regions": dict(region),
-        "total_whitespace": round(sum(a.whitespace_potential for a in ACCOUNTS)),
-        "total_open_pipeline": round(sum(a.open_pipeline for a in ACCOUNTS)),
-        "total_current_arr": round(sum(a.current_arr for a in ACCOUNTS)),
+        "total_whitespace_mrr": round(sum(a.whitespace_potential for a in ACCOUNTS)),
+        "total_open_pipeline_mrr": round(sum(a.open_pipeline for a in ACCOUNTS)),
+        "total_current_mrr": round(sum(a.current_arr for a in ACCOUNTS)),
     }
 
 

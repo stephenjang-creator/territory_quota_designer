@@ -10,6 +10,25 @@ whole four-stage chain recomputes. These are also the dashboard sliders/inputs.
 from __future__ import annotations
 
 # ----------------------------------------------------------------------
+# Units
+# ----------------------------------------------------------------------
+# All monetary values are MRR (monthly recurring revenue). Quota is a QUARTERLY
+# new-MRR bookings target. The synthetic figures keep their generator magnitudes,
+# read as MRR; avg deal size stays per-segment (from conversions.csv), read as
+# MRR added per deal. Every coverage/balance/cost-of-sale figure is a ratio, so
+# the denomination is a labeling choice — it does not change any outcome.
+QUOTA_PERIOD = "quarterly"
+UNITS = {
+    "currency": "USD MRR (monthly recurring revenue)",
+    "quota_period": QUOTA_PERIOD,
+    "note": (
+        "All $ figures are MRR. Quota is a quarterly new-MRR bookings target; "
+        "won_deals = quota / avg_deal_size (MRR added per deal) = deals to close "
+        "in the quarter. avg_deal_size is per-segment (Enterprise/Mid-Market/SMB)."
+    ),
+}
+
+# ----------------------------------------------------------------------
 # Stage 1 — Balance
 # ----------------------------------------------------------------------
 # Combined-imbalance weights (must sum to 1.0). Also the dashboard sliders.
@@ -32,12 +51,12 @@ MAX_LOCAL_SEARCH_PASSES = 30
 # ----------------------------------------------------------------------
 # Stage 2 — Quota
 # ----------------------------------------------------------------------
-# Default company_target = COMPANY_TARGET_MULTIPLE * total opportunity potential.
-# Tuned (seed 42) so the book can *roughly* support the target but a few
-# territories fall under-covered — that tension is exactly what the dashboard
-# exists to surface. At 0.27 the three full-time Enterprise reps land ~0.91
-# coverage (lowest win-rate segment); the ramping Enterprise rep is rescued by
-# the quota haircut. See the reverse-waterfall math in the README.
+# Default quarterly company_target = COMPANY_TARGET_MULTIPLE * total opportunity
+# potential (MRR). Tuned (seed 42) so the book can *roughly* support the target
+# but a few territories fall under-covered — that tension is exactly what the
+# dashboard exists to surface. At 0.27 the three full-time Enterprise reps land
+# ~0.91 coverage (lowest win-rate segment); the ramping Enterprise rep is rescued
+# by the quota haircut. See the reverse-waterfall math in the README.
 COMPANY_TARGET_MULTIPLE = 0.27
 
 # Ramping reps carry a lighter load; quotas re-normalize to the target afterward.

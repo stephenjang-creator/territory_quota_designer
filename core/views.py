@@ -65,6 +65,7 @@ def territory_detail(t: Territory, rep: Rep, accounts_by_id: dict[str, Account])
 
     detail = {
         **territory_row(t, rep),
+        "units": config.UNITS,
         "home_region": rep.home_region,
         "home_metro": rep.home_metro,
         "tenure_months": rep.tenure_months,
@@ -74,8 +75,9 @@ def territory_detail(t: Territory, rep: Rep, accounts_by_id: dict[str, Account])
             "opportunity_value": _r(t.potential, 0),
             "whitespace": _r(t.whitespace, 0),
             "available_pipeline": _r(t.available_potential, 0),
-            "note": "opportunity_value = whitespace + open_pipeline + 0.25*current_arr; "
-            "available_pipeline (coverage numerator) = whitespace + open_pipeline",
+            "note": "all MRR. opportunity_value = whitespace + open_pipeline + "
+            "0.25*current_arr; available_pipeline (coverage numerator) = "
+            "whitespace + open_pipeline",
         },
         "waterfall": _waterfall_view(t),
         "rates_used": t.rates_used,
@@ -122,6 +124,7 @@ def plan_summary(plan: PlanResult) -> dict:
     """Top-line: balance vs baseline, coverage counts, target, cost-of-sale."""
     sc = plan.scorecard
     return {
+        "units": config.UNITS,
         "company_target": _r(plan.company_target, 0),
         "n_territories": plan.n_territories,
         "n_under_covered": plan.n_under_covered,

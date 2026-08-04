@@ -17,6 +17,11 @@ the Anthropic API, and it degrades gracefully with no key.
 > All data is **synthetic** (`generate_territory_data.py`). No real customer or
 > company data, ever — this is a portfolio project.
 
+**Units.** Every dollar figure is **MRR** (monthly recurring revenue). Quota is a
+**quarterly** new-MRR bookings target, so `won_deals = quota / avg_deal_size`
+(MRR added per deal) reads as deals to close in the quarter. Coverage, balance,
+and cost-of-sale are all ratios, so the denomination never changes an outcome.
+
 ## The four-stage chain
 
 ```
@@ -52,7 +57,8 @@ balance, which the optimizer controls. The whole-team CoV is dominated by the
 structural gap between a ~$25M Enterprise book and a ~$3.7M SMB book and is
 reported as the floor it is.
 
-Company target: **$45,487,231** (0.27 × total opportunity potential).
+Quarterly company target: **$45,487,231** in new MRR (0.27 × total opportunity
+potential, all MRR).
 
 | Metric | Baseline (naive) | Optimized | Change |
 | --- | ---: | ---: | ---: |
@@ -81,17 +87,17 @@ Work **backward** from the quota up the funnel, then ask: does the territory hol
 enough addressable pipeline to support it?
 
 ```
-quota                 $7,422,488
-avg deal size         $120,000        (Enterprise default, from conversions.csv)
+quota (quarterly)     $7,422,488 MRR  (new-MRR bookings target for the quarter)
+avg deal size         $120,000 MRR    (Enterprise default, from conversions.csv)
 
-won deals    = 7,422,488 / 120,000                    =    61.9
+won deals    = 7,422,488 / 120,000                    =    61.9   (deals this quarter)
 at negotiation = 61.9 / 0.30  (Negotiation→Won)       =   206.2
 at proposal    = 206.2 / 0.60 (Proposal→Negotiation)  =   343.6
 at qualification = 343.6 / 0.55 (Qualification→Prop)  =   624.8
 at discovery   = 624.8 / 0.45 (Discovery→Qual)        = 1,388.4   ← required SQLs
 
-required_pipeline = at_negotiation × avg_deal = $24,741,625   ( = quota / 0.30 )
-available_pipeline = Σ (whitespace + open_pipeline)  = $22,595,100
+required_pipeline = at_negotiation × avg_deal = $24,741,625 MRR ( = quota / 0.30 )
+available_pipeline = Σ (whitespace + open_pipeline)  = $22,595,100 MRR
 coverage_ratio     = 22,595,100 / 24,741,625         = 0.91      → UNDER-COVERED
 ```
 

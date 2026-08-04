@@ -11,7 +11,9 @@ cost-of-sale reflects fully-loaded comp, not just commission::
     total_comp      = base_salary + variable_payout(attainment)
     cost_of_sale    = sum(total_comp) / sum(bookings)
 
-Every parameter is overridable via the API/UI; nothing here is hardcoded.
+Quota is a quarterly new-MRR target, so payouts, bookings, and cost-of-sale are
+all per-quarter; cost_of_sale is a ratio and so is denomination-invariant. Every
+parameter is overridable via the API/UI; nothing here is hardcoded.
 """
 
 from __future__ import annotations

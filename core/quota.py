@@ -5,6 +5,9 @@ Each territory's quota is proportional to its share of total opportunity
 potential. Ramping reps carry a haircut; quotas are then re-normalized so the
 book still sums to exactly the company target. Fairness is reported as each rep's
 quota/potential ratio, flagging anyone set up to fail (high) or sandbagged (low).
+
+The company target is a *quarterly* new-MRR bookings goal; every dollar here is
+MRR (see config.UNITS).
 """
 
 from __future__ import annotations
