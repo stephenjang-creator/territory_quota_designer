@@ -136,3 +136,22 @@ the carve don't move — this is the funnel lens — but every Enterprise rep's
 funnel-coverage drops, and the tool reports which territories cross below 1.0 and
 each coverage delta. Powers "our Enterprise close rate is slipping — where does the
 pipeline stop being enough".
+
+---
+
+### 10. "Which level can I hire into without breaking coverage?"
+
+```
+whatif_hire("Enterprise", "AE")        # absorbed by surplus?
+whatif_hire("SMB", "AE", count=2)      # or does the segment run short?
+```
+
+Adds planned hires (use **"TBH"** for open reqs) at a role and diffs the plan. An
+**Enterprise AE** is absorbed by the segment's pipeline surplus — reps-covered goes 10 → 11
+and Enterprise stays coverable ($4.87M required vs $5.15M available). **Two SMB AEs** push
+the already-short SMB segment's required pipeline $1.25M → $1.91M against the same $1.02M
+available, land uncovered, and drop the coverage floor 2.43× → 1.40× — so the tool flags
+SMB as the segment you can't hire into without sourcing more pipeline. Returns the
+company-target delta, reps covered before/after, the coverage floor, and the segment's
+pipeline vs. required. The dashboard does the same interactively: add reps in the roster
+(bottom section) and watch the capacity bars.

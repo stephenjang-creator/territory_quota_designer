@@ -137,7 +137,21 @@
   .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px;display:flex;align-items:center}
   .muted{color:var(--muted)} .note{color:var(--muted);font-size:12px;margin-top:10px}
   .spin{color:var(--muted);font-size:12px}
-  footer{color:var(--muted);font-size:12px;padding:0 26px 30px;max-width:1280px;margin:0 auto}
+  /* plan-a-hire (bottom section) */
+  .hirectl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:2px 0 10px;
+    background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+  .hirectl .hlbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+  .hirectl input,.hirectl select{width:auto;padding:6px 9px;font-size:12.5px}
+  .hirectl #hireName{width:92px}
+  .hirectl .tip{color:var(--muted);font-size:11.5px;margin-left:auto;max-width:340px}
+  .hires{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+  .hires:empty{display:none}
+  .hchip{display:inline-flex;align-items:center;gap:6px;background:#1d3a5f;border:1px solid var(--accent);
+    color:var(--ink);border-radius:999px;padding:3px 5px 3px 11px;font-size:12px}
+  .hchip .x{cursor:pointer;color:var(--muted);font-weight:700;padding:0 5px;border-radius:50%;line-height:1}
+  .hchip .x:hover{color:var(--bad)}
+  tr.planned td{background:rgba(91,140,255,.06)}
+  .pill-plan{font-size:10px;padding:1px 6px;border-radius:999px;background:#1d3a5f;color:var(--accent);margin-left:6px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -277,7 +291,17 @@
   <div class="grid">
     <!-- TABLE -->
     <div class="card pad">
-      <h2>Reps &amp; territories &middot; <span class="muted" id="tcount"></span></h2>
+      <h2>Reps &amp; territories &middot; <span class="muted" id="tcount"></span>
+        <span class="info" data-tip="Plan hires here. Add a rep (use 'TBH' for an open req) at a segment + level; it takes that role's standardized quota and the carve pulls pipeline from its segment. Watch the capacity bars and coverage floor above to see which roles you can fill without dropping a segment below the coverage target.">i</span></h2>
+      <div class="hirectl">
+        <span class="hlbl">Plan a hire</span>
+        <input id="hireName" type="text" placeholder="TBH" maxlength="24" aria-label="new rep name">
+        <select id="hireSeg" aria-label="segment"></select>
+        <select id="hireLvl" aria-label="level"></select>
+        <button class="btn" id="hireAdd" type="button">+ Add hire</button>
+        <span class="tip">Takes a standardized quota &amp; pulls pipeline from its segment — watch the capacity bars &amp; floor above.</span>
+      </div>
+      <div class="hires" id="hires"></div>
       <div style="overflow-x:auto">
         <table id="tbl">
           <thead><tr>
@@ -346,6 +370,7 @@ function settings(){
   const o=convOverrides(); if(Object.keys(o).length) body.overrides=o;
   const r=roleOverrides(); if(Object.keys(r).length) body.ote_overrides=r;
   const c=compOverrides(); if(c) body.comp=c;
+  if(HIRES.length) body.added_reps=HIRES;
   return body;
 }
 
@@ -355,6 +380,8 @@ async function loadRoles(){
   ROLES = await (await fetch("/roles")).json();
   if($("#qm").value==="") $("#qm").value=ROLES.quota_to_ote;
   if($("#ct").value==="") $("#ct").value=ROLES.coverage_target;
+  $("#hireSeg").innerHTML = ROLES.segments.map(s=>`<option>${s}</option>`).join("");
+  $("#hireLvl").innerHTML = ROLES.levels.map(l=>`<option>${l}</option>`).join("");
   $("#rolebody").innerHTML = ROLES.roles.map(r=>{
     const ote=Math.round(r.ote/1000), isRamp=r.level==='ramping';
     return `<tr>
@@ -389,6 +416,24 @@ function resetRoles(ev){
   $("#rolebody").querySelectorAll("input").forEach(inp=>{ inp.value=inp.dataset.def; inp.classList.remove("ovr"); });
   refresh(true);
 }
+
+// ---- Plan-a-hire (what-if reps for capacity / hiring planning) ---------------
+let HIRES=[];  // [{name, segment_focus, level}] appended to the roster on every /plan
+function renderHires(){
+  $("#hires").innerHTML = HIRES.map((h,i)=>
+    `<span class="hchip">${esc(h.name)} <span class="muted">·</span> ${h.segment_focus} <span class="muted">·</span> ${h.level}`
+    + ` <span class="x" data-i="${i}" title="remove hire" role="button" aria-label="remove hire">✕</span></span>`).join("");
+}
+function addHire(){
+  if(!ROLES) return;
+  const name=($("#hireName").value||"").trim()||"TBH";
+  const seg=$("#hireSeg").value, lvl=$("#hireLvl").value;
+  if(!seg||!lvl) return;
+  HIRES.push({name, segment_focus:seg, level:lvl});
+  $("#hireName").value="";
+  renderHires(); refresh(true);
+}
+function removeHire(i){ HIRES.splice(i,1); renderHires(); refresh(true); }
 
 // ---- Conversion-assumption overrides (per segment) --------------------------
 let CONV=null;
@@ -534,12 +579,18 @@ function renderTable(rows){
   rows=rows.slice().sort((a,b)=>{ const x=a[state.sort], y=b[state.sort];
     const xn=(x==null), yn=(y==null); if(xn||yn) return xn-yn; return (x>y?1:x<y?-1:0)*(state.asc?1:-1); });
   $("#tcount").textContent=rows.length+" reps";
-  $("#tbody").innerHTML=rows.map(r=>`
-    <tr data-id="${r.rep_id}" class="${r.rep_id===state.sel?'sel':''}">
-      <td><b>${r.rep_id}</b> <span class="muted">${r.rep_name}</span></td>
+  $("#tbody").innerHTML=rows.map(r=>{
+    const plan=(""+r.rep_id).startsWith("NEW-");
+    const idCell = plan
+      ? `<td><b>${esc(r.rep_name)}</b> <span class="pill-plan">planned</span></td>`
+      : `<td><b>${r.rep_id}</b> <span class="muted">${r.rep_name}</span></td>`;
+    return `
+    <tr data-id="${r.rep_id}" class="${r.rep_id===state.sel?'sel':''}${plan?' planned':''}">
+      ${idCell}
       <td><span class="tag ${r.level==='ramping'?'ramp':''}">${r.role||r.segment_focus}</span></td>
       <td>${fmtK(r.ote)}</td><td>${fmtK(r.quota)}</td>
-      <td>${r.account_count}</td><td>${fmtK(r.available_pipeline)}</td>${covCell(r.pipeline_coverage, state.covTarget)}</tr>`).join("");
+      <td>${r.account_count}</td><td>${fmtK(r.available_pipeline)}</td>${covCell(r.pipeline_coverage, state.covTarget)}</tr>`;
+  }).join("");
   $("#tbody").querySelectorAll("tr").forEach(tr=>tr.onclick=()=>selectRep(tr.dataset.id));
 }
 function renderComp(rows, att){
@@ -598,7 +649,9 @@ async function refresh(keepSel){
   renderTable(plan.territories);
   renderComp(plan.comp, +$("#att").value);
   renderPayoutCurve(plan.payout_curve, plan.comp_params||{});
-  selectRep((keepSel && state.sel) ? state.sel : plan.territories[0].rep_id);
+  // keep the selection only if that rep still exists (a removed hire falls back)
+  const ids=new Set(plan.territories.map(t=>t.rep_id));
+  selectRep((keepSel && state.sel && ids.has(state.sel)) ? state.sel : plan.territories[0].rep_id);
 }
 function debounced(){ clearTimeout(timer); timer=setTimeout(()=>refresh(true), 220); }
 
@@ -607,6 +660,9 @@ $("#geo").addEventListener("change",()=>refresh(true));
 $("#att").addEventListener("change",()=>refresh(true));
 $("#rolebody").addEventListener("input",debounced);
 $("#roleReset").addEventListener("click",resetRoles);
+$("#hireAdd").addEventListener("click",addHire);
+$("#hireName").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); addHire(); } });
+$("#hires").addEventListener("click",e=>{ if(e.target.classList.contains("x")) removeHire(+e.target.dataset.i); });
 $("#convbody").addEventListener("input",debounced);
 $("#ovReset").addEventListener("click",resetConv);
 CP_IDS.forEach(id=>$("#"+id).addEventListener("input",debounced));

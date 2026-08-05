@@ -43,3 +43,39 @@ def test_higher_coverage_target_covers_fewer_reps(data):
     lo = run_plan(accounts, reps, conversions, PlanSettings(coverage_target=3.0))
     hi = run_plan(accounts, reps, conversions, PlanSettings(coverage_target=5.0))
     assert hi.scorecard["reps_covered"]["optimized"] < lo.scorecard["reps_covered"]["optimized"]
+
+
+def test_added_reps_grow_the_team_and_target(data):
+    accounts, reps, conversions = data
+    base = run_plan(accounts, reps, conversions)
+    more = run_plan(
+        accounts,
+        reps,
+        conversions,
+        PlanSettings(added_reps=[{"name": "TBH", "segment": "Enterprise", "level": "AE"}]),
+    )
+    assert more.n_territories == base.n_territories + 1
+    assert more.company_target > base.company_target
+    # every account is still assigned exactly once across the larger team
+    ids = [a for t in more.territories for a in t.account_ids]
+    assert len(ids) == len(accounts) and len(set(ids)) == len(accounts)
+    added = [t for t in more.territories if t.rep_id.startswith("NEW-")]
+    assert len(added) == 1 and added[0].quota is not None
+
+
+def test_invalid_added_reps_are_skipped(data):
+    accounts, reps, conversions = data
+    base = run_plan(accounts, reps, conversions)
+    got = run_plan(
+        accounts,
+        reps,
+        conversions,
+        PlanSettings(
+            added_reps=[
+                {"name": "bad seg", "segment": "Nope", "level": "AE"},
+                {"name": "bad lvl", "segment": "SMB", "level": "Principal"},
+                "not-a-dict",
+            ]
+        ),
+    )
+    assert got.n_territories == base.n_territories  # every malformed hire skipped
