@@ -80,7 +80,7 @@ def territory_detail(t: Territory, rep: Rep, accounts_by_id: dict[str, Account])
             "opportunity_value": _r(t.potential, 0),
             "whitespace": _r(t.whitespace, 0),
             "available_pipeline": _r(t.available_potential, 0),
-            "note": "all MRR. opportunity_value = whitespace + open_pipeline + "
+            "note": "all USD ACV. opportunity_value = whitespace + open_pipeline + "
             "0.25*current_arr; available_pipeline (coverage numerator) = "
             "whitespace + open_pipeline",
         },

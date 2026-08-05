@@ -29,10 +29,13 @@ def test_health_and_favicon():
 
 def test_roles_endpoint():
     body = client.get("/roles").json()
-    assert body["quota_to_ote"] == 5.0 and body["coverage_target"] == 3.0
+    assert body["quota_to_ote"] == 4.0 and body["coverage_target"] == 3.0
+    assert body["periods_per_year"] == 4
     assert {r["segment"] for r in body["roles"]} == {"Enterprise", "Mid-Market", "SMB"}
-    # quota = multiple x OTE for every role
-    assert all(abs(r["quota"] - body["quota_to_ote"] * r["ote"]) < 1 for r in body["roles"])
+    ppy = body["periods_per_year"]
+    # quarterly quota = annual (multiple x OTE) / periods; annual_quota is the 4-6x headline
+    assert all(abs(r["quota"] - body["quota_to_ote"] * r["ote"] / ppy) < 1 for r in body["roles"])
+    assert all(abs(r["annual_quota"] - body["quota_to_ote"] * r["ote"]) < 1 for r in body["roles"])
 
 
 def test_conversions_and_comp_defaults():
@@ -47,12 +50,12 @@ def test_plan_endpoint_shape():
     body = client.post("/plan", json={}).json()
     sm = body["summary"]
     assert sm["units"]["quota_period"] == "quarterly"
-    assert sm["n_territories"] == 12
-    assert sm["reps_covered"]["of"] == 12
+    assert sm["n_territories"] == 14
+    assert sm["reps_covered"]["of"] == 14
     assert sm["coverage_target"] == 3.0
     assert set(sm["per_segment_capacity"]) == {"Enterprise", "Mid-Market", "SMB"}
     assert "coverage_floor" in sm and "capacity_gap" in sm
-    assert len(body["territories"]) == 12
+    assert len(body["territories"]) == 14
     row = body["territories"][0]
     for k in ("role", "ote", "quota", "pipeline_coverage", "available_pipeline"):
         assert k in row
@@ -84,7 +87,7 @@ def test_balance_and_quota_endpoints():
     assert bal["coverage_target"] == 3.0 and "capacity_gap" in bal
     assert bal["per_segment_capacity"]["SMB"]["coverable"] is False
     q = client.post("/quota", json={}).json()
-    assert q["quota_to_ote"] == 5.0
+    assert q["quota_to_ote"] == 4.0
     assert all("role" in t and "ote" in t for t in q["territories"])
 
 

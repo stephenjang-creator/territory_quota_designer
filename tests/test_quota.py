@@ -15,11 +15,13 @@ def test_same_role_same_quota(reps):
     assert len({next(iter(v)) for v in by_role.values()}) > 1
 
 
-def test_quota_is_the_multiple_times_ote(reps):
+def test_quota_is_the_annual_multiple_over_periods_times_ote(reps):
     qs = quota.standardized_quotas(reps)
     otes = quota.resolve_ote(reps)
+    ppy = config.QUOTA_PERIODS_PER_YEAR
     for r in reps:
-        assert abs(qs[r.rep_id] - config.QUOTA_TO_OTE * otes[r.rep_id]) < 1e-6
+        # quarterly quota = (annual multiple x OTE) / periods-per-year
+        assert abs(qs[r.rep_id] - config.QUOTA_TO_OTE * otes[r.rep_id] / ppy) < 1e-6
 
 
 def test_company_target_is_sum_of_quotas(reps):
@@ -32,7 +34,8 @@ def test_ote_override_reprices_only_that_role(reps):
     got = quota.standardized_quotas(reps, ote_overrides={"Enterprise": {"AE": 1_000_000}})
     for r in reps:
         if (r.segment_focus, r.level) == ("Enterprise", "AE"):
-            assert abs(got[r.rep_id] - config.QUOTA_TO_OTE * 1_000_000) < 1e-6
+            expect = config.QUOTA_TO_OTE * 1_000_000 / config.QUOTA_PERIODS_PER_YEAR
+            assert abs(got[r.rep_id] - expect) < 1e-6
         else:
             assert abs(got[r.rep_id] - base[r.rep_id]) < 1e-6
 

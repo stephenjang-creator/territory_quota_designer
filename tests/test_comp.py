@@ -4,7 +4,7 @@ import config
 from core import comp
 
 OTE = 500_000.0
-QUOTA = config.QUOTA_TO_OTE * OTE
+QUOTA = config.QUOTA_TO_OTE * OTE / config.QUOTA_PERIODS_PER_YEAR  # quarterly
 
 
 def test_payout_factor_is_one_on_target():

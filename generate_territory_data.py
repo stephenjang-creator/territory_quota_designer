@@ -20,7 +20,7 @@ No production data is used. Runtime deps: pandas (required), faker (optional --
 falls back to a built-in pool).
 
 Usage:
-    python generate_territory_data.py --accounts 800 --reps 12 --seed 42 --outdir data
+    python generate_territory_data.py --accounts 800 --reps 14 --seed 42 --outdir data
 """
 
 import argparse
@@ -70,18 +70,21 @@ REGIONS = {
 }
 REGION_WEIGHTS = [0.40, 0.35, 0.15, 0.10]
 
-# Firmographic ranges by segment: employees, annual_revenue ($), and the
-# potential envelope that drives whitespace + pipeline.
+# Firmographic ranges by segment: employees, annual_revenue ($), and the potential
+# envelope that drives whitespace + pipeline. All $ are ACV. The envelopes are sized
+# so total addressable pipeline lands near ~3x the (much smaller, OTE-anchored)
+# standardized quotas: Enterprise/Mid-Market carry a surplus, SMB stays a touch
+# short — the capacity gap the dashboard exists to surface.
 SEG_PROFILE = {
     "Enterprise": dict(emp=(2000, 50000), rev=(5e8, 2e10),
-                       whitespace=(150_000, 600_000), pipe=(80_000, 350_000),
-                       arr=(50_000, 400_000)),
+                       whitespace=(12_000, 30_000), pipe=(6_000, 18_000),
+                       arr=(5_000, 40_000)),
     "Mid-Market": dict(emp=(200, 2000), rev=(5e7, 5e8),
-                       whitespace=(40_000, 150_000), pipe=(20_000, 90_000),
-                       arr=(10_000, 90_000)),
+                       whitespace=(5_000, 10_000), pipe=(2_000, 6_000),
+                       arr=(2_000, 12_000)),
     "SMB":        dict(emp=(10, 200), rev=(1e6, 5e7),
-                       whitespace=(5_000, 40_000), pipe=(3_000, 25_000),
-                       arr=(1_000, 20_000)),
+                       whitespace=(1_000, 3_400), pipe=(600, 2_200),
+                       arr=(300, 4_000)),
 }
 
 STAGES = ["Discovery", "Qualification", "Proposal", "Negotiation", "Won"]
@@ -155,23 +158,26 @@ def _level_for(segment, tenure):
     return base if LEVEL_ORDER.index(base) <= LEVEL_ORDER.index(cap) else cap
 
 
-# The default 12-rep demo team, curated so seniority tracks account size (see
+# The default 14-rep demo team, curated so seniority tracks account size (see
 # above): strategic reps sell Enterprise, senior reps the larger Mid-Market books,
-# SMB is AEs + a new hire. Segments match the random draw they replace, so the
-# Stage-1 carve is unchanged; only seniority/tenure differ. (segment, level, tenure)
+# SMB is AEs + a new hire. The mix (4 Enterprise / 6 Mid-Market / 4 SMB) sizes the
+# derived company target into the ~$2.5-3M/quarter range for a $100-500M SaaS co.
+# (segment, level, tenure)
 DEFAULT_TEAM = [
-    ("Mid-Market", "Sr. AE", 30),            # R-100
-    ("Enterprise", "Sr. Strategic AE", 48),  # R-101
-    ("Enterprise", "Sr. Strategic AE", 42),  # R-102
-    ("Mid-Market", "AE", 14),                # R-103
-    ("SMB", "AE", 20),                        # R-104
-    ("Enterprise", "AE", 14),                # R-105
-    ("Mid-Market", "ramping", 4),            # R-106
-    ("Mid-Market", "AE", 9),                 # R-107
-    ("SMB", "AE", 30),                        # R-108
-    ("Enterprise", "ramping", 4),            # R-109
-    ("SMB", "ramping", 2),                    # R-110
-    ("Mid-Market", "Sr. AE", 36),            # R-111
+    ("Enterprise", "Sr. Strategic AE", 48),  # R-100
+    ("Enterprise", "Sr. Strategic AE", 42),  # R-101
+    ("Enterprise", "AE", 14),                # R-102
+    ("Enterprise", "ramping", 4),            # R-103
+    ("Mid-Market", "Sr. AE", 30),            # R-104
+    ("Mid-Market", "Sr. AE", 36),            # R-105
+    ("Mid-Market", "AE", 14),                # R-106
+    ("Mid-Market", "AE", 12),                # R-107
+    ("Mid-Market", "AE", 9),                 # R-108
+    ("Mid-Market", "ramping", 4),            # R-109
+    ("SMB", "AE", 30),                        # R-110
+    ("SMB", "AE", 24),                        # R-111
+    ("SMB", "AE", 20),                        # R-112
+    ("SMB", "ramping", 2),                    # R-113
 ]
 
 
@@ -219,7 +225,7 @@ def _conversions():
     return pd.DataFrame(rows)
 
 
-def build(n_accounts=800, n_reps=12, seed=42):
+def build(n_accounts=800, n_reps=14, seed=42):
     random.seed(seed)
     _seed_faker(seed)
     return _accounts(n_accounts), _reps(n_reps), _conversions()
@@ -228,7 +234,7 @@ def build(n_accounts=800, n_reps=12, seed=42):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--accounts", type=int, default=800)
-    ap.add_argument("--reps", type=int, default=12)
+    ap.add_argument("--reps", type=int, default=14)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--outdir", default="data")
     args = ap.parse_args()

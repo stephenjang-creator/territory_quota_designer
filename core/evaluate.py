@@ -114,7 +114,7 @@ def scorecard_markdown(scorecard: dict) -> str:
     lines = [
         f"| Metric | Naive equal-split | Work-back carve | (target {tgt:.0f}x) |",
         "| --- | ---: | ---: | ---: |",
-        f"| **Total capacity gap** (pipeline short, MRR) | ${gap['baseline']:,.0f} | "
+        f"| **Total capacity gap** (pipeline short, USD) | ${gap['baseline']:,.0f} | "
         f"**${gap['optimized']:,.0f}** | {_pct(gap['baseline'], gap['optimized'])} |",
         f"| **Coverage floor** — worst-covered rep (higher = fairer) | {flr['baseline']:.2f}x | "
         f"**{flr['optimized']:.2f}x** | {_pct(flr['baseline'], flr['optimized'])} |",

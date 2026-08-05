@@ -12,19 +12,22 @@ from __future__ import annotations
 # ----------------------------------------------------------------------
 # Units
 # ----------------------------------------------------------------------
-# All monetary values are MRR (monthly recurring revenue). Quota is a QUARTERLY
-# new-MRR bookings target. The synthetic figures keep their generator magnitudes,
-# read as MRR; avg deal size stays per-segment (from conversions.csv), read as
-# MRR added per deal. Every coverage/balance/cost-of-sale figure is a ratio, so
-# the denomination is a labeling choice — it does not change any outcome.
+# All monetary values are USD ACV (annual contract value). OTE is annual on-target
+# earnings. The ANNUAL quota = QUOTA_TO_OTE * OTE (industry norm 4-6x); the quota
+# the model plans and carves against is QUARTERLY = annual / QUOTA_PERIODS_PER_YEAR,
+# and that quarterly number is what the dashboard shows. avg_deal_size is per-segment
+# ACV added per deal (from conversions.csv). Coverage/balance are ratios, so they are
+# denomination-invariant; comp and cost-of-sale are reported annually (see Stage 4).
 QUOTA_PERIOD = "quarterly"
+QUOTA_PERIODS_PER_YEAR = 4  # quarterly quota = annual quota / 4
 UNITS = {
-    "currency": "USD MRR (monthly recurring revenue)",
+    "currency": "USD (annual contract value)",
     "quota_period": QUOTA_PERIOD,
     "note": (
-        "All $ figures are MRR. Quota is a quarterly new-MRR bookings target; "
-        "won_deals = quota / avg_deal_size (MRR added per deal) = deals to close "
-        "in the quarter. avg_deal_size is per-segment (Enterprise/Mid-Market/SMB)."
+        "All $ are USD ACV. OTE is annual; annual quota = QUOTA_TO_OTE x OTE "
+        "(norm 4-6x); the quarterly quota shown = annual quota / 4. won_deals = "
+        "quarterly quota / avg_deal_size (ACV per deal) = deals to close in the "
+        "quarter. Comp and cost-of-sale are annual; coverage is a ratio."
     ),
 }
 
@@ -54,18 +57,19 @@ POTENTIAL_MIX = {"whitespace": 1.0, "pipeline": 1.0, "current_arr": 0.25}
 # derived backward from on-target earnings (OTE):
 #
 #     OTE(role)      = SEGMENT_OTE[segment] * LEVEL_OTE_FACTOR[level]   (annual OTE, $)
-#     quota          = QUOTA_TO_OTE * OTE(role)                         (quarterly target)
-#     company target = sum of every rep's quota                         (derived)
+#     annual quota   = QUOTA_TO_OTE * OTE(role)                         (industry norm 4-6x)
+#     quota          = annual quota / QUOTA_PERIODS_PER_YEAR            (quarterly target)
+#     company target = sum of every rep's quarterly quota              (derived)
 #
 # OTE, the multiple, and the coverage target are all overridable in the API/UI.
 AE_LEVELS = ["ramping", "AE", "Sr. AE", "Sr. Strategic AE"]
 
-# On-target earnings: the AE-tier OTE per segment, times a seniority factor on top.
-# (SMB OTE is set so the thin SMB book can't quite cover its reps to 3x — that
-# capacity gap is the tension the tool surfaces even after an optimal carve.)
-SEGMENT_OTE = {"Enterprise": 900_000, "Mid-Market": 550_000, "SMB": 300_000}
-LEVEL_OTE_FACTOR = {"ramping": 0.6, "AE": 1.0, "Sr. AE": 1.2, "Sr. Strategic AE": 1.35}
-QUOTA_TO_OTE = 5.0  # quota as a multiple of OTE (industry norm ~4-6x)
+# On-target earnings (annual, USD) — realistic for a US SaaS company of ~$100-500M
+# revenue: the AE-tier OTE per segment, times a seniority factor on top. Ramping
+# reps carry a lighter effective load; senior tiers earn 25-50% more.
+SEGMENT_OTE = {"Enterprise": 280_000, "Mid-Market": 175_000, "SMB": 110_000}
+LEVEL_OTE_FACTOR = {"ramping": 0.8, "AE": 1.0, "Sr. AE": 1.25, "Sr. Strategic AE": 1.5}
+QUOTA_TO_OTE = 4.0  # ANNUAL quota as a multiple of OTE (industry norm ~4-6x)
 
 # Tenure (months) -> level, a dataio fallback when a reps row has no explicit level.
 AE_LEVEL_TENURE_BANDS = [(6, "ramping"), (18, "AE"), (36, "Sr. AE")]
@@ -112,6 +116,9 @@ STANDARD_COVERAGE_MULTIPLE = PIPELINE_COVERAGE_TARGET  # available_potential / q
 #   up to accelerator_threshold : slope                           (standard)
 #   above accelerator_threshold : slope * accelerator_multiplier  (>1 = kicker)
 #   total_comp = base + (1 - split) * OTE * payout_factor(attainment)
+# Comp is annual (OTE is annual). Bookings are annualized (quarterly quota x
+# QUOTA_PERIODS_PER_YEAR x attainment) so cost-of-sale = annual comp / annual
+# bookings lands at the usual ~20-30% of bookings, not a quarter-vs-year mismatch.
 COMP = {
     "base_variable_split": 0.5,  # base as a fraction of OTE
     "decelerator_threshold": 0.7,  # below this attainment, the reduced (decel) slope

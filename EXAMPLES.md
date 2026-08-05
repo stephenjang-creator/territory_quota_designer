@@ -2,9 +2,9 @@
 
 Natural-language questions a RevOps planner might ask, and the tool call(s) each
 triggers. Tools return **structured JSON**; the agent narrates. Every number comes
-from the deterministic engine. Quotas are standardized by role (quota = a multiple
-of OTE); territories are carved back to a pipeline-coverage target (3×). All $ are
-MRR.
+from the deterministic engine. Quotas are standardized by role (annual quota = a
+multiple of OTE, planned quarterly = annual ÷ 4); territories are carved back to a
+pipeline-coverage target (3×). All $ are USD ACV.
 
 ---
 
@@ -12,15 +12,15 @@ MRR.
 
 ```
 coverage_gaps()                    # → reps whose book is below the 3× pipeline target
-assess_territory("R-104")          # → drill into one for the full picture
+assess_territory("R-110")          # → drill into one for the full picture
 ```
 
-`coverage_gaps` returns the three **SMB reps** at ~2.6× pipeline coverage, each with
-the exact pipeline gap (target × quota − available). `assess_territory("R-104")`
-shows why: a standardized SMB AE quota of $1.5M needs $4.5M of pipeline at 3×, but
-the book holds only ~$4.0M — a **$0.5M capacity gap**. It's not a carve mistake: the
-whole SMB segment holds $10.3M vs the $11.7M its quotas need. An assignment can't
-invent pipeline.
+`coverage_gaps` returns the four **SMB reps** at ~2.43× pipeline coverage, each with
+the exact pipeline gap (target × quota − available). `assess_territory("R-110")`
+shows why: a standardized SMB AE quota of $110K/quarter needs $330K of pipeline at
+3×, but the book holds only ~$268K — a **$62K capacity gap**. It's not a carve
+mistake: the whole SMB segment holds $1.02M vs the $1.25M its quotas need at 3×. An
+assignment can't invent pipeline.
 
 ---
 
@@ -30,7 +30,7 @@ invent pipeline.
 whatif_coverage(5.0)
 ```
 
-Re-carves to the stiffer target and diffs. Reps covered drops from **9 → 1** — at 5×,
+Re-carves to the stiffer target and diffs. Reps covered drops from **10 → 3** — at 5×,
 even the surplus Enterprise and Mid-Market segments can't pack every book that
 deep — and the total capacity gap balloons. Returns the coverage floor, the gap, and
 the full below-target list. Powers "how much pipeline coverage can we actually
@@ -38,17 +38,17 @@ demand before the model breaks".
 
 ---
 
-### 3. "If we lift SMB AE OTE to $400K, what happens to quota and coverage?"
+### 3. "If we lift SMB AE OTE to $200K, what happens to quota and coverage?"
 
 ```
-whatif_ote("SMB", "AE", 400000)
+whatif_ote("SMB", "AE", 200000)
 ```
 
-Every SMB AE's quota is re-priced to `5 × 400,000 = $2.0M` (same role → same number),
-the company target rises, and each affected rep's pipeline coverage drops further
-below 3× (a richer quota on the same thin book). Returns the before/after quota and
-coverage per affected rep. Powers "we want to pay SMB more — can the segment support
-the quota that implies?".
+Every SMB AE's quota is re-priced to `4 × 200,000 ÷ 4 = $200K/quarter` (annual $800K;
+same role → same number), the company target rises from $2.86M to **$3.13M/quarter**,
+and each affected rep's pipeline coverage drops from 2.43× to ~1.48× (a richer quota
+on the same thin book). Returns the before/after quota and coverage per affected rep.
+Powers "we want to pay SMB more — can the segment support the quota that implies?".
 
 ---
 
@@ -59,9 +59,10 @@ comp_scenario(attainment=0.90)
 ```
 
 Total comp, cost-of-sale, and the top/bottom earners at 90%. Call `comp_scenario()`
-with no argument for the 0.85 / 1.0 / 1.10 table. Comp is OTE-anchored (base = a
-slice of OTE, on-target variable earned in full at 100%), so cost-of-sale can tick
-*up* above 100% as the accelerator kicks in — the table shows it honestly.
+with no argument for the 0.85 / 1.0 / 1.10 table. Comp is OTE-anchored and **annual**
+(base = a slice of OTE, on-target variable earned in full at 100%), so at-plan
+cost-of-sale sits near **25%** and can tick *up* above 100% as the accelerator kicks
+in — the table shows it honestly.
 
 ---
 
@@ -71,25 +72,28 @@ slice of OTE, on-target variable earned in full at 100%), so cost-of-sale can ti
 get_scorecard()
 ```
 
-The capacity eval, both carves under the **same** standardized quotas: the work-back
-carve cuts the total capacity gap (~$1.96M → ~$1.37M) and raises the coverage floor
-(worst rep 2.23× → 2.63×) by spreading the SMB shortfall evenly instead of starving
-one rep to over-fill another. Includes a ready-to-paste markdown table and the
-per-segment pipeline-vs-required breakdown.
+The capacity eval, both carves under the **same** standardized quotas. The total
+capacity gap is **identical** ($233K either way) — SMB is short no matter how you
+carve, and an assignment can't invent pipeline. The work-back win is *fairness*: it
+raises the coverage floor (worst rep 2.24× → 2.43×) and keeps books compact (off-home
+0.81 → 0.47) by spreading the SMB shortfall evenly instead of starving one rep to
+over-fill another. Includes a ready-to-paste markdown table and the per-segment
+pipeline-vs-required breakdown.
 
 ---
 
-### 6. "Is R-104 set up to fail, or is the segment just short on pipeline?"
+### 6. "Is R-110 set up to fail, or is the segment just short on pipeline?"
 
 ```
-assess_territory("R-104")
+assess_territory("R-110")
 ```
 
 Distinguishes two things: the **quota is standardized and fair** (every SMB AE
-carries the same $1.5M, derived from OTE — not a punishment), and the **coverage** is
-2.67× vs the 3× target. So it isn't that R-104's quota is unfair; it's that the SMB
-book can't hold 3× pipeline for these quotas. The payload carries the pipeline gap
-and both coverage lenses (pipeline multiple + the reverse-waterfall funnel).
+carries the same $110K/quarter, derived from OTE — not a punishment), and the
+**coverage** is 2.43× vs the 3× target. So it isn't that R-110's quota is unfair;
+it's that the SMB book can't hold 3× pipeline for these quotas. The payload carries
+the pipeline gap and both coverage lenses (pipeline multiple + the reverse-waterfall
+funnel).
 
 ---
 
@@ -101,8 +105,8 @@ list_territories(sort_by="pipeline_coverage", ascending=True, limit=15)
 ```
 
 A compact table, worst-covered first. `list_reps` shows each rep's role
-(segment × title), OTE, and standardized quota; `list_segments` gives each segment's
-default conversion rates + avg deal size.
+(segment × title), OTE, and standardized quarterly quota; `list_segments` gives each
+segment's default conversion rates + avg deal size.
 
 ---
 
