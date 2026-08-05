@@ -67,7 +67,7 @@ potential, all MRR).
 | Geo — Σ distinct regions (lower better) | 47 | 28 | −40.4% |
 | Whitespace balance — CoV (lower better) | 0.609 | 0.601 | −1.4% |
 | Whole-team potential CoV *(structural floor)* | 0.608 | 0.603 | −0.8% |
-| Under-covered territories | 6 | 6 | 0 flipped |
+| Under-covered territories | 2 | 3 | 0 flipped |
 
 The **off-home-region floor is 0.45** — 358 of 800 accounts have no rep of their
 segment *in their region*, so they must be sold cross-region no matter what. The
@@ -78,31 +78,32 @@ of the sliders.
 Coverage is **segment- and seniority-structural** here: quota is proportional to
 potential *scaled by the rep's level*, so a territory's coverage ratio is set
 mostly by its segment's win rate and how heavily its level is loaded — not by
-which accounts it holds, so re-carving doesn't flip it. At this target six of
-twelve reps are under-covered: the full-time Enterprise AEs (lowest win rate) plus
-the senior tiers (Sr. AE / Sr. Strategic AE, loaded 15–30% heavier), while the
-ramping reps sit comfortably over-covered on their lighter load. Dial the level
-multipliers, the conversion rates, or the target and watch who moves — that's what
-the dashboard and the what-if tools are for.
+which accounts it holds, so re-carving doesn't flip it. At this target the three
+under-covered reps are exactly the ones you'd worry about: the two **Sr. Strategic
+AEs on Enterprise books** (lowest win rate, loaded ×1.30 → ~$8.6M quotas → 0.79
+coverage) and a **Sr. AE** sitting right on the line, while the ramping reps sit
+comfortably over-covered on their lighter load. Dial the level multipliers, the
+conversion rates, or the target and watch who moves — that's what the dashboard and
+the what-if tools are for.
 
-## Worked reverse-waterfall example (R-101, Enterprise)
+## Worked reverse-waterfall example (R-101, a Sr. Strategic AE on Enterprise)
 
 Work **backward** from the quota up the funnel, then ask: does the territory hold
 enough addressable pipeline to support it?
 
 ```
-quota (quarterly)     $7,103,688 MRR  (new-MRR bookings target; R-101 is an "AE", ×1.0)
+quota (quarterly)     $8,612,153 MRR  (new-MRR target; R-101 is a Sr. Strategic AE, ×1.3)
 avg deal size         $120,000 MRR    (Enterprise default, from conversions.csv)
 
-won deals    = 7,103,688 / 120,000                    =    59.2   (deals this quarter)
-at negotiation = 59.2 / 0.30  (Negotiation→Won)       =   197.3
-at proposal    = 197.3 / 0.60 (Proposal→Negotiation)  =   328.9
-at qualification = 328.9 / 0.55 (Qualification→Prop)  =   598.0
-at discovery   = 598.0 / 0.45 (Discovery→Qual)        = 1,328.8   ← required SQLs
+won deals    = 8,612,153 / 120,000                    =    71.8   (deals this quarter)
+at negotiation = 71.8 / 0.30  (Negotiation→Won)       =   239.2
+at proposal    = 239.2 / 0.60 (Proposal→Negotiation)  =   398.7
+at qualification = 398.7 / 0.55 (Qualification→Prop)  =   724.9
+at discovery   = 724.9 / 0.45 (Discovery→Qual)        = 1,611.0   ← required SQLs
 
-required_pipeline = at_negotiation × avg_deal = $23,678,960 MRR ( = quota / 0.30 )
+required_pipeline = at_negotiation × avg_deal = $28,707,178 MRR ( = quota / 0.30 )
 available_pipeline = Σ (whitespace + open_pipeline)  = $22,595,100 MRR
-coverage_ratio     = 22,595,100 / 23,678,960         = 0.95      → UNDER-COVERED
+coverage_ratio     = 22,595,100 / 28,707,178         = 0.79      → UNDER-COVERED
 ```
 
 `available_pipeline` is the addressable portion (whitespace + open pipeline); it
@@ -111,8 +112,8 @@ new-bookings quota. Coverage is an **adequacy / risk** signal, not a guarantee o
 attainment. Levers the engine surfaces to close this gap:
 
 - lower quota to ~$6,778,530 (makes coverage = 1.0), or
-- reassign ~$1,083,860 of addressable potential into this book, or
-- source ~61 more SQLs.
+- reassign ~$6,112,078 of addressable potential into this book, or
+- source ~343 more SQLs.
 
 ## The override hierarchy (a first-class feature)
 
@@ -130,11 +131,11 @@ the `/territory` endpoint) can show the audit trail. Example overrides payload:
 {
   "global":  {"Negotiation->Won": 0.28},
   "segment": {"Enterprise": {"Negotiation->Won": 0.25}},
-  "rep":     {"R-104": {"avg_deal_size": 15000}}
+  "rep":     {"R-105": {"avg_deal_size": 90000}}
 }
 ```
 
-With this, `R-104` uses its own deal size, every other Enterprise rep uses the
+With this, `R-105` uses its own deal size, every other Enterprise rep uses the
 0.25 win rate, and everyone else falls back to the CSV default (reported as
 `global`). "If enterprise win-rates drop to 25%, who breaks?" is exactly this.
 

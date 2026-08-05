@@ -11,16 +11,17 @@ figures are **MRR**; quota is a **quarterly** new-MRR target.
 
 ```
 coverage_gaps()                    # → the under-covered reps, worst first
-assess_territory("R-100")          # → drill into the worst one for the full funnel
+assess_territory("R-101")          # → drill into the worst one for the full funnel
 ```
 
-`coverage_gaps` returns six under-covered reps, worst first: R-100 (a Sr. Strategic
-AE on a Mid-Market book) at 0.82, R-111 (Sr. AE) at 0.93, then the three full-time
-Enterprise AEs (R-101 / R-102 / R-105) at ~0.95 — each with a gap size and levers.
-`assess_territory("R-100")` shows *why*: the reverse-waterfall funnel (quota → 94
-won deals → … → ~1,670 required SQLs), `required_pipeline` ≈ $12.8M MRR vs
-`available_pipeline` ≈ $10.4M MRR. Its book is fine for an AE — but it's **loaded as
-a Sr. Strategic AE (×1.30)**, and that heavier quota is what pulls coverage under.
+`coverage_gaps` returns three under-covered reps, worst first: the two **Sr.
+Strategic AEs on Enterprise books** — R-101 and R-102 at 0.79 — and a **Sr. AE**
+(R-100, Mid-Market) sitting right on the line at 0.99, each with a gap size and
+levers. `assess_territory("R-101")` shows *why*: the reverse-waterfall funnel
+(quota → 72 won deals → … → ~1,611 required SQLs), `required_pipeline` ≈ $28.7M MRR
+vs `available_pipeline` ≈ $22.6M MRR. It's a normal Enterprise book — but it's
+**loaded as a Sr. Strategic AE (×1.30) → an $8.6M quota** on the lowest-win-rate
+segment, and that's what pulls coverage to 0.79.
 
 ---
 
@@ -43,12 +44,13 @@ geo up compacts territories at the cost of balance — the diff quantifies the t
 whatif_conversions({"segment": {"Enterprise": {"Negotiation->Won": 0.25}}})
 ```
 
-Re-runs the waterfall with the override (rep > segment > global). The three
-full-time Enterprise AEs (R-101, R-102, R-105) drop from ~0.95 to ~0.80 coverage —
-deeper gaps, not new ones — while the *ramping* Enterprise rep (R-109) stays covered
-at ~1.32 because its lighter ramping load already protects it. Push the rate to
-~0.19 and even that rep flips under; the tool reports exactly which territories
-cross the line and each coverage delta.
+Re-runs the waterfall with the override (rep > segment > global). Every Enterprise
+rep drops: the two Sr. Strategic AEs (R-101, R-102) from ~0.79 to ~0.66, and the
+Enterprise AE (R-105) from 1.02 to 0.85 — a *new* gap — while the *ramping*
+Enterprise rep (R-109) stays covered at ~1.41 because its lighter load protects it.
+Under-covered goes 3 → 4; push the rate lower still and even the ramping rep's
+cushion goes. The tool reports exactly which territories cross the line and each
+coverage delta.
 
 ---
 
@@ -86,11 +88,13 @@ assess_territory("R-101")
 ```
 
 Distinguishes two things the planner conflates: **fairness** (`quota_to_potential`
-vs. the team mean — is the quota itself unfair?) and **coverage** (does the book
-hold enough pipeline?). R-101's quota is fair for its level (an AE at ×1.0), but its
-coverage is 0.95 — the issue is pipeline adequacy, and the `gap` block lists the
-levers (lower quota to ~$6.78M MRR, add ~$1.08M MRR of pipeline, or source ~61 more
-SQLs).
+and how it compares across peers — is the quota load reasonable for this rep?) and
+**coverage** (does the book hold enough pipeline?). R-101's quota load is high **by
+design** — it's a Sr. Strategic AE (×1.30) on a big Enterprise book → an $8.6M
+quota — which is appropriate, not a carve error. The real signal is **coverage:
+0.79** — that heavy senior quota outruns the territory's addressable pipeline. The
+`gap` block lists the levers (lower quota to ~$6.78M MRR, add ~$6.11M MRR of
+pipeline, or source ~343 more SQLs).
 
 ---
 
@@ -131,8 +135,10 @@ whatif_levels({"Sr. Strategic AE": 1.4})
 
 Quota is proportional to potential × the rep's **seniority-level multiplier**, then
 re-normalized to the same company target — so loading one level up shifts quota onto
-it and off everyone else. Here the two Sr. Strategic AEs deepen from 0.82→0.76
-(R-100) and 0.96→0.90 (R-104) as their quota rises, while the rest of the team eases
-slightly; the tool returns each rep's quota + coverage delta and any covered↔under
-flips. `list_reps` shows who sits at each level and the default multipliers, and the
-dashboard's "Quota by seniority level" panel is the same lever with sliders.
+it and off everyone else. Here the two Sr. Strategic AEs on Enterprise (R-101, R-102)
+deepen from 0.79→0.75 and 0.79→0.76 as their quota climbs ~$8.6M → ~$9.0M, while the
+rest of the team eases just enough that the Sr. AE (R-100) tips back over 1.0 — so
+total under-covered actually drops 3 → 2. The tool returns each rep's quota +
+coverage delta and any flips. `list_reps` shows who sits at each level and the
+default multipliers, and the dashboard's "Quota by seniority level" panel is the
+same lever with sliders.
