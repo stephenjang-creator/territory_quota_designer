@@ -2,9 +2,12 @@
 core/quota.py — Stage 2: derive fair quotas that sum to the company target.
 
 Each territory's quota is proportional to its share of total opportunity
-potential. Ramping reps carry a haircut; quotas are then re-normalized so the
-book still sums to exactly the company target. Fairness is reported as each rep's
-quota/potential ratio, flagging anyone set up to fail (high) or sandbagged (low).
+potential, then scaled by the rep's seniority-level multiplier (ramping / AE /
+Sr. AE / Sr. Strategic AE — a ramping rep carries less, senior tiers carry more);
+quotas are then re-normalized so the book still sums to exactly the company
+target. Fairness is reported as each rep's quota/potential ratio, flagging anyone
+set up to fail (high) or sandbagged (low) — with levels, that ratio varies by
+tier by design, so senior tiers read "stretch" and ramping "sandbag" as expected.
 
 The company target is a *quarterly* new-MRR bookings goal; every dollar here is
 MRR (see config.UNITS).
@@ -30,33 +33,50 @@ def default_company_target(
     return m * sum(t.potential for t in territories)
 
 
+def resolve_level_multipliers(overrides: dict | None = None) -> dict[str, float]:
+    """The effective {level: quota multiplier} map — config defaults with any
+    caller overrides layered on top."""
+    mult = dict(config.LEVEL_QUOTA_MULTIPLIER)
+    for level, value in (overrides or {}).items():
+        try:
+            mult[level] = float(value)
+        except (TypeError, ValueError):
+            continue  # ignore un-parseable overrides; keep the default
+    return mult
+
+
 def derive_quotas(
     territories: list[Territory],
     reps: list[Rep],
     company_target: float | None = None,
     *,
+    level_multipliers: dict | None = None,
     ramp_haircut: float | None = None,
     fairness_tolerance: float | None = None,
 ) -> float:
     """Fill `quota` and `quota_to_potential` on each territory in place.
 
+    Each raw quota is proportional to the territory's potential, then scaled by
+    the rep's seniority-level multiplier (config.LEVEL_QUOTA_MULTIPLIER, override
+    via `level_multipliers`), then re-normalized so the book sums to the company
+    target. `ramp_haircut`, if given, overrides just the ramping level (back-compat).
+
     Returns the (resolved) company_target actually used.
     """
-    haircut = config.RAMP_QUOTA_HAIRCUT if ramp_haircut is None else ramp_haircut
+    mult = resolve_level_multipliers(level_multipliers)
+    if ramp_haircut is not None:
+        mult["ramping"] = float(ramp_haircut)
     tol = config.QUOTA_FAIRNESS_TOLERANCE if fairness_tolerance is None else fairness_tolerance
     target = default_company_target(territories) if company_target is None else company_target
 
     rep_by_id = {r.rep_id: r for r in reps}
     total_potential = sum(t.potential for t in territories)
 
-    # Raw proportional quota, then the ramp haircut.
+    # Raw proportional quota, then the rep's level multiplier.
     raw: dict[str, float] = {}
     for t in territories:
         share = (t.potential / total_potential) if total_potential else 0.0
-        q = target * share
-        if rep_by_id[t.rep_id].is_ramping:
-            q *= haircut
-        raw[t.rep_id] = q
+        raw[t.rep_id] = target * share * mult.get(rep_by_id[t.rep_id].level, 1.0)
 
     # Re-normalize so quotas sum back to the company target.
     total_raw = sum(raw.values())

@@ -71,16 +71,21 @@ def _weights(pw, gw, ww):
     return {k: v / total for k, v in w.items()}
 
 
-def _plan(pw=None, gw=None, ww=None, company_target=None, overrides=None):
+def _plan(pw=None, gw=None, ww=None, company_target=None, overrides=None, level_multipliers=None):
     """The default plan when nothing is overridden, else a fresh in-memory re-run."""
     w = _weights(pw, gw, ww)
-    if w is None and company_target is None and not overrides:
+    if w is None and company_target is None and not overrides and not level_multipliers:
         return DEFAULT_PLAN
     return run_plan(
         ACCOUNTS,
         REPS,
         CONVERSIONS,
-        PlanSettings(weights=w, company_target=company_target, overrides=overrides or {}),
+        PlanSettings(
+            weights=w,
+            company_target=company_target,
+            overrides=overrides or {},
+            level_multipliers=level_multipliers,
+        ),
     )
 
 
@@ -285,6 +290,70 @@ def whatif_conversions(overrides: dict) -> dict:
 
 
 @mcp.tool()
+def whatif_levels(level_multipliers: dict) -> dict:
+    """Re-derive quotas with new AE-level quota multipliers and DIFF vs. the default.
+
+    `level_multipliers` maps a seniority level to its quota-load multiplier, e.g.
+    ``{"ramping": 0.5, "Sr. Strategic AE": 1.4}``. Valid levels: ramping, AE,
+    Sr. AE, Sr. Strategic AE (call list_reps for the defaults + who sits where).
+    Quota is proportional to potential × the rep's multiplier, re-normalized to the
+    same company target — so raising one level's load lowers everyone else's.
+    Returns each rep's quota + coverage change and any covered↔under-covered flips.
+    Powers "if we load Sr. Strategic AEs 40% heavier, who runs short on pipeline".
+    """
+    try:
+        if not isinstance(level_multipliers, dict) or not level_multipliers:
+            return {
+                "error": "level_multipliers must be a non-empty object, "
+                "e.g. {'Sr. Strategic AE': 1.4}"
+            }
+        unknown = [lvl for lvl in level_multipliers if lvl not in config.LEVEL_QUOTA_MULTIPLIER]
+        if unknown:
+            return {"error": f"unknown level(s) {unknown}; valid: {config.AE_LEVELS}"}
+        plan = _plan(level_multipliers=level_multipliers)
+        base = {t.rep_id: t for t in DEFAULT_PLAN.territories}
+        to_under, to_covered, deltas = [], [], []
+        for t in plan.territories:
+            b = base.get(t.rep_id)
+            if b is None:
+                continue
+            deltas.append(
+                {
+                    "rep_id": t.rep_id,
+                    "rep_name": REP_BY_ID[t.rep_id].name,
+                    "level": REP_BY_ID[t.rep_id].level,
+                    "quota_default": round(b.quota or 0),
+                    "quota_whatif": round(t.quota or 0),
+                    "delta_quota": round((t.quota or 0) - (b.quota or 0)),
+                    "coverage_default": (
+                        round(b.coverage_ratio, 3) if b.coverage_ratio is not None else None
+                    ),
+                    "coverage_whatif": (
+                        round(t.coverage_ratio, 3) if t.coverage_ratio is not None else None
+                    ),
+                }
+            )
+            if not b.under_covered and t.under_covered:
+                to_under.append(t.rep_id)
+            if b.under_covered and not t.under_covered:
+                to_covered.append(t.rep_id)
+        deltas.sort(key=lambda x: x["delta_quota"])
+        return {
+            "units": config.UNITS,
+            "level_multipliers_used": plan.settings["level_multipliers"],
+            "n_under_covered": {
+                "default": DEFAULT_PLAN.n_under_covered,
+                "whatif": plan.n_under_covered,
+            },
+            "flipped_to_under_covered": to_under,
+            "flipped_to_covered": to_covered,
+            "quota_deltas": deltas,
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@mcp.tool()
 def comp_scenario(attainment: float | None = None) -> dict:
     """Comp outputs for the default plan (quarterly MRR).
 
@@ -343,9 +412,11 @@ def get_scorecard() -> dict:
 @mcp.tool()
 def list_reps() -> dict:
     """Valid rep ids + metadata (name, segment_focus, home_region/metro, tenure,
-    ramp_status) — discovery for the other tools."""
+    ramp_status, level) — discovery for the other tools."""
     try:
         return {
+            "levels": config.AE_LEVELS,
+            "level_multipliers": dict(config.LEVEL_QUOTA_MULTIPLIER),
             "reps": [
                 {
                     "rep_id": r.rep_id,
@@ -355,9 +426,10 @@ def list_reps() -> dict:
                     "home_metro": r.home_metro,
                     "tenure_months": r.tenure_months,
                     "ramp_status": r.ramp_status,
+                    "level": r.level,
                 }
                 for r in REPS
-            ]
+            ],
         }
     except Exception as e:
         return {"error": str(e)}

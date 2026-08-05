@@ -27,7 +27,7 @@ and cost-of-sale are all ratios, so the denomination never changes an outcome.
 ```
 accounts + firmographics + reps
   → ① Balance     weighted multi-factor optimization (potential / geo / whitespace)
-  → ② Quota       fair, proportional to potential, sums to a company target
+  → ② Quota       proportional to potential × the rep's seniority-level load, summed to a target
   → ③ Reverse     work backward quota → won → … → required SQLs; is there enough pipeline?
      waterfall
   → ④ Comp        payout curves, cost-of-sale, attainment scenarios
@@ -67,7 +67,7 @@ potential, all MRR).
 | Geo — Σ distinct regions (lower better) | 47 | 28 | −40.4% |
 | Whitespace balance — CoV (lower better) | 0.609 | 0.601 | −1.4% |
 | Whole-team potential CoV *(structural floor)* | 0.608 | 0.603 | −0.8% |
-| Under-covered territories | 3 | 3 | 0 flipped |
+| Under-covered territories | 6 | 6 | 0 flipped |
 
 The **off-home-region floor is 0.45** — 358 of 800 accounts have no rep of their
 segment *in their region*, so they must be sold cross-region no matter what. The
@@ -75,11 +75,15 @@ optimizer captures nearly all of the discretionary remainder. Turn the geo weigh
 up and it compacts further at the cost of balance — that trade-off is the point
 of the sliders.
 
-Coverage is **segment-structural** here: because quota is proportional to
-potential, a territory's coverage ratio is set mostly by its segment's win rate,
-not by which accounts it holds — so re-carving doesn't flip it. The tool surfaces
-that as an honest signal: at this target the three full-time Enterprise reps are
-under-covered (lowest win rate), and the what-if tools let a planner explore it.
+Coverage is **segment- and seniority-structural** here: quota is proportional to
+potential *scaled by the rep's level*, so a territory's coverage ratio is set
+mostly by its segment's win rate and how heavily its level is loaded — not by
+which accounts it holds, so re-carving doesn't flip it. At this target six of
+twelve reps are under-covered: the full-time Enterprise AEs (lowest win rate) plus
+the senior tiers (Sr. AE / Sr. Strategic AE, loaded 15–30% heavier), while the
+ramping reps sit comfortably over-covered on their lighter load. Dial the level
+multipliers, the conversion rates, or the target and watch who moves — that's what
+the dashboard and the what-if tools are for.
 
 ## Worked reverse-waterfall example (R-101, Enterprise)
 
@@ -87,18 +91,18 @@ Work **backward** from the quota up the funnel, then ask: does the territory hol
 enough addressable pipeline to support it?
 
 ```
-quota (quarterly)     $7,422,488 MRR  (new-MRR bookings target for the quarter)
+quota (quarterly)     $7,103,688 MRR  (new-MRR bookings target; R-101 is an "AE", ×1.0)
 avg deal size         $120,000 MRR    (Enterprise default, from conversions.csv)
 
-won deals    = 7,422,488 / 120,000                    =    61.9   (deals this quarter)
-at negotiation = 61.9 / 0.30  (Negotiation→Won)       =   206.2
-at proposal    = 206.2 / 0.60 (Proposal→Negotiation)  =   343.6
-at qualification = 343.6 / 0.55 (Qualification→Prop)  =   624.8
-at discovery   = 624.8 / 0.45 (Discovery→Qual)        = 1,388.4   ← required SQLs
+won deals    = 7,103,688 / 120,000                    =    59.2   (deals this quarter)
+at negotiation = 59.2 / 0.30  (Negotiation→Won)       =   197.3
+at proposal    = 197.3 / 0.60 (Proposal→Negotiation)  =   328.9
+at qualification = 328.9 / 0.55 (Qualification→Prop)  =   598.0
+at discovery   = 598.0 / 0.45 (Discovery→Qual)        = 1,328.8   ← required SQLs
 
-required_pipeline = at_negotiation × avg_deal = $24,741,625 MRR ( = quota / 0.30 )
+required_pipeline = at_negotiation × avg_deal = $23,678,960 MRR ( = quota / 0.30 )
 available_pipeline = Σ (whitespace + open_pipeline)  = $22,595,100 MRR
-coverage_ratio     = 22,595,100 / 24,741,625         = 0.91      → UNDER-COVERED
+coverage_ratio     = 22,595,100 / 23,678,960         = 0.95      → UNDER-COVERED
 ```
 
 `available_pipeline` is the addressable portion (whitespace + open pipeline); it
@@ -107,8 +111,8 @@ new-bookings quota. Coverage is an **adequacy / risk** signal, not a guarantee o
 attainment. Levers the engine surfaces to close this gap:
 
 - lower quota to ~$6,778,530 (makes coverage = 1.0), or
-- reassign ~$2,146,525 of addressable potential into this book, or
-- source ~120 more SQLs.
+- reassign ~$1,083,860 of addressable potential into this book, or
+- source ~61 more SQLs.
 
 ## The override hierarchy (a first-class feature)
 
@@ -134,6 +138,45 @@ With this, `R-104` uses its own deal size, every other Enterprise rep uses the
 0.25 win rate, and everyone else falls back to the CSV default (reported as
 `global`). "If enterprise win-rates drop to 25%, who breaks?" is exactly this.
 
+## Quota by AE seniority level (a first-class lever)
+
+Reps aren't interchangeable. Every rep carries a **seniority level** — `ramping`,
+`AE`, `Sr. AE`, or `Sr. Strategic AE` — and each level carries a different quota
+load. Stage 2 makes each raw quota proportional to the territory's potential
+**times the rep's level multiplier**, then re-normalizes so the book still sums to
+exactly the company target:
+
+```
+ramping 0.6 · AE 1.0 · Sr. AE 1.15 · Sr. Strategic AE 1.30   (config.LEVEL_QUOTA_MULTIPLIER)
+```
+
+Dialing one level up shifts *who carries the number* — a little more onto that
+level, a little less onto everyone else — without changing the total. The
+multipliers are overridable per call (`level_multipliers`) and editable live in
+the dashboard's "Quota by seniority level" panel; the MCP `whatif_levels` tool
+answers "if we load Sr. Strategic AEs 40% heavier, who runs short on pipeline?".
+Because coverage is linear in quota, loading a level heavier drops its reps'
+coverage proportionally — which is why the senior tiers, not the ramping reps, are
+the ones under-covered at the default target.
+
+## Compensation: accelerators & decelerators
+
+Stage 4 pays variable comp on a **three-band curve** in attainment, every
+parameter overridable (`comp`) and editable in the dashboard's "Compensation plan"
+panel (with a live payout curve):
+
+```
+below decelerator_threshold  → rate × decelerator_multiplier   (< 1: under-attainment penalty)
+up to accelerator_threshold  → rate                            (standard band)
+above accelerator_threshold  → rate × accelerator_multiplier   (> 1: overperformance kicker)
+```
+
+optionally frozen at `cap_attainment`. Base salary is derived from the
+base/variable OTE split, so `cost_of_sale = Σ total_comp / Σ bookings` reflects
+fully-loaded comp. Defaults: a decelerator at 0.5× below 70% attainment and an
+accelerator at 1.5× above 100%. Set the decelerator multiplier to 1.0 (or its
+threshold to 0) and the model collapses back to a plain accelerator.
+
 ## API
 
 Load the CSVs once at startup; each endpoint recomputes from a settings payload.
@@ -144,6 +187,9 @@ Interactive docs at `/docs`.
 | `GET /` | the **interactive dashboard** (self-contained HTML, served same-origin) |
 | `GET /api` | JSON service index; `GET /health` liveness probe |
 | `GET /data/summary` | counts, total potential, segment/region mix |
+| `GET /conversions` | per-segment default conversion rates + avg deal size (override-panel seed) |
+| `GET /levels` | AE seniority levels, default quota multipliers, rep counts per level |
+| `GET /comp/defaults` | default comp parameters (split, rate, decel/accel bands, cap) |
 | `POST /balance` | Stage 1 — territories + balance scores for given weights |
 | `POST /quota` | Stage 2 — quotas + fairness for a company target |
 | `POST /waterfall` | Stage 3 — coverage results + under-covered roll-up |
@@ -162,9 +208,9 @@ to 25%, who breaks", "what does this cost at 85% attainment". The tools are thin
 calls, nothing persists — what-ifs recompute in memory). See **[EXAMPLES.md](EXAMPLES.md)**
 for natural-language questions mapped to the tools they trigger.
 
-Ten tools: `plan_summary`, `list_territories`, `assess_territory`, `coverage_gaps`,
-`whatif_weights`, `whatif_conversions`, `comp_scenario`, `get_scorecard`,
-`list_reps`, `list_segments`.
+Eleven tools: `plan_summary`, `list_territories`, `assess_territory`, `coverage_gaps`,
+`whatif_weights`, `whatif_conversions`, `whatif_levels`, `comp_scenario`,
+`get_scorecard`, `list_reps`, `list_segments`.
 
 ```bash
 make mcp        # stdio (for Claude Desktop / claude mcp)
@@ -198,8 +244,9 @@ and set `MCP_AUTH_TOKEN` to require a `Authorization: Bearer <token>` header.
 ## Configuration
 
 All tunable knobs live in `config.py` (weights, potential mix, segment-focus and
-cap constraints, quota target multiple, ramp haircut, coverage band, comp
-parameters) or come from the loaded CSVs — nothing is hardcoded mid-logic.
+cap constraints, quota target multiple, per-level quota multipliers, coverage
+band, and the three-band comp parameters) or come from the loaded CSVs — nothing
+is hardcoded mid-logic. Every one of them is also overridable per API/MCP call.
 
 ## Deploy (Render)
 

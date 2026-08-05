@@ -47,6 +47,7 @@ def build_scorecard(
     max_accounts_per_rep: int | None = None,
     company_target: float | None = None,
     overrides: dict | None = None,
+    level_multipliers: dict | None = None,
     optimized: list[Territory] | None = None,
 ) -> dict:
     """Compute the full scorecard dict. `optimized` may be passed to avoid a
@@ -71,8 +72,8 @@ def build_scorecard(
 
     # Same company target on both carves so coverage is compared apples-to-apples.
     target = quota.default_company_target(optimized) if company_target is None else company_target
-    quota.derive_quotas(optimized, reps, target)
-    quota.derive_quotas(baseline, reps, target)
+    quota.derive_quotas(optimized, reps, target, level_multipliers=level_multipliers)
+    quota.derive_quotas(baseline, reps, target, level_multipliers=level_multipliers)
     waterfall.run_waterfall(optimized, accounts, conversions, overrides)
     waterfall.run_waterfall(baseline, accounts, conversions, overrides)
 

@@ -1,13 +1,13 @@
-rep_id,name,segment_focus,home_region,home_metro,tenure_months,ramp_status
-R-100,Jamie Kowalski,Mid-Market,NA-West,Seattle,48,full
-R-101,Taylor Chen,Enterprise,APAC,Tokyo,6,full
-R-102,Morgan Kowalski,Enterprise,APAC,Bangalore,14,full
-R-103,Jamie Kim,Mid-Market,APAC,Sydney,14,full
-R-104,Skyler Adeyemi,SMB,NA-East,New York,48,full
-R-105,Avery Chen,Enterprise,EMEA,Madrid,14,full
-R-106,Alex Kim,Mid-Market,EMEA,Madrid,4,ramping
-R-107,Skyler Novak,Mid-Market,APAC,Sydney,9,full
-R-108,Jordan Kim,SMB,APAC,Seoul,30,full
-R-109,Jamie Muller,Enterprise,NA-West,Phoenix,4,ramping
-R-110,Cameron Kowalski,SMB,APAC,Bangalore,2,ramping
-R-111,Skyler Nguyen,Mid-Market,NA-West,Los Angeles,30,full
+rep_id,name,segment_focus,home_region,home_metro,tenure_months,ramp_status,level
+R-100,Jamie Kowalski,Mid-Market,NA-West,Seattle,48,full,Sr. Strategic AE
+R-101,Taylor Chen,Enterprise,APAC,Tokyo,6,full,AE
+R-102,Morgan Kowalski,Enterprise,APAC,Bangalore,14,full,AE
+R-103,Jamie Kim,Mid-Market,APAC,Sydney,14,full,AE
+R-104,Skyler Adeyemi,SMB,NA-East,New York,48,full,Sr. Strategic AE
+R-105,Avery Chen,Enterprise,EMEA,Madrid,14,full,AE
+R-106,Alex Kim,Mid-Market,EMEA,Madrid,4,ramping,ramping
+R-107,Skyler Novak,Mid-Market,APAC,Sydney,9,full,AE
+R-108,Jordan Kim,SMB,APAC,Seoul,30,full,Sr. AE
+R-109,Jamie Muller,Enterprise,NA-West,Phoenix,4,ramping,ramping
+R-110,Cameron Kowalski,SMB,APAC,Bangalore,2,ramping,ramping
+R-111,Skyler Nguyen,Mid-Market,NA-West,Los Angeles,30,full,Sr. AE

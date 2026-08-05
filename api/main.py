@@ -43,6 +43,7 @@ class PlanRequest(BaseModel):
     respect_segment_focus: bool | None = None
     max_accounts_per_rep: int | None = None
     overrides: dict = Field(default_factory=dict)
+    level_multipliers: dict | None = None
     comp: dict | None = None
     attainment: float = 1.0
     attainment_scenarios: list | None = None
@@ -82,6 +83,9 @@ def api_index():
         "dashboard": "/",
         "endpoints": [
             "/data/summary",
+            "/conversions",
+            "/levels",
+            "/comp/defaults",
             "/balance",
             "/quota",
             "/waterfall",
@@ -97,6 +101,61 @@ def api_index():
 def health():
     """Liveness probe for the platform health check."""
     return {"status": "ok"}
+
+
+@app.get("/conversions")
+def conversions_defaults():
+    """The global-default conversion rates + avg deal size per segment.
+
+    Read straight from the loaded conversions.csv (the `global` tier of the
+    override hierarchy). The dashboard uses this to pre-fill its editable
+    override panel, so the inputs always start from the real data rather than
+    hardcoded numbers.
+    """
+    from core.dataio import AVG_DEAL_KEY, TRANSITIONS
+
+    # Order segments high-to-low by deal size (Enterprise, Mid-Market, SMB).
+    segments = sorted(CONVERSIONS, key=lambda s: -CONVERSIONS[s][AVG_DEAL_KEY])
+    return {
+        "units": config.UNITS,
+        "transitions": TRANSITIONS,
+        "avg_deal_key": AVG_DEAL_KEY,
+        "segments": segments,
+        "defaults": {s: dict(CONVERSIONS[s]) for s in segments},
+    }
+
+
+@app.get("/comp/defaults")
+def comp_defaults():
+    """Default compensation-plan parameters (base/variable split, commission rate,
+    decelerator + accelerator thresholds/multipliers, cap). The dashboard pre-fills
+    its editable comp panel from this; POST them back on /plan or /comp as `comp`.
+    """
+    return {
+        "defaults": comp.resolved_params(),
+        "attainment_scenarios": config.ATTAINMENT_SCENARIOS,
+        "note": "Variable pay is commission on bookings on a three-band curve: a "
+        "reduced rate below the decelerator threshold, the standard rate up to the "
+        "accelerator threshold, then the accelerated rate above it (optionally capped).",
+    }
+
+
+@app.get("/levels")
+def ae_levels():
+    """AE seniority levels + their default quota multipliers + how many reps sit at
+    each level. The dashboard pre-fills its editable quota-by-level panel from this.
+    """
+    from collections import Counter
+
+    counts = Counter(r.level for r in REPS)
+    return {
+        "levels": config.AE_LEVELS,
+        "multipliers": dict(config.LEVEL_QUOTA_MULTIPLIER),
+        "counts": {lvl: counts.get(lvl, 0) for lvl in config.AE_LEVELS},
+        "note": "Quota per rep is proportional to their book's potential, scaled by "
+        "their level multiplier, then re-normalized to the company target. 1.0 = a "
+        "standard AE; the whole team still sums to the same target.",
+    }
 
 
 @app.get("/favicon.ico", include_in_schema=False)
@@ -220,12 +279,15 @@ def comp_endpoint(req: PlanRequest):
 def plan_endpoint(req: PlanRequest):
     """Run the whole chain from one settings payload (the dashboard's hot path)."""
     plan = _plan(req)
+    sample_quota = plan.company_target / max(len(plan.territories), 1)
     return {
         "summary": views.plan_summary(plan),
         "scorecard": plan.scorecard,
         "scorecard_markdown": evaluate.scorecard_markdown(plan.scorecard),
         "territories": views.list_rows(plan, REPS, sort_by="coverage_ratio", limit=len(REPS)),
         "comp": comp.scenario_compare(plan.territories, req.attainment_scenarios, req.comp),
+        "comp_params": comp.resolved_params(req.comp),
+        "payout_curve": comp.payout_curve(sample_quota, req.comp),
     }
 
 
