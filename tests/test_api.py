@@ -53,12 +53,12 @@ def test_plan_endpoint_shape():
     body = client.post("/plan", json={}).json()
     sm = body["summary"]
     assert sm["units"]["quota_period"] == "quarterly"
-    assert sm["n_territories"] == 14
-    assert sm["reps_covered"]["of"] == 14
+    assert sm["n_territories"] == 36
+    assert sm["reps_covered"]["of"] == 36
     assert sm["coverage_target"] == 3.0
     assert set(sm["per_segment_capacity"]) == {"Enterprise", "Mid-Market", "SMB"}
     assert "coverage_floor" in sm and "capacity_gap" in sm
-    assert len(body["territories"]) == 14
+    assert len(body["territories"]) == 36
     row = body["territories"][0]
     for k in ("role", "ote", "quota", "pipeline_coverage", "available_pipeline"):
         assert k in row
@@ -134,7 +134,7 @@ def test_plan_returns_recommendations_and_a_lever_resolves_over_the_wire():
 
 def test_plan_accepts_segment_override():
     base = client.post("/plan", json={}).json()["summary"]
-    got = client.post("/plan", json={"segment_overrides": {"SMB": {"quota_to_ote": 3.25}}}).json()[
+    got = client.post("/plan", json={"segment_overrides": {"SMB": {"quota_to_ote": 3.0}}}).json()[
         "summary"
     ]
     assert got["per_segment_capacity"]["SMB"]["coverable"] is True

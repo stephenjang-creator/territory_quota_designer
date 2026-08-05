@@ -20,7 +20,7 @@ No production data is used. Runtime deps: pandas (required), faker (optional --
 falls back to a built-in pool).
 
 Usage:
-    python generate_territory_data.py --accounts 800 --reps 14 --seed 42 --outdir data
+    python generate_territory_data.py --accounts 2200 --reps 36 --seed 42 --outdir data
 """
 
 import argparse
@@ -158,27 +158,39 @@ def _level_for(segment, tenure):
     return base if LEVEL_ORDER.index(base) <= LEVEL_ORDER.index(cap) else cap
 
 
-# The default 14-rep demo team, curated so seniority tracks account size (see
-# above): strategic reps sell Enterprise, senior reps the larger Mid-Market books,
-# SMB is AEs + a new hire. The mix (4 Enterprise / 6 Mid-Market / 4 SMB) sizes the
-# derived company target into the ~$2.5-3M/quarter range for a $100-500M SaaS co.
-# (segment, level, tenure)
-DEFAULT_TEAM = [
-    ("Enterprise", "Sr. Strategic AE", 48),  # R-100
-    ("Enterprise", "Sr. Strategic AE", 42),  # R-101
-    ("Enterprise", "AE", 14),                # R-102
-    ("Enterprise", "ramping", 4),            # R-103
-    ("Mid-Market", "Sr. AE", 30),            # R-104
-    ("Mid-Market", "Sr. AE", 36),            # R-105
-    ("Mid-Market", "AE", 14),                # R-106
-    ("Mid-Market", "AE", 12),                # R-107
-    ("Mid-Market", "AE", 9),                 # R-108
-    ("Mid-Market", "ramping", 4),            # R-109
-    ("SMB", "AE", 30),                        # R-110
-    ("SMB", "AE", 24),                        # R-111
-    ("SMB", "AE", 20),                        # R-112
-    ("SMB", "ramping", 2),                    # R-113
+# The default demo team, curated so seniority tracks account size (see above):
+# strategic reps sell Enterprise, senior reps the larger Mid-Market books, SMB is
+# AEs + new hires. The mix (10 Enterprise / 15 Mid-Market / 11 SMB = 36 reps) sizes
+# the derived company target near $7M/quarter ($28M/year) for a mid-size SaaS co.
+# Each block is (segment, level, count); order fixes the rep ids -- Enterprise
+# R-100.., Mid-Market R-110.., SMB R-125...
+DEFAULT_TEAM_SPEC = [
+    ("Enterprise", "Sr. Strategic AE", 3),
+    ("Enterprise", "AE", 5),
+    ("Enterprise", "ramping", 2),
+    ("Mid-Market", "Sr. AE", 4),
+    ("Mid-Market", "AE", 9),
+    ("Mid-Market", "ramping", 2),
+    ("SMB", "AE", 9),
+    ("SMB", "ramping", 2),
 ]
+# Representative tenure (months) each level starts from, oldest first. Tenure is for
+# display / ramp_status only; the curated team sets its level explicitly, so tenure
+# does not drive it here (a slight per-rep spread just keeps the roster realistic).
+_LEVEL_TENURE = {"Sr. Strategic AE": 44, "Sr. AE": 32, "AE": 16, "ramping": 4}
+
+
+def _default_team():
+    """Expand DEFAULT_TEAM_SPEC into per-rep (segment, level, tenure) tuples."""
+    team = []
+    for segment, level, count in DEFAULT_TEAM_SPEC:
+        base = _LEVEL_TENURE[level]
+        for k in range(count):
+            team.append((segment, level, max(2, base - k)))
+    return team
+
+
+DEFAULT_TEAM = _default_team()
 
 
 def _reps(n):
@@ -189,9 +201,11 @@ def _reps(n):
     regions = list(REGIONS)
     for i in range(n):
         # Draw name/region/metro from the pools (and a random focus/tenure so the
-        # RNG stream is stable); the default team below then curates seniority.
+        # RNG stream is stable); the default team below then curates seniority. Home
+        # regions follow REGION_WEIGHTS so reps cluster where the accounts are -- the
+        # carve's home-region tiebreaker then can't starve a rep parked in a thin geo.
         focus = random.choice(focus_pool)
-        region = random.choice(regions)
+        region = random.choices(regions, weights=REGION_WEIGHTS)[0]
         tenure = random.choice([2, 4, 6, 9, 14, 20, 30, 48])
         row = {
             "rep_id": f"R-{100 + i}",
@@ -225,7 +239,7 @@ def _conversions():
     return pd.DataFrame(rows)
 
 
-def build(n_accounts=800, n_reps=14, seed=42):
+def build(n_accounts=2200, n_reps=36, seed=42):
     random.seed(seed)
     _seed_faker(seed)
     return _accounts(n_accounts), _reps(n_reps), _conversions()
@@ -233,8 +247,8 @@ def build(n_accounts=800, n_reps=14, seed=42):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--accounts", type=int, default=800)
-    ap.add_argument("--reps", type=int, default=14)
+    ap.add_argument("--accounts", type=int, default=2200)
+    ap.add_argument("--reps", type=int, default=36)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--outdir", default="data")
     args = ap.parse_args()

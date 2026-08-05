@@ -51,7 +51,7 @@ def _floor2(x: float) -> float:
 
 def _fmt(x: float | None) -> str:
     if x is None:
-        return "—"
+        return "n/a"
     if abs(x) >= 1e6:
         return f"${x / 1e6:.2f}M"
     return f"${round(x / 1000):,}K"
@@ -94,7 +94,8 @@ def retag_to_cover(
     if _segment_floor(base_target, seg_reps, quotas, target_by_rep) >= target - eps:
         return {}
 
-    # source-segment surplus budget (aggregate): never push a source below its own req
+    # Per-segment available + required pipeline. A source is only a donor while it stays
+    # coverable; the target's (required - held) is the aggregate deficit it must import.
     seg_avail: dict[str, float] = {}
     for a in accounts:
         seg_avail[a.segment] = seg_avail.get(a.segment, 0.0) + _addr(a)
@@ -104,23 +105,35 @@ def retag_to_cover(
             r.rep_id
         ] * quotas.get(r.rep_id, 0.0)
 
+    # Candidate donors, smallest-addressable first (the most "target-like" accounts and
+    # the finest granularity for lifting the worst rep to the line), each still leaving
+    # its source segment coverable.
     avail = dict(seg_avail)
-    moved: list = []
-    # smallest-addressable first: the most "target-segment-like" accounts, and the
-    # finest granularity for lifting the worst rep exactly to the line.
+    candidates: list = []
     for a in sorted(
         (a for a in accounts if a.segment != target_segment),
         key=lambda a: (_addr(a), a.account_id),
     ):
-        src = a.segment
-        if avail[src] - _addr(a) < seg_req.get(src, 0.0):
+        if avail[a.segment] - _addr(a) < seg_req.get(a.segment, 0.0):
             continue  # moving this would push the source below its own target
-        moved.append(a)
-        avail[src] -= _addr(a)
-        eff = base_target + [replace(m, segment=target_segment) for m in moved]
+        candidates.append(a)
+        avail[a.segment] -= _addr(a)
+
+    # Two-phase, and EXACTLY equivalent to re-carving after every single move: every
+    # rep clearing the target implies the segment's aggregate pipeline >= required, so
+    # no carve can clear before the deficit is met. Phase 1 jumps to that lower bound
+    # with zero carves; Phase 2 re-carves one account at a time until the floor clears.
+    deficit = max(0.0, seg_req.get(target_segment, 0.0) - seg_avail.get(target_segment, 0.0))
+    n, running = 0, 0.0
+    while n < len(candidates) and running < deficit:
+        running += _addr(candidates[n])
+        n += 1
+    while n < len(candidates):
+        eff = base_target + [replace(m, segment=target_segment) for m in candidates[:n]]
         if _segment_floor(eff, seg_reps, quotas, target_by_rep) >= target - eps:
             break
-    return {m.account_id: target_segment for m in moved}
+        n += 1
+    return {m.account_id: target_segment for m in candidates[:n]}
 
 
 def _seg_capacity(scorecard: dict) -> dict:
@@ -180,7 +193,7 @@ def build_recommendations(
             src_txt = ", ".join(f"{n} from {sg}" for sg, n in src_counts.items())
             levers.append(
                 {
-                    "label": f"Re-tag {len(retags)} accounts into {seg} ({src_txt}) — "
+                    "label": f"Re-tag {len(retags)} accounts into {seg} ({src_txt}): "
                     f"{_fmt(moved)} of pipeline; every {seg} rep then clears {seg_target:g}×, "
                     f"sources stay covered.",
                     "apply": {"account_retags": retags},
@@ -208,7 +221,7 @@ def build_recommendations(
                 "title": f"{seg} is short {_fmt(gap)} of pipeline against its standardized quotas",
                 "body": f"{seg} holds {_fmt(d['available_pipeline'])} addressable pipeline "
                 f"but needs {_fmt(d['required_pipeline'])} to cover {d['reps']} reps "
-                f"at {seg_target:g}×. No carve invents pipeline — the shortfall is "
+                f"at {seg_target:g}×. No carve invents pipeline; the shortfall is "
                 "structural, so pick a lever below.",
                 "levers": levers,
             }
@@ -261,7 +274,7 @@ def build_recommendations(
                 "id": "hiring",
                 "category": "hiring",
                 "severity": "info",
-                "title": f"Hire into {segs_txt} — not into {avoid}",
+                "title": f"Hire into {segs_txt}, not into {avoid}",
                 "body": "; ".join(
                     f"{h['seg']} has {_fmt(h['surplus'])} of pipeline headroom "
                     f"({h['heads']} AE at {_fmt(h['ae_quota'])} quota)"
@@ -335,7 +348,7 @@ def build_recommendations(
             "body": f"Base pay is fixed, so a miss does not shrink the bill proportionally: "
             f"{cos85:.1%} of bookings at {STRESS_ATT:.0%} vs {plan_cos:.1%} at plan"
             + (
-                f" — within the {TARGET_COS:.0%} ceiling."
+                f", within the {TARGET_COS:.0%} ceiling."
                 if not over
                 else f", above the {TARGET_COS:.0%} ceiling."
             ),

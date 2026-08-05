@@ -799,3 +799,1403 @@ A-10796,Soylent Cloud,Healthcare,Mid-Market,1173,479809000.0,EMEA,Berlin,6200.0,
 A-10797,Hooli Cloud,Logistics,Mid-Market,1402,143940000.0,NA-West,Denver,9300.0,8900.0,1800.0,0.395
 A-10798,Cyberdyne Group,Telecom,Mid-Market,903,137017000.0,NA-West,Denver,10300.0,9700.0,5800.0,0.477
 A-10799,Umbra Analytics,Retail,Enterprise,38508,709996000.0,APAC,Tokyo,9100.0,17700.0,5600.0,0.167
+A-10800,Globex Cloud,Media,Mid-Market,1775,477270000.0,NA-West,Phoenix,2400.0,9400.0,4200.0,0.605
+A-10801,Gekko Labs,Financial Services,SMB,199,30562000.0,NA-West,Denver,2500.0,1900.0,900.0,0.334
+A-10802,Cogswell Cloud,Retail,Mid-Market,1828,338119000.0,EMEA,Madrid,5300.0,11200.0,3900.0,0.755
+A-10803,Sterling Solutions,Logistics,SMB,125,28715000.0,NA-West,Seattle,2500.0,2000.0,500.0,0.202
+A-10804,Soylent Industries,Education,SMB,137,45286000.0,NA-East,New York,1900.0,2100.0,700.0,0.368
+A-10805,Pied Piper Cloud,Telecom,Mid-Market,1404,61538000.0,NA-East,Atlanta,7700.0,5600.0,4000.0,0.608
+A-10806,Dunder Industries,Media,Enterprise,48731,5349671000.0,APAC,Sydney,20600.0,35300.0,13600.0,0.822
+A-10807,Contoso Solutions,Financial Services,Enterprise,18020,12519853000.0,NA-East,Atlanta,30900.0,24500.0,14500.0,0.446
+A-10808,Cyberdyne Holdings,Retail,SMB,172,24787000.0,NA-West,Seattle,1500.0,1600.0,600.0,0.169
+A-10809,Sterling Labs,Manufacturing,Mid-Market,368,370250000.0,NA-West,Los Angeles,11100.0,5900.0,2500.0,0.208
+A-10810,Stark Networks,Education,SMB,194,16868000.0,EMEA,Paris,1100.0,1400.0,2500.0,0.685
+A-10811,Soylent Solutions,Manufacturing,SMB,37,15543000.0,NA-West,Los Angeles,3900.0,3600.0,1100.0,0.602
+A-10812,Pied Piper Networks,Telecom,SMB,151,35631000.0,NA-East,Chicago,3900.0,2800.0,1400.0,0.412
+A-10813,Wayne Cloud,Manufacturing,SMB,161,29369000.0,NA-West,Seattle,700.0,1300.0,1900.0,0.589
+A-10814,Soylent Solutions,Retail,SMB,119,3607000.0,APAC,Bangalore,2600.0,3600.0,2100.0,0.609
+A-10815,Globex Analytics,Media,Mid-Market,317,373491000.0,NA-East,Boston,7700.0,4900.0,2800.0,0.073
+A-10816,Prestige Cloud,Retail,SMB,72,28923000.0,NA-East,Austin,3500.0,1100.0,900.0,0.163
+A-10817,Globex Networks,Financial Services,SMB,110,36789000.0,NA-West,Phoenix,3000.0,3300.0,2600.0,0.939
+A-10818,Cyberdyne Cloud,Energy,Mid-Market,449,204483000.0,NA-East,Boston,3000.0,8100.0,5000.0,0.455
+A-10819,Wayne Solutions,Financial Services,Mid-Market,1142,59180000.0,NA-East,Atlanta,8100.0,10400.0,4800.0,0.557
+A-10820,Contoso Holdings,Education,SMB,104,27225000.0,NA-West,Seattle,3900.0,1500.0,500.0,0.228
+A-10821,Prestige Labs,Retail,Enterprise,46881,2601611000.0,NA-East,Boston,28900.0,15300.0,8200.0,0.776
+A-10822,Prestige Labs,Media,Mid-Market,643,113622000.0,NA-West,San Francisco,11600.0,7100.0,2400.0,0.471
+A-10823,Oscorp Cloud,Logistics,Mid-Market,1139,390616000.0,EMEA,London,8400.0,6100.0,3700.0,0.406
+A-10824,Wayne Digital,Energy,Mid-Market,1297,187654000.0,NA-West,Los Angeles,11900.0,7000.0,3700.0,0.429
+A-10825,Cogswell Systems,Logistics,SMB,15,48372000.0,EMEA,London,1700.0,2200.0,1600.0,0.465
+A-10826,Initech Solutions,Healthcare,Mid-Market,1806,370585000.0,NA-East,Chicago,2700.0,10600.0,7400.0,0.815
+A-10827,Soylent Analytics,Media,Mid-Market,1971,494188000.0,NA-West,Phoenix,10300.0,7100.0,1300.0,0.166
+A-10828,Sterling Analytics,Retail,Mid-Market,568,445406000.0,EMEA,London,9400.0,7500.0,3400.0,0.221
+A-10829,Globex Analytics,Financial Services,Mid-Market,407,455998000.0,NA-East,Chicago,6900.0,4800.0,3800.0,0.306
+A-10830,Cyberdyne Holdings,Financial Services,Enterprise,28627,10210361000.0,NA-West,Seattle,9400.0,19800.0,18600.0,0.732
+A-10831,Northwind Analytics,Logistics,SMB,155,10260000.0,NA-East,New York,1100.0,2700.0,1300.0,0.471
+A-10832,Stark Digital,Financial Services,Mid-Market,605,332246000.0,NA-East,Boston,5400.0,7500.0,2900.0,0.603
+A-10833,Northwind Labs,Financial Services,SMB,87,27179000.0,NA-West,Denver,2600.0,1000.0,1400.0,0.173
+A-10834,Northwind Networks,Logistics,Enterprise,5548,13152821000.0,APAC,Tokyo,36900.0,20200.0,10100.0,0.169
+A-10835,Nakatomi Group,Energy,SMB,111,18647000.0,NA-East,Atlanta,800.0,3700.0,1800.0,0.616
+A-10836,Cyberdyne Group,Media,Mid-Market,574,232607000.0,NA-West,Denver,10800.0,7400.0,2700.0,0.445
+A-10837,Sterling Holdings,Education,Mid-Market,550,443123000.0,NA-East,Chicago,8600.0,6900.0,2600.0,0.382
+A-10838,Prestige Analytics,Energy,Mid-Market,740,424800000.0,APAC,Seoul,9700.0,8600.0,5000.0,0.795
+A-10839,Acme Cloud,Manufacturing,Mid-Market,894,350147000.0,NA-West,Los Angeles,4700.0,6100.0,4700.0,0.316
+A-10840,Nakatomi Industries,Education,SMB,187,31004000.0,NA-East,Boston,3000.0,3200.0,2200.0,0.686
+A-10841,Initech Digital,Healthcare,SMB,181,8449000.0,NA-East,New York,1800.0,1900.0,700.0,0.129
+A-10842,Initech Analytics,Healthcare,Mid-Market,1836,93681000.0,NA-East,Boston,2400.0,8600.0,2700.0,0.414
+A-10843,Oscorp Industries,Media,SMB,197,44438000.0,NA-East,Chicago,600.0,4100.0,2700.0,0.79
+A-10844,Globex Industries,Education,Enterprise,49211,10147623000.0,NA-West,Denver,26800.0,23000.0,21900.0,0.913
+A-10845,Northwind Partners,Energy,Mid-Market,1386,199813000.0,APAC,Tokyo,2300.0,7400.0,3800.0,0.531
+A-10846,Wayne Industries,Logistics,SMB,172,39422000.0,APAC,Sydney,1800.0,2600.0,1700.0,0.5
+A-10847,Dunder Industries,Logistics,Mid-Market,1812,60353000.0,APAC,Tokyo,3300.0,10900.0,2700.0,0.669
+A-10848,Acme Cloud,Media,SMB,175,31256000.0,NA-West,Los Angeles,900.0,2500.0,500.0,0.249
+A-10849,Cogswell Labs,Healthcare,Mid-Market,365,478126000.0,EMEA,Madrid,2000.0,5200.0,2500.0,0.479
+A-10850,Nakatomi Networks,Healthcare,SMB,99,36847000.0,NA-West,San Francisco,2500.0,3100.0,1800.0,0.56
+A-10851,Globex Holdings,Healthcare,SMB,171,38058000.0,NA-East,Austin,1100.0,2200.0,1400.0,0.288
+A-10852,Gekko Systems,Retail,Mid-Market,706,122569000.0,EMEA,Berlin,2600.0,10500.0,5800.0,0.683
+A-10853,Cogswell Analytics,Financial Services,Mid-Market,773,397124000.0,APAC,Sydney,11100.0,10900.0,2800.0,0.845
+A-10854,Stark Solutions,Media,SMB,113,37503000.0,NA-East,New York,1100.0,3300.0,1400.0,0.645
+A-10855,Umbra Industries,Telecom,Enterprise,49508,12827764000.0,NA-East,Chicago,19000.0,23000.0,7700.0,0.723
+A-10856,Contoso Partners,Logistics,Enterprise,15328,4203948000.0,EMEA,Paris,26200.0,12800.0,9400.0,0.282
+A-10857,Massive Partners,Healthcare,Mid-Market,623,474502000.0,NA-East,Boston,10000.0,10400.0,5200.0,0.579
+A-10858,Gekko Partners,Media,Mid-Market,1504,413206000.0,NA-West,Seattle,10600.0,9200.0,5200.0,0.684
+A-10859,Wayne Analytics,Energy,Mid-Market,1616,299748000.0,APAC,Sydney,7800.0,6100.0,3700.0,0.158
+A-10860,Oscorp Solutions,Software,Mid-Market,764,446328000.0,NA-West,Los Angeles,5800.0,8500.0,2700.0,0.415
+A-10861,Vandelay Partners,Healthcare,Enterprise,19461,15666306000.0,NA-West,Phoenix,21600.0,13100.0,8300.0,0.226
+A-10862,Massive Digital,Manufacturing,Mid-Market,1683,340629000.0,NA-West,Seattle,11600.0,8600.0,8100.0,0.871
+A-10863,Hooli Holdings,Healthcare,Mid-Market,732,62970000.0,NA-West,San Francisco,8400.0,8800.0,2000.0,0.456
+A-10864,Aperture Partners,Manufacturing,Mid-Market,1471,254000000.0,NA-West,Los Angeles,3600.0,7600.0,6900.0,0.7
+A-10865,Acme Analytics,Telecom,Enterprise,33023,8212985000.0,APAC,Sydney,16400.0,19700.0,7000.0,0.165
+A-10866,Nakatomi Labs,Financial Services,SMB,36,6010000.0,NA-West,Seattle,900.0,3400.0,2300.0,0.805
+A-10867,Cyberdyne Cloud,Healthcare,SMB,114,5384000.0,NA-West,Seattle,1100.0,2200.0,1600.0,0.454
+A-10868,Soylent Group,Healthcare,Enterprise,26028,6797530000.0,EMEA,Berlin,31500.0,16700.0,4900.0,0.26
+A-10869,Vandelay Holdings,Education,SMB,103,18120000.0,NA-West,Seattle,600.0,1000.0,1400.0,0.378
+A-10870,Wonka Digital,Telecom,SMB,40,10878000.0,NA-East,Boston,2500.0,3400.0,1500.0,0.93
+A-10871,Cyberdyne Holdings,Healthcare,Mid-Market,402,224353000.0,NA-West,Seattle,3100.0,9600.0,4500.0,0.465
+A-10872,Aperture Systems,Manufacturing,SMB,117,44335000.0,NA-West,Phoenix,1200.0,2500.0,1100.0,0.532
+A-10873,Cyberdyne Networks,Healthcare,Mid-Market,1857,266079000.0,NA-West,Los Angeles,8000.0,8900.0,4400.0,0.844
+A-10874,Wonka Holdings,Manufacturing,SMB,194,37350000.0,NA-East,Boston,1700.0,2600.0,500.0,0.214
+A-10875,Vandelay Labs,Software,Mid-Market,1784,469419000.0,NA-East,Atlanta,3700.0,11700.0,7000.0,0.765
+A-10876,Globex Technologies,Telecom,Enterprise,3435,10199757000.0,NA-East,Chicago,34100.0,23400.0,7100.0,0.41
+A-10877,Vandelay Holdings,Energy,Mid-Market,1658,498127000.0,APAC,Seoul,2400.0,10300.0,7500.0,0.787
+A-10878,Nakatomi Digital,Healthcare,Mid-Market,871,455819000.0,EMEA,Amsterdam,9300.0,9500.0,4700.0,0.739
+A-10879,Dunder Solutions,Logistics,Mid-Market,934,482624000.0,NA-West,Seattle,2900.0,9000.0,2600.0,0.521
+A-10880,Pied Piper Group,Education,Mid-Market,814,334714000.0,NA-West,Seattle,9400.0,9900.0,3600.0,0.563
+A-10881,Contoso Cloud,Manufacturing,SMB,139,39598000.0,NA-East,Boston,2100.0,1900.0,1800.0,0.699
+A-10882,Sterling Labs,Manufacturing,Mid-Market,1352,254144000.0,EMEA,Berlin,10300.0,7500.0,4700.0,0.435
+A-10883,Stark Holdings,Telecom,SMB,67,11253000.0,NA-West,San Francisco,2700.0,3500.0,1900.0,0.605
+A-10884,Wonka Analytics,Telecom,SMB,12,30280000.0,NA-West,San Francisco,1600.0,3700.0,1500.0,0.652
+A-10885,Wayne Industries,Software,Mid-Market,660,263119000.0,NA-West,Phoenix,10000.0,7400.0,2100.0,0.485
+A-10886,Northwind Solutions,Financial Services,SMB,100,27643000.0,EMEA,Madrid,600.0,2500.0,800.0,0.693
+A-10887,Sterling Solutions,Manufacturing,SMB,126,5653000.0,NA-East,New York,2800.0,1200.0,1200.0,0.636
+A-10888,Northwind Partners,Education,Mid-Market,411,282531000.0,NA-East,New York,3700.0,8700.0,4100.0,0.383
+A-10889,Nakatomi Holdings,Software,Mid-Market,897,385039000.0,EMEA,London,8500.0,10400.0,3300.0,0.667
+A-10890,Sterling Labs,Financial Services,Enterprise,9892,3073981000.0,NA-West,Seattle,39300.0,12400.0,8100.0,0.213
+A-10891,Initech Technologies,Energy,Mid-Market,260,246331000.0,NA-West,Denver,9000.0,11000.0,6200.0,0.872
+A-10892,Globex Networks,Healthcare,Enterprise,33902,9198991000.0,NA-West,Seattle,39900.0,16200.0,7200.0,0.645
+A-10893,Cyberdyne Systems,Media,Mid-Market,307,404639000.0,NA-West,San Francisco,3100.0,8500.0,6900.0,0.884
+A-10894,Dunder Solutions,Energy,SMB,100,5853000.0,NA-East,New York,1700.0,2100.0,900.0,0.489
+A-10895,Globex Networks,Healthcare,Mid-Market,644,389036000.0,NA-East,New York,10400.0,4300.0,3100.0,0.261
+A-10896,Cogswell Industries,Telecom,Mid-Market,1009,426368000.0,NA-West,Seattle,4200.0,8800.0,3700.0,0.828
+A-10897,Globex Cloud,Healthcare,SMB,156,2957000.0,NA-East,Austin,1300.0,1000.0,600.0,0.383
+A-10898,Cyberdyne Cloud,Education,Mid-Market,1451,465554000.0,NA-East,Atlanta,8100.0,9600.0,4000.0,0.484
+A-10899,Stark Networks,Logistics,SMB,53,46414000.0,NA-East,Chicago,1500.0,2200.0,1800.0,0.34
+A-10900,Vandelay Networks,Healthcare,Mid-Market,1644,359749000.0,NA-West,Seattle,3900.0,6200.0,3400.0,0.222
+A-10901,Pied Piper Holdings,Manufacturing,SMB,123,32039000.0,NA-East,Austin,1500.0,2400.0,1700.0,0.349
+A-10902,Massive Labs,Retail,SMB,33,19452000.0,EMEA,Berlin,2300.0,2300.0,800.0,0.481
+A-10903,Cyberdyne Industries,Financial Services,Mid-Market,451,105312000.0,NA-West,Seattle,9600.0,7400.0,3500.0,0.405
+A-10904,Vandelay Systems,Education,SMB,21,6460000.0,NA-West,San Francisco,3900.0,3200.0,1700.0,0.507
+A-10905,Umbra Systems,Logistics,SMB,120,38355000.0,NA-West,Los Angeles,900.0,1900.0,1600.0,0.297
+A-10906,Nakatomi Labs,Financial Services,SMB,56,20914000.0,NA-West,Phoenix,1200.0,4200.0,1400.0,0.832
+A-10907,Globex Technologies,Energy,Mid-Market,996,382624000.0,EMEA,Paris,5800.0,6300.0,2500.0,0.345
+A-10908,Vandelay Industries,Healthcare,Mid-Market,1466,320429000.0,NA-West,Phoenix,9000.0,9300.0,5400.0,0.934
+A-10909,Nakatomi Systems,Education,Mid-Market,639,363911000.0,EMEA,Paris,6500.0,9200.0,3400.0,0.456
+A-10910,Wonka Holdings,Retail,SMB,79,49858000.0,NA-West,Seattle,2100.0,1900.0,1200.0,0.454
+A-10911,Globex Cloud,Healthcare,Enterprise,6434,14058599000.0,EMEA,Amsterdam,6800.0,15900.0,12400.0,0.321
+A-10912,Contoso Digital,Financial Services,Enterprise,13127,2299284000.0,APAC,Bangalore,6800.0,12900.0,8700.0,0.298
+A-10913,Massive Cloud,Financial Services,SMB,22,5974000.0,EMEA,Paris,3300.0,1000.0,2000.0,0.415
+A-10914,Wayne Group,Retail,Enterprise,26635,904000000.0,NA-West,Denver,22700.0,18200.0,19000.0,0.732
+A-10915,Aperture Holdings,Energy,Enterprise,10406,2642586000.0,NA-West,San Francisco,13700.0,20700.0,17600.0,0.643
+A-10916,Gekko Solutions,Logistics,Mid-Market,837,322483000.0,EMEA,London,9200.0,7000.0,4300.0,0.377
+A-10917,Acme Holdings,Telecom,SMB,157,37767000.0,EMEA,Amsterdam,2000.0,900.0,1100.0,0.289
+A-10918,Aperture Industries,Manufacturing,Mid-Market,1033,237110000.0,EMEA,Paris,2500.0,8900.0,4800.0,0.743
+A-10919,Massive Partners,Media,SMB,166,28029000.0,EMEA,London,400.0,2400.0,1200.0,0.396
+A-10920,Gekko Industries,Software,SMB,95,17368000.0,EMEA,London,2600.0,900.0,800.0,0.295
+A-10921,Northwind Analytics,Logistics,Mid-Market,1511,304858000.0,NA-West,Seattle,2700.0,6600.0,4400.0,0.364
+A-10922,Vandelay Labs,Education,SMB,82,20326000.0,APAC,Bangalore,500.0,1100.0,1400.0,0.272
+A-10923,Vandelay Systems,Financial Services,Mid-Market,494,66857000.0,APAC,Singapore,9300.0,5800.0,3300.0,0.271
+A-10924,Dunder Industries,Logistics,SMB,39,34416000.0,NA-West,Los Angeles,3000.0,2200.0,800.0,0.176
+A-10925,Cyberdyne Systems,Education,Mid-Market,740,438407000.0,NA-West,Phoenix,3100.0,8100.0,7700.0,0.806
+A-10926,Oscorp Industries,Retail,Enterprise,5894,3667687000.0,NA-West,Los Angeles,21800.0,22400.0,12900.0,0.694
+A-10927,Stark Holdings,Energy,SMB,177,25101000.0,NA-West,Seattle,3800.0,1800.0,1200.0,0.495
+A-10928,Globex Labs,Financial Services,Mid-Market,348,381844000.0,NA-East,Boston,3500.0,7200.0,3900.0,0.601
+A-10929,Northwind Group,Retail,Mid-Market,794,67524000.0,EMEA,Paris,7800.0,5200.0,3000.0,0.208
+A-10930,Gekko Labs,Education,SMB,64,4182000.0,NA-East,Boston,2500.0,1600.0,1000.0,0.468
+A-10931,Wonka Digital,Retail,Mid-Market,728,367546000.0,NA-East,Austin,6000.0,5700.0,3100.0,0.091
+A-10932,Initech Group,Financial Services,SMB,199,7179000.0,NA-West,Seattle,3000.0,1200.0,800.0,0.62
+A-10933,Prestige Cloud,Education,Mid-Market,744,369100000.0,NA-West,Seattle,11000.0,8800.0,6200.0,0.583
+A-10934,Nakatomi Solutions,Telecom,SMB,158,43266000.0,NA-West,Denver,2000.0,1900.0,1100.0,0.759
+A-10935,Contoso Partners,Telecom,SMB,27,43901000.0,NA-East,Chicago,1500.0,1400.0,1900.0,0.435
+A-10936,Massive Industries,Media,Enterprise,2131,9914568000.0,NA-West,Phoenix,33900.0,25400.0,16100.0,0.607
+A-10937,Oscorp Networks,Education,Mid-Market,553,396370000.0,NA-West,Seattle,9300.0,6700.0,3900.0,0.455
+A-10938,Nakatomi Technologies,Energy,Enterprise,45877,12370829000.0,APAC,Seoul,13100.0,25600.0,17400.0,0.625
+A-10939,Cyberdyne Partners,Software,Mid-Market,1155,68245000.0,NA-East,Chicago,11500.0,6100.0,2900.0,0.168
+A-10940,Cogswell Analytics,Retail,Mid-Market,1584,348491000.0,NA-West,Denver,7000.0,4600.0,4900.0,0.389
+A-10941,Prestige Analytics,Manufacturing,Mid-Market,225,243275000.0,NA-East,Austin,5300.0,8000.0,3400.0,0.539
+A-10942,Tyrell Holdings,Healthcare,Mid-Market,850,394292000.0,NA-East,New York,4900.0,7600.0,3200.0,0.38
+A-10943,Hooli Group,Financial Services,SMB,155,17539000.0,NA-East,New York,2200.0,3100.0,700.0,0.426
+A-10944,Cyberdyne Holdings,Logistics,SMB,189,36540000.0,NA-East,Austin,3700.0,2600.0,1000.0,0.357
+A-10945,Wonka Systems,Media,Mid-Market,1736,406699000.0,APAC,Sydney,6300.0,8400.0,4000.0,0.302
+A-10946,Cogswell Holdings,Energy,SMB,115,23435000.0,EMEA,Madrid,1500.0,2200.0,500.0,0.253
+A-10947,Tyrell Cloud,Software,Mid-Market,1945,437903000.0,EMEA,London,2900.0,10100.0,4900.0,0.558
+A-10948,Initech Networks,Software,SMB,159,32266000.0,NA-East,Austin,1200.0,2700.0,2100.0,0.678
+A-10949,Wayne Technologies,Financial Services,Mid-Market,1955,213703000.0,NA-East,New York,7000.0,7700.0,3000.0,0.64
+A-10950,Contoso Networks,Manufacturing,SMB,120,4863000.0,NA-East,New York,500.0,2300.0,2800.0,0.861
+A-10951,Tyrell Labs,Media,Mid-Market,684,73424000.0,EMEA,Amsterdam,2700.0,12400.0,4400.0,0.857
+A-10952,Soylent Labs,Media,SMB,41,32776000.0,NA-East,New York,2400.0,4300.0,2800.0,0.887
+A-10953,Soylent Technologies,Software,SMB,139,43879000.0,NA-East,New York,2400.0,3500.0,2100.0,0.74
+A-10954,Wonka Group,Telecom,SMB,195,21166000.0,EMEA,Madrid,2400.0,1700.0,1700.0,0.705
+A-10955,Oscorp Group,Education,Mid-Market,415,351961000.0,NA-East,New York,3300.0,11100.0,6400.0,0.844
+A-10956,Pied Piper Holdings,Financial Services,Enterprise,41838,768318000.0,APAC,Sydney,8700.0,37200.0,17300.0,0.84
+A-10957,Vandelay Technologies,Media,Mid-Market,538,349636000.0,NA-West,San Francisco,11500.0,5300.0,3800.0,0.344
+A-10958,Cogswell Solutions,Logistics,Mid-Market,720,236032000.0,NA-East,Atlanta,10800.0,8900.0,5300.0,0.502
+A-10959,Hooli Solutions,Telecom,Enterprise,14942,9866831000.0,NA-West,Denver,20300.0,18500.0,10000.0,0.69
+A-10960,Wonka Digital,Retail,Enterprise,35115,5800336000.0,EMEA,Madrid,28000.0,13500.0,8300.0,0.403
+A-10961,Dunder Digital,Education,SMB,119,46297000.0,NA-East,New York,3700.0,1500.0,900.0,0.417
+A-10962,Cogswell Partners,Telecom,Mid-Market,652,412067000.0,APAC,Sydney,7900.0,8600.0,3300.0,0.707
+A-10963,Wayne Industries,Energy,Mid-Market,1566,289619000.0,NA-East,Austin,6900.0,10300.0,3700.0,0.607
+A-10964,Cogswell Labs,Financial Services,Mid-Market,1425,489167000.0,NA-East,New York,6400.0,5400.0,3200.0,0.365
+A-10965,Oscorp Solutions,Manufacturing,Enterprise,6487,18509560000.0,NA-East,Boston,26400.0,18800.0,13200.0,0.905
+A-10966,Acme Solutions,Manufacturing,Enterprise,40194,17805631000.0,NA-West,Phoenix,8500.0,22100.0,13000.0,0.408
+A-10967,Acme Cloud,Financial Services,Mid-Market,1965,307267000.0,NA-West,Phoenix,8700.0,7000.0,4600.0,0.452
+A-10968,Dunder Solutions,Manufacturing,Enterprise,31695,1114073000.0,EMEA,Paris,30400.0,17900.0,15000.0,0.804
+A-10969,Contoso Analytics,Telecom,SMB,30,38456000.0,NA-West,Seattle,1100.0,1800.0,900.0,0.805
+A-10970,Oscorp Networks,Media,Enterprise,44546,3569245000.0,NA-West,Los Angeles,39900.0,27700.0,12200.0,0.49
+A-10971,Acme Holdings,Telecom,Mid-Market,731,397651000.0,NA-East,Chicago,6600.0,9400.0,5600.0,0.605
+A-10972,Cogswell Group,Software,Enterprise,26861,11010995000.0,NA-East,Boston,13100.0,36200.0,17400.0,0.843
+A-10973,Prestige Group,Healthcare,Enterprise,4112,10064913000.0,APAC,Seoul,34300.0,13500.0,9000.0,0.481
+A-10974,Wayne Solutions,Healthcare,Enterprise,34704,19858662000.0,EMEA,London,16800.0,27400.0,19600.0,0.821
+A-10975,Cogswell Analytics,Education,Enterprise,5891,13915150000.0,NA-West,San Francisco,21800.0,12600.0,7300.0,0.414
+A-10976,Wonka Industries,Telecom,SMB,137,39940000.0,NA-East,Austin,2200.0,1100.0,800.0,0.51
+A-10977,Globex Group,Healthcare,Mid-Market,1683,180040000.0,NA-West,Los Angeles,8200.0,5400.0,2600.0,0.167
+A-10978,Globex Industries,Logistics,Enterprise,15203,3424193000.0,NA-West,San Francisco,18200.0,17400.0,12400.0,0.408
+A-10979,Oscorp Technologies,Software,Enterprise,28522,1267832000.0,NA-East,Atlanta,21400.0,18700.0,8700.0,0.583
+A-10980,Gekko Group,Healthcare,Mid-Market,316,170515000.0,NA-West,Phoenix,2500.0,11000.0,8200.0,0.932
+A-10981,Pied Piper Group,Logistics,Enterprise,47525,10219721000.0,NA-West,Phoenix,37600.0,18300.0,6700.0,0.232
+A-10982,Massive Analytics,Retail,Mid-Market,1506,284776000.0,NA-West,Los Angeles,8500.0,6000.0,5500.0,0.656
+A-10983,Gekko Technologies,Manufacturing,SMB,29,48078000.0,NA-West,Seattle,1200.0,1600.0,1400.0,0.315
+A-10984,Northwind Group,Telecom,Mid-Market,1619,374506000.0,NA-West,Denver,5700.0,8300.0,4700.0,0.437
+A-10985,Gekko Systems,Manufacturing,Mid-Market,1515,215767000.0,NA-West,Los Angeles,7600.0,8300.0,5600.0,0.564
+A-10986,Northwind Partners,Software,Mid-Market,1987,181119000.0,NA-West,Seattle,4000.0,5000.0,4400.0,0.419
+A-10987,Umbra Labs,Financial Services,Mid-Market,370,319935000.0,APAC,Tokyo,7300.0,4600.0,3800.0,0.264
+A-10988,Umbra Technologies,Media,SMB,199,2921000.0,EMEA,Amsterdam,1800.0,2100.0,1100.0,0.258
+A-10989,Tyrell Digital,Logistics,Enterprise,44807,708103000.0,NA-West,San Francisco,11500.0,22000.0,13300.0,0.605
+A-10990,Acme Holdings,Telecom,SMB,73,32205000.0,APAC,Sydney,2100.0,3200.0,1600.0,0.598
+A-10991,Umbra Systems,Financial Services,SMB,69,4475000.0,EMEA,Amsterdam,800.0,1400.0,1300.0,0.192
+A-10992,Umbra Technologies,Manufacturing,Mid-Market,507,375329000.0,EMEA,Berlin,11400.0,6000.0,1800.0,0.373
+A-10993,Cogswell Cloud,Retail,Mid-Market,434,291247000.0,NA-East,New York,11400.0,5900.0,2000.0,0.431
+A-10994,Northwind Digital,Financial Services,Enterprise,7592,3011336000.0,NA-West,San Francisco,32300.0,22600.0,18200.0,0.677
+A-10995,Globex Industries,Manufacturing,Enterprise,6797,3922409000.0,NA-West,Los Angeles,12700.0,15100.0,10600.0,0.248
+A-10996,Prestige Analytics,Healthcare,SMB,128,49212000.0,NA-West,Denver,3400.0,2900.0,1200.0,0.463
+A-10997,Stark Holdings,Energy,Mid-Market,1753,460726000.0,APAC,Sydney,9400.0,9700.0,3900.0,0.917
+A-10998,Northwind Digital,Media,Mid-Market,1987,311380000.0,NA-East,Boston,2600.0,6800.0,3300.0,0.252
+A-10999,Oscorp Networks,Telecom,Mid-Market,1579,307722000.0,NA-East,New York,5800.0,8500.0,5500.0,0.759
+A-11000,Globex Digital,Retail,SMB,37,39393000.0,NA-West,Phoenix,2400.0,2700.0,1800.0,0.429
+A-11001,Vandelay Group,Manufacturing,Mid-Market,395,427634000.0,NA-East,Boston,10100.0,8400.0,6100.0,0.858
+A-11002,Initech Solutions,Telecom,Mid-Market,1950,63734000.0,EMEA,Madrid,6400.0,6400.0,3000.0,0.329
+A-11003,Gekko Group,Logistics,SMB,153,41963000.0,NA-West,Los Angeles,3900.0,1700.0,900.0,0.41
+A-11004,Umbra Technologies,Education,SMB,154,27681000.0,EMEA,Madrid,800.0,1800.0,1400.0,0.215
+A-11005,Nakatomi Technologies,Financial Services,SMB,137,34598000.0,NA-West,Phoenix,800.0,3000.0,600.0,0.485
+A-11006,Umbra Holdings,Education,Enterprise,40221,6559483000.0,NA-East,Austin,22800.0,29800.0,12700.0,0.681
+A-11007,Initech Technologies,Logistics,Mid-Market,563,86546000.0,NA-West,San Francisco,3900.0,7200.0,6200.0,0.542
+A-11008,Wayne Systems,Energy,Mid-Market,934,129735000.0,EMEA,London,8300.0,9000.0,6200.0,0.648
+A-11009,Nakatomi Solutions,Energy,Enterprise,30744,8119390000.0,NA-East,Chicago,7000.0,30700.0,12800.0,0.884
+A-11010,Cogswell Solutions,Energy,SMB,185,46231000.0,EMEA,Madrid,3900.0,1300.0,2500.0,0.855
+A-11011,Vandelay Holdings,Manufacturing,Mid-Market,1016,90134000.0,APAC,Sydney,3300.0,9000.0,2800.0,0.718
+A-11012,Vandelay Group,Financial Services,SMB,24,9006000.0,NA-West,Los Angeles,1700.0,2900.0,1200.0,0.364
+A-11013,Stark Partners,Education,Mid-Market,288,482557000.0,NA-East,Austin,10600.0,10800.0,4900.0,0.682
+A-11014,Aperture Holdings,Retail,Mid-Market,1697,229262000.0,NA-West,Denver,7300.0,4900.0,1600.0,0.202
+A-11015,Prestige Group,Financial Services,SMB,129,13794000.0,APAC,Bangalore,3700.0,2700.0,2500.0,0.795
+A-11016,Soylent Digital,Manufacturing,Mid-Market,1777,431634000.0,NA-East,Atlanta,3800.0,6200.0,3700.0,0.502
+A-11017,Prestige Cloud,Telecom,SMB,86,46428000.0,NA-West,San Francisco,700.0,2100.0,1600.0,0.433
+A-11018,Globex Analytics,Healthcare,Mid-Market,524,333129000.0,NA-West,Denver,5300.0,3800.0,2900.0,0.19
+A-11019,Pied Piper Group,Financial Services,Enterprise,49121,3205510000.0,APAC,Tokyo,24900.0,9400.0,3800.0,0.053
+A-11020,Prestige Systems,Healthcare,SMB,34,46011000.0,EMEA,London,3400.0,2300.0,1400.0,0.424
+A-11021,Massive Industries,Education,SMB,107,31846000.0,APAC,Singapore,2700.0,1700.0,800.0,0.481
+A-11022,Prestige Technologies,Energy,Mid-Market,902,138195000.0,NA-East,Austin,9700.0,8900.0,2700.0,0.413
+A-11023,Aperture Solutions,Education,SMB,111,19839000.0,NA-West,Phoenix,900.0,3400.0,2100.0,0.788
+A-11024,Pied Piper Digital,Media,Mid-Market,1426,50295000.0,APAC,Seoul,8400.0,9900.0,2100.0,0.489
+A-11025,Cyberdyne Cloud,Education,SMB,73,23375000.0,EMEA,Berlin,400.0,2000.0,2400.0,0.582
+A-11026,Umbra Industries,Education,SMB,65,32277000.0,NA-West,Phoenix,2600.0,2100.0,1200.0,0.493
+A-11027,Wayne Group,Logistics,Enterprise,38551,14587206000.0,NA-East,Austin,37600.0,22100.0,19900.0,0.903
+A-11028,Gekko Networks,Media,Enterprise,6906,17278779000.0,APAC,Bangalore,37900.0,23900.0,7200.0,0.332
+A-11029,Wayne Systems,Education,Enterprise,17381,10011483000.0,NA-East,Atlanta,28800.0,17800.0,15000.0,0.427
+A-11030,Initech Solutions,Education,SMB,102,3298000.0,NA-West,Los Angeles,2200.0,2200.0,500.0,0.167
+A-11031,Vandelay Labs,Manufacturing,SMB,148,18939000.0,NA-East,Atlanta,3600.0,1500.0,2400.0,0.736
+A-11032,Umbra Cloud,Financial Services,SMB,63,38718000.0,NA-East,Austin,600.0,800.0,1200.0,0.238
+A-11033,Cogswell Group,Energy,SMB,11,18688000.0,NA-West,Denver,1200.0,2700.0,900.0,0.804
+A-11034,Tyrell Solutions,Logistics,Mid-Market,995,184393000.0,NA-East,Atlanta,3700.0,9300.0,4300.0,0.492
+A-11035,Sterling Networks,Retail,Mid-Market,519,108004000.0,NA-West,Seattle,11600.0,5400.0,4100.0,0.244
+A-11036,Globex Holdings,Healthcare,SMB,132,41465000.0,APAC,Bangalore,4000.0,1800.0,1400.0,0.202
+A-11037,Initech Partners,Retail,Enterprise,15649,10636276000.0,NA-West,Seattle,26600.0,23700.0,9000.0,0.599
+A-11038,Aperture Cloud,Retail,Mid-Market,1357,117367000.0,NA-East,Chicago,2100.0,5300.0,3800.0,0.184
+A-11039,Globex Group,Manufacturing,Mid-Market,1291,445399000.0,NA-East,Boston,8500.0,4300.0,1800.0,0.223
+A-11040,Acme Digital,Healthcare,Mid-Market,1580,231811000.0,NA-East,New York,9100.0,7400.0,3200.0,0.323
+A-11041,Oscorp Systems,Media,SMB,37,5421000.0,NA-West,Los Angeles,3300.0,2100.0,1200.0,0.473
+A-11042,Nakatomi Group,Financial Services,SMB,96,11538000.0,NA-East,Chicago,1900.0,2200.0,900.0,0.613
+A-11043,Massive Holdings,Telecom,SMB,177,47812000.0,NA-West,Phoenix,3000.0,2700.0,1800.0,0.688
+A-11044,Wonka Cloud,Manufacturing,SMB,159,42929000.0,NA-East,Austin,2300.0,2300.0,800.0,0.172
+A-11045,Cyberdyne Partners,Manufacturing,Mid-Market,1895,306970000.0,APAC,Tokyo,4600.0,8400.0,2500.0,0.369
+A-11046,Aperture Systems,Healthcare,Mid-Market,1227,248064000.0,EMEA,Madrid,3600.0,11000.0,6800.0,0.757
+A-11047,Wayne Group,Education,Mid-Market,1912,475612000.0,NA-East,Austin,7200.0,7400.0,5500.0,0.483
+A-11048,Northwind Systems,Retail,Enterprise,38527,10034436000.0,NA-West,San Francisco,33400.0,9500.0,5500.0,0.162
+A-11049,Wonka Analytics,Logistics,SMB,77,12603000.0,NA-East,Austin,2300.0,3000.0,1900.0,0.592
+A-11050,Oscorp Industries,Financial Services,SMB,97,17997000.0,EMEA,London,3500.0,2400.0,1800.0,0.423
+A-11051,Cogswell Networks,Media,SMB,136,5531000.0,EMEA,Amsterdam,1000.0,3300.0,2700.0,0.969
+A-11052,Globex Networks,Financial Services,Mid-Market,461,71787000.0,EMEA,Amsterdam,3500.0,5300.0,3700.0,0.348
+A-11053,Cyberdyne Technologies,Financial Services,Enterprise,8216,4023786000.0,NA-West,San Francisco,9200.0,31900.0,10400.0,0.905
+A-11054,Cogswell Holdings,Software,SMB,65,10430000.0,NA-East,Atlanta,1700.0,1400.0,1500.0,0.431
+A-11055,Stark Group,Financial Services,Mid-Market,362,60219000.0,NA-West,Los Angeles,7600.0,4500.0,3900.0,0.28
+A-11056,Vandelay Cloud,Media,Mid-Market,1990,207489000.0,NA-East,Atlanta,5800.0,4500.0,4500.0,0.345
+A-11057,Initech Holdings,Energy,SMB,32,14498000.0,EMEA,London,1900.0,2800.0,800.0,0.819
+A-11058,Cogswell Group,Software,Mid-Market,453,266834000.0,NA-West,Seattle,2500.0,7300.0,2800.0,0.697
+A-11059,Globex Technologies,Telecom,Enterprise,43374,936418000.0,NA-East,Chicago,13000.0,15300.0,17700.0,0.709
+A-11060,Soylent Cloud,Retail,Enterprise,3554,1643632000.0,NA-West,San Francisco,5600.0,18300.0,9500.0,0.191
+A-11061,Wonka Solutions,Education,Mid-Market,1418,499118000.0,APAC,Bangalore,5700.0,9400.0,4800.0,0.565
+A-11062,Northwind Digital,Software,Mid-Market,1584,408767000.0,NA-West,Los Angeles,7100.0,7900.0,2200.0,0.607
+A-11063,Gekko Systems,Logistics,Enterprise,2630,2399852000.0,NA-West,Denver,30400.0,14600.0,8700.0,0.59
+A-11064,Soylent Systems,Energy,Mid-Market,1482,199463000.0,NA-West,Phoenix,11700.0,3700.0,2400.0,0.129
+A-11065,Wonka Digital,Logistics,SMB,138,22894000.0,NA-West,Phoenix,2900.0,1100.0,1400.0,0.594
+A-11066,Hooli Technologies,Telecom,Mid-Market,986,117011000.0,NA-East,Boston,5500.0,8500.0,3200.0,0.36
+A-11067,Stark Industries,Education,Enterprise,3196,1822319000.0,NA-West,Los Angeles,9100.0,25700.0,15800.0,0.921
+A-11068,Prestige Labs,Education,Mid-Market,1563,436064000.0,NA-East,Chicago,8300.0,9600.0,5200.0,0.756
+A-11069,Northwind Networks,Retail,Mid-Market,1363,319070000.0,NA-West,Los Angeles,7000.0,7300.0,5300.0,0.7
+A-11070,Prestige Cloud,Retail,SMB,29,45496000.0,EMEA,Amsterdam,3800.0,3000.0,1300.0,0.535
+A-11071,Vandelay Cloud,Logistics,Enterprise,34147,12104866000.0,NA-East,New York,25400.0,28700.0,12900.0,0.647
+A-11072,Contoso Labs,Financial Services,SMB,88,42210000.0,APAC,Bangalore,2700.0,2700.0,2800.0,0.872
+A-11073,Oscorp Solutions,Healthcare,SMB,180,5092000.0,NA-East,Atlanta,1900.0,1700.0,1000.0,0.148
+A-11074,Hooli Partners,Logistics,Enterprise,8635,15277737000.0,EMEA,Amsterdam,20800.0,26300.0,14800.0,0.364
+A-11075,Acme Partners,Logistics,SMB,18,24241000.0,NA-West,Phoenix,2100.0,2700.0,800.0,0.71
+A-11076,Contoso Digital,Energy,Enterprise,34368,12013384000.0,EMEA,Paris,32700.0,21300.0,6100.0,0.376
+A-11077,Dunder Analytics,Software,Mid-Market,680,314979000.0,NA-East,Austin,4300.0,7200.0,4400.0,0.322
+A-11078,Contoso Solutions,Retail,Enterprise,34361,16265359000.0,APAC,Sydney,24400.0,33900.0,17200.0,0.752
+A-11079,Contoso Partners,Software,Mid-Market,1792,466802000.0,NA-East,Atlanta,9000.0,6300.0,3200.0,0.196
+A-11080,Umbra Digital,Media,Mid-Market,383,114053000.0,NA-East,Chicago,11800.0,6500.0,4400.0,0.667
+A-11081,Hooli Digital,Telecom,Mid-Market,1158,275814000.0,EMEA,Madrid,8100.0,13600.0,7600.0,0.983
+A-11082,Globex Partners,Financial Services,SMB,50,41655000.0,NA-West,Seattle,2500.0,1000.0,1700.0,0.381
+A-11083,Tyrell Labs,Manufacturing,SMB,50,36266000.0,NA-East,Atlanta,3600.0,3000.0,900.0,0.513
+A-11084,Hooli Partners,Energy,Mid-Market,460,106056000.0,APAC,Sydney,3000.0,8300.0,2900.0,0.331
+A-11085,Cogswell Solutions,Financial Services,Mid-Market,1590,107050000.0,NA-West,Los Angeles,4600.0,8700.0,3600.0,0.431
+A-11086,Initech Partners,Financial Services,Mid-Market,997,236165000.0,EMEA,London,10500.0,6600.0,3700.0,0.386
+A-11087,Prestige Networks,Manufacturing,Enterprise,35546,11844507000.0,NA-West,Seattle,29400.0,21800.0,13400.0,0.498
+A-11088,Initech Labs,Education,Mid-Market,442,319599000.0,NA-West,Phoenix,3800.0,6700.0,4800.0,0.526
+A-11089,Soylent Networks,Logistics,SMB,153,28207000.0,EMEA,Berlin,1800.0,2200.0,2000.0,0.632
+A-11090,Acme Networks,Education,Mid-Market,742,111149000.0,NA-West,Los Angeles,7300.0,5800.0,1600.0,0.299
+A-11091,Massive Technologies,Telecom,Mid-Market,1095,72501000.0,NA-West,Seattle,9900.0,11200.0,6700.0,0.726
+A-11092,Aperture Partners,Media,Mid-Market,1936,136529000.0,NA-West,Seattle,7100.0,7000.0,1900.0,0.395
+A-11093,Sterling Partners,Software,Mid-Market,395,334681000.0,NA-East,Boston,8000.0,6000.0,3700.0,0.514
+A-11094,Aperture Technologies,Energy,Mid-Market,1449,263277000.0,APAC,Sydney,6000.0,7300.0,4200.0,0.807
+A-11095,Hooli Digital,Logistics,SMB,131,49675000.0,NA-East,Chicago,300.0,3500.0,2300.0,0.685
+A-11096,Globex Group,Education,SMB,123,47147000.0,NA-East,New York,1900.0,3500.0,800.0,0.546
+A-11097,Globex Group,Financial Services,SMB,184,3620000.0,NA-West,Seattle,2300.0,1400.0,1900.0,0.522
+A-11098,Aperture Digital,Media,Mid-Market,1952,336001000.0,EMEA,Madrid,5700.0,7800.0,3300.0,0.298
+A-11099,Hooli Systems,Software,Mid-Market,1416,243157000.0,NA-East,Atlanta,5100.0,4900.0,2000.0,0.17
+A-11100,Stark Digital,Education,Mid-Market,1577,378937000.0,NA-East,Atlanta,6900.0,12300.0,8000.0,0.839
+A-11101,Dunder Cloud,Healthcare,SMB,102,2505000.0,NA-East,New York,3500.0,2700.0,1700.0,0.531
+A-11102,Soylent Systems,Retail,Mid-Market,792,335904000.0,NA-West,Los Angeles,2300.0,6100.0,6100.0,0.685
+A-11103,Sterling Analytics,Financial Services,Mid-Market,1126,371820000.0,EMEA,Paris,6000.0,5500.0,6100.0,0.569
+A-11104,Prestige Holdings,Logistics,Mid-Market,1782,359795000.0,NA-West,San Francisco,6800.0,4200.0,2200.0,0.092
+A-11105,Pied Piper Networks,Financial Services,Mid-Market,464,255422000.0,NA-East,Austin,7000.0,6400.0,2200.0,0.17
+A-11106,Sterling Networks,Software,SMB,68,49279000.0,EMEA,Madrid,2100.0,2600.0,1000.0,0.729
+A-11107,Cogswell Networks,Logistics,SMB,152,19686000.0,EMEA,London,1200.0,1200.0,800.0,0.622
+A-11108,Initech Analytics,Logistics,Mid-Market,1099,226354000.0,APAC,Seoul,10200.0,9600.0,3100.0,0.786
+A-11109,Initech Systems,Financial Services,SMB,12,12271000.0,NA-East,Boston,3600.0,4100.0,1200.0,0.852
+A-11110,Dunder Solutions,Telecom,Enterprise,7841,11180950000.0,NA-East,Chicago,33600.0,22300.0,12900.0,0.259
+A-11111,Pied Piper Labs,Education,Enterprise,26496,1423611000.0,NA-West,San Francisco,21900.0,29600.0,14400.0,0.54
+A-11112,Initech Systems,Software,Mid-Market,557,397893000.0,EMEA,Amsterdam,2200.0,9200.0,6300.0,0.69
+A-11113,Globex Industries,Software,SMB,181,3258000.0,NA-East,Boston,1900.0,1800.0,700.0,0.062
+A-11114,Soylent Partners,Software,SMB,163,27541000.0,NA-West,Seattle,700.0,1400.0,2300.0,0.699
+A-11115,Vandelay Technologies,Telecom,Mid-Market,1186,182390000.0,APAC,Seoul,3400.0,8300.0,5400.0,0.774
+A-11116,Prestige Digital,Education,Mid-Market,412,288112000.0,NA-East,Austin,8800.0,6000.0,3600.0,0.468
+A-11117,Aperture Technologies,Software,Mid-Market,1447,156536000.0,EMEA,London,2200.0,6500.0,2000.0,0.369
+A-11118,Stark Labs,Logistics,Enterprise,43029,15340522000.0,NA-East,Atlanta,39300.0,26800.0,10100.0,0.461
+A-11119,Stark Cloud,Financial Services,Mid-Market,1407,112086000.0,APAC,Sydney,5000.0,6400.0,4600.0,0.673
+A-11120,Cyberdyne Group,Telecom,Mid-Market,679,123223000.0,EMEA,London,8000.0,5200.0,4600.0,0.438
+A-11121,Hooli Group,Financial Services,Mid-Market,1681,205975000.0,NA-East,New York,4900.0,4900.0,3500.0,0.218
+A-11122,Nakatomi Systems,Education,Mid-Market,232,380443000.0,EMEA,Berlin,2600.0,7700.0,8000.0,0.962
+A-11123,Nakatomi Group,Logistics,Mid-Market,493,301996000.0,APAC,Tokyo,5300.0,5500.0,5200.0,0.471
+A-11124,Hooli Cloud,Energy,SMB,55,7676000.0,EMEA,London,1900.0,1600.0,500.0,0.123
+A-11125,Wonka Systems,Education,Mid-Market,520,258720000.0,APAC,Tokyo,10100.0,5700.0,2700.0,0.603
+A-11126,Aperture Systems,Education,SMB,35,3149000.0,NA-East,Atlanta,2000.0,1100.0,1200.0,0.119
+A-11127,Oscorp Partners,Logistics,SMB,145,35257000.0,NA-East,New York,1100.0,1600.0,1000.0,0.012
+A-11128,Hooli Partners,Energy,Mid-Market,1578,236039000.0,EMEA,Amsterdam,9300.0,6700.0,2400.0,0.439
+A-11129,Cogswell Labs,Software,SMB,58,3225000.0,EMEA,Amsterdam,1600.0,3000.0,1300.0,0.905
+A-11130,Wayne Group,Telecom,Mid-Market,1153,232534000.0,NA-East,Boston,4700.0,11000.0,7000.0,0.816
+A-11131,Prestige Digital,Manufacturing,Mid-Market,1184,485453000.0,NA-West,Denver,5200.0,7000.0,3700.0,0.649
+A-11132,Hooli Cloud,Software,Mid-Market,908,252044000.0,APAC,Tokyo,5400.0,9100.0,5000.0,0.819
+A-11133,Wayne Labs,Software,Enterprise,25682,14146825000.0,APAC,Singapore,30600.0,15800.0,6600.0,0.158
+A-11134,Dunder Systems,Healthcare,SMB,72,15452000.0,NA-East,Boston,3800.0,3300.0,800.0,0.499
+A-11135,Globex Analytics,Healthcare,SMB,199,44755000.0,NA-West,Los Angeles,2800.0,3900.0,2200.0,0.772
+A-11136,Northwind Labs,Media,Enterprise,7327,4684676000.0,APAC,Seoul,30200.0,34000.0,20300.0,0.907
+A-11137,Nakatomi Labs,Energy,Enterprise,35800,16968234000.0,EMEA,Amsterdam,21200.0,14300.0,13900.0,0.293
+A-11138,Vandelay Cloud,Education,Mid-Market,413,174845000.0,APAC,Seoul,3300.0,6500.0,4900.0,0.498
+A-11139,Pied Piper Industries,Education,Enterprise,31596,3898117000.0,NA-West,San Francisco,24100.0,27900.0,17100.0,0.479
+A-11140,Nakatomi Networks,Education,Mid-Market,223,58650000.0,EMEA,Berlin,7700.0,6800.0,5100.0,0.901
+A-11141,Soylent Solutions,Logistics,SMB,60,34331000.0,APAC,Seoul,3000.0,800.0,1000.0,0.105
+A-11142,Wayne Industries,Software,SMB,51,32011000.0,NA-East,Austin,3400.0,3200.0,2300.0,0.677
+A-11143,Oscorp Systems,Healthcare,Enterprise,33751,11667302000.0,NA-West,Denver,32300.0,19500.0,8600.0,0.451
+A-11144,Prestige Digital,Telecom,Mid-Market,1118,159339000.0,NA-West,Seattle,3500.0,4900.0,1300.0,0.16
+A-11145,Prestige Solutions,Media,SMB,172,43174000.0,NA-West,Denver,600.0,2500.0,2000.0,0.567
+A-11146,Contoso Systems,Healthcare,Mid-Market,1023,209175000.0,NA-East,Chicago,3900.0,7400.0,5500.0,0.559
+A-11147,Acme Group,Manufacturing,Mid-Market,976,480846000.0,APAC,Sydney,3000.0,5700.0,4600.0,0.418
+A-11148,Acme Analytics,Media,SMB,117,22253000.0,NA-East,Boston,3200.0,1800.0,900.0,0.172
+A-11149,Nakatomi Group,Financial Services,Mid-Market,887,282544000.0,NA-West,Seattle,9100.0,6400.0,3000.0,0.273
+A-11150,Massive Group,Logistics,SMB,182,24500000.0,EMEA,Paris,900.0,1000.0,1900.0,0.369
+A-11151,Vandelay Networks,Retail,Mid-Market,1165,331372000.0,NA-West,Seattle,10400.0,5500.0,3100.0,0.629
+A-11152,Cogswell Labs,Financial Services,Mid-Market,958,479069000.0,NA-East,Boston,5600.0,8000.0,4300.0,0.285
+A-11153,Umbra Holdings,Healthcare,Mid-Market,435,247508000.0,NA-West,San Francisco,5600.0,6500.0,5000.0,0.525
+A-11154,Wayne Systems,Telecom,SMB,58,10655000.0,NA-East,New York,2800.0,1600.0,900.0,0.761
+A-11155,Prestige Holdings,Healthcare,SMB,155,34506000.0,NA-West,Phoenix,2700.0,2800.0,600.0,0.355
+A-11156,Gekko Holdings,Financial Services,SMB,189,2429000.0,NA-West,San Francisco,1200.0,1300.0,1700.0,0.42
+A-11157,Initech Technologies,Energy,SMB,12,3738000.0,NA-East,Atlanta,1800.0,2600.0,800.0,0.36
+A-11158,Sterling Technologies,Healthcare,SMB,25,26095000.0,APAC,Bangalore,1800.0,3700.0,1500.0,0.742
+A-11159,Vandelay Analytics,Retail,Mid-Market,1288,134854000.0,NA-West,Seattle,4200.0,12000.0,4500.0,0.771
+A-11160,Initech Labs,Retail,Mid-Market,1943,165077000.0,NA-West,Phoenix,9900.0,6500.0,6600.0,0.692
+A-11161,Northwind Digital,Energy,SMB,190,30112000.0,APAC,Tokyo,2800.0,2600.0,2400.0,0.695
+A-11162,Dunder Technologies,Retail,Enterprise,12588,11414260000.0,NA-East,Chicago,33200.0,12100.0,11400.0,0.365
+A-11163,Soylent Holdings,Retail,SMB,190,47519000.0,NA-East,Atlanta,400.0,1500.0,2100.0,0.925
+A-11164,Aperture Cloud,Telecom,SMB,184,28622000.0,NA-West,Seattle,1300.0,3300.0,1500.0,0.771
+A-11165,Oscorp Solutions,Retail,Mid-Market,907,469037000.0,NA-East,Austin,7900.0,11500.0,4600.0,0.715
+A-11166,Sterling Systems,Education,Mid-Market,797,427447000.0,APAC,Sydney,8200.0,7600.0,2600.0,0.722
+A-11167,Stark Solutions,Healthcare,SMB,31,46209000.0,NA-East,Atlanta,400.0,2000.0,1300.0,0.545
+A-11168,Hooli Analytics,Logistics,SMB,120,13143000.0,NA-West,Los Angeles,3600.0,1700.0,2200.0,0.49
+A-11169,Dunder Solutions,Manufacturing,SMB,29,45466000.0,EMEA,Berlin,3600.0,2600.0,1700.0,0.813
+A-11170,Cogswell Digital,Energy,Enterprise,6434,18684374000.0,NA-East,New York,14800.0,30700.0,7500.0,0.582
+A-11171,Nakatomi Systems,Financial Services,Enterprise,25866,13034908000.0,NA-West,Seattle,10700.0,27500.0,19500.0,0.666
+A-11172,Aperture Solutions,Healthcare,Mid-Market,1239,230137000.0,EMEA,London,5200.0,6700.0,6700.0,0.7
+A-11173,Umbra Solutions,Logistics,Enterprise,5018,18587646000.0,NA-East,New York,17900.0,17500.0,7100.0,0.189
+A-11174,Contoso Industries,Energy,Mid-Market,1392,475413000.0,NA-East,New York,3200.0,6100.0,1400.0,0.135
+A-11175,Northwind Holdings,Financial Services,Enterprise,11509,12637470000.0,NA-West,Phoenix,17300.0,14600.0,19700.0,0.599
+A-11176,Wonka Networks,Media,Enterprise,41707,17266235000.0,EMEA,Paris,28900.0,16500.0,7600.0,0.509
+A-11177,Massive Group,Software,SMB,64,42790000.0,NA-West,Los Angeles,2900.0,1600.0,1600.0,0.614
+A-11178,Northwind Digital,Energy,SMB,18,10184000.0,EMEA,Paris,2500.0,1800.0,600.0,0.326
+A-11179,Prestige Holdings,Logistics,SMB,138,31974000.0,NA-West,Phoenix,1000.0,3600.0,2400.0,0.744
+A-11180,Umbra Holdings,Manufacturing,Enterprise,49143,19658197000.0,EMEA,Madrid,10000.0,21200.0,9800.0,0.576
+A-11181,Cogswell Networks,Healthcare,Enterprise,36433,13467579000.0,NA-East,New York,29000.0,21100.0,21400.0,0.696
+A-11182,Pied Piper Systems,Telecom,SMB,56,44957000.0,NA-West,Seattle,3200.0,2700.0,700.0,0.249
+A-11183,Initech Analytics,Logistics,Mid-Market,783,56098000.0,EMEA,London,8600.0,5400.0,2000.0,0.115
+A-11184,Dunder Industries,Telecom,Mid-Market,313,378724000.0,NA-West,Denver,9900.0,9200.0,5900.0,0.713
+A-11185,Hooli Labs,Financial Services,Enterprise,29178,18407084000.0,NA-West,Phoenix,17000.0,9700.0,11500.0,0.146
+A-11186,Acme Group,Software,Mid-Market,656,245569000.0,NA-West,San Francisco,3600.0,9500.0,2400.0,0.572
+A-11187,Sterling Technologies,Education,Enterprise,21369,10873616000.0,NA-East,Chicago,27700.0,29200.0,13000.0,0.511
+A-11188,Contoso Group,Energy,Mid-Market,1373,353728000.0,NA-East,Austin,2300.0,6300.0,5300.0,0.528
+A-11189,Pied Piper Analytics,Education,SMB,181,35216000.0,NA-East,Austin,1400.0,3000.0,2100.0,0.494
+A-11190,Northwind Group,Financial Services,Enterprise,30132,7363471000.0,NA-West,Denver,5800.0,12100.0,5500.0,0.238
+A-11191,Prestige Solutions,Telecom,Mid-Market,751,295140000.0,EMEA,Berlin,9600.0,4900.0,3600.0,0.486
+A-11192,Northwind Systems,Telecom,Mid-Market,639,191631000.0,NA-West,Denver,4200.0,5800.0,6200.0,0.641
+A-11193,Umbra Networks,Telecom,Enterprise,12691,4514829000.0,NA-East,Chicago,29300.0,25300.0,15200.0,0.601
+A-11194,Soylent Labs,Media,Mid-Market,1305,462274000.0,NA-East,Boston,8200.0,7700.0,3400.0,0.406
+A-11195,Hooli Partners,Manufacturing,Mid-Market,753,165829000.0,NA-East,Atlanta,2700.0,7200.0,7000.0,0.691
+A-11196,Hooli Partners,Education,SMB,95,12094000.0,NA-East,Chicago,3600.0,3500.0,2500.0,0.693
+A-11197,Gekko Technologies,Healthcare,SMB,125,24374000.0,NA-West,Phoenix,3800.0,1600.0,1600.0,0.544
+A-11198,Acme Networks,Energy,SMB,34,34872000.0,NA-East,Austin,700.0,1300.0,900.0,0.536
+A-11199,Wayne Solutions,Education,Mid-Market,437,399986000.0,NA-West,Seattle,2400.0,8300.0,3500.0,0.469
+A-11200,Cogswell Industries,Financial Services,Enterprise,8545,2738575000.0,NA-West,Phoenix,30700.0,24600.0,6900.0,0.397
+A-11201,Acme Digital,Telecom,Mid-Market,1947,85497000.0,EMEA,Berlin,7700.0,9500.0,6500.0,0.711
+A-11202,Prestige Digital,Media,Mid-Market,286,142117000.0,NA-West,Seattle,10900.0,5700.0,2100.0,0.412
+A-11203,Initech Systems,Retail,Enterprise,13135,9289864000.0,NA-East,Boston,25300.0,12600.0,5800.0,0.186
+A-11204,Wayne Cloud,Healthcare,Mid-Market,1224,176261000.0,NA-East,Chicago,9500.0,12900.0,8400.0,0.942
+A-11205,Northwind Partners,Manufacturing,SMB,169,3864000.0,NA-West,San Francisco,1100.0,2300.0,1000.0,0.621
+A-11206,Wayne Cloud,Healthcare,SMB,47,7540000.0,EMEA,London,4000.0,1500.0,700.0,0.231
+A-11207,Acme Holdings,Manufacturing,Mid-Market,656,260801000.0,NA-West,Los Angeles,2700.0,4000.0,1200.0,0.073
+A-11208,Massive Networks,Media,SMB,152,16444000.0,NA-East,Chicago,3600.0,2000.0,1800.0,0.471
+A-11209,Hooli Solutions,Healthcare,Enterprise,13279,4727304000.0,NA-West,Seattle,30100.0,17400.0,7800.0,0.114
+A-11210,Aperture Cloud,Healthcare,SMB,191,33434000.0,NA-West,Los Angeles,800.0,2700.0,500.0,0.323
+A-11211,Massive Group,Retail,Enterprise,4402,7515335000.0,NA-West,Denver,24000.0,18000.0,8000.0,0.596
+A-11212,Wayne Networks,Software,Mid-Market,1644,313220000.0,APAC,Singapore,8900.0,12400.0,3700.0,0.854
+A-11213,Vandelay Solutions,Education,Mid-Market,1584,84339000.0,EMEA,Berlin,3900.0,6200.0,3000.0,0.491
+A-11214,Tyrell Cloud,Education,Enterprise,4399,18368450000.0,NA-West,San Francisco,39200.0,14400.0,10500.0,0.234
+A-11215,Massive Networks,Retail,Enterprise,35333,3974955000.0,EMEA,Madrid,16100.0,12400.0,5800.0,0.306
+A-11216,Prestige Solutions,Healthcare,SMB,41,18675000.0,EMEA,Madrid,1400.0,1800.0,600.0,0.072
+A-11217,Vandelay Cloud,Software,Enterprise,35233,16420852000.0,NA-West,Denver,12100.0,22500.0,21700.0,0.738
+A-11218,Aperture Systems,Healthcare,Mid-Market,218,218386000.0,NA-West,San Francisco,8800.0,8700.0,1800.0,0.384
+A-11219,Contoso Technologies,Telecom,SMB,130,11251000.0,NA-East,New York,3800.0,2600.0,2000.0,0.751
+A-11220,Oscorp Group,Software,Mid-Market,953,448620000.0,NA-West,Los Angeles,5500.0,5200.0,4900.0,0.36
+A-11221,Wayne Technologies,Manufacturing,Enterprise,4017,12032541000.0,EMEA,Paris,16100.0,14800.0,4200.0,0.068
+A-11222,Cogswell Partners,Healthcare,SMB,18,19472000.0,NA-East,Boston,1500.0,1700.0,1600.0,0.333
+A-11223,Northwind Partners,Education,Mid-Market,1161,432946000.0,NA-East,Austin,9000.0,6300.0,4200.0,0.281
+A-11224,Initech Cloud,Media,Enterprise,27839,17459739000.0,EMEA,London,24000.0,23500.0,19200.0,0.635
+A-11225,Umbra Analytics,Software,Mid-Market,276,224720000.0,APAC,Tokyo,7700.0,8000.0,7100.0,0.688
+A-11226,Pied Piper Technologies,Retail,Mid-Market,1902,229683000.0,APAC,Bangalore,5100.0,7800.0,5000.0,0.355
+A-11227,Contoso Labs,Manufacturing,SMB,44,15976000.0,NA-East,Boston,500.0,3500.0,2100.0,0.613
+A-11228,Sterling Labs,Financial Services,Mid-Market,1047,326749000.0,NA-East,Austin,3500.0,7300.0,5200.0,0.45
+A-11229,Northwind Holdings,Telecom,SMB,90,2026000.0,NA-East,Austin,2800.0,1600.0,1900.0,0.805
+A-11230,Initech Systems,Media,Enterprise,32326,6869430000.0,NA-West,San Francisco,11300.0,24300.0,9400.0,0.643
+A-11231,Northwind Solutions,Telecom,Mid-Market,1161,244488000.0,NA-East,Boston,10200.0,6900.0,3800.0,0.351
+A-11232,Dunder Holdings,Manufacturing,SMB,164,20968000.0,APAC,Singapore,3100.0,1500.0,1200.0,0.11
+A-11233,Vandelay Group,Logistics,Mid-Market,1623,140506000.0,NA-East,Austin,4300.0,5300.0,5600.0,0.444
+A-11234,Globex Digital,Energy,Mid-Market,785,472053000.0,NA-West,Phoenix,9400.0,9300.0,5900.0,0.848
+A-11235,Contoso Systems,Logistics,SMB,109,42959000.0,NA-East,Chicago,3300.0,3500.0,2600.0,0.854
+A-11236,Oscorp Technologies,Education,Mid-Market,1735,339463000.0,NA-West,Los Angeles,7400.0,7700.0,2500.0,0.534
+A-11237,Prestige Technologies,Healthcare,Mid-Market,1300,209256000.0,NA-East,Boston,10300.0,8500.0,5300.0,0.51
+A-11238,Acme Solutions,Retail,Enterprise,44556,11796966000.0,NA-East,Atlanta,26300.0,27300.0,15800.0,0.667
+A-11239,Massive Technologies,Energy,Mid-Market,238,51731000.0,NA-East,Boston,9800.0,5800.0,4200.0,0.615
+A-11240,Gekko Holdings,Education,Mid-Market,1643,431141000.0,NA-East,Chicago,3100.0,5800.0,1800.0,0.29
+A-11241,Cyberdyne Partners,Education,Mid-Market,1160,169349000.0,NA-West,Denver,5200.0,8900.0,4900.0,0.695
+A-11242,Contoso Technologies,Healthcare,SMB,192,2915000.0,NA-West,Phoenix,1800.0,3700.0,2800.0,0.776
+A-11243,Oscorp Digital,Manufacturing,Mid-Market,1774,412024000.0,APAC,Sydney,5300.0,5000.0,5600.0,0.508
+A-11244,Wonka Technologies,Manufacturing,Mid-Market,226,466454000.0,EMEA,Amsterdam,6500.0,7700.0,2100.0,0.351
+A-11245,Massive Industries,Manufacturing,Mid-Market,231,485708000.0,NA-West,San Francisco,5600.0,5400.0,3100.0,0.214
+A-11246,Oscorp Systems,Logistics,Mid-Market,1570,461291000.0,NA-East,Austin,11100.0,8200.0,2900.0,0.284
+A-11247,Soylent Partners,Retail,SMB,67,48478000.0,NA-East,Boston,800.0,2600.0,600.0,0.303
+A-11248,Contoso Partners,Software,Mid-Market,880,404329000.0,NA-West,Denver,3300.0,6500.0,5100.0,0.406
+A-11249,Contoso Labs,Education,Mid-Market,214,156160000.0,NA-West,Phoenix,11300.0,6200.0,6200.0,0.574
+A-11250,Tyrell Industries,Healthcare,Mid-Market,373,420840000.0,NA-West,San Francisco,4300.0,6700.0,2800.0,0.478
+A-11251,Cogswell Holdings,Telecom,Mid-Market,429,133176000.0,NA-West,San Francisco,2900.0,11900.0,2900.0,0.818
+A-11252,Hooli Digital,Logistics,SMB,148,31257000.0,APAC,Bangalore,2400.0,2300.0,1400.0,0.588
+A-11253,Wayne Labs,Telecom,SMB,31,25615000.0,NA-West,Seattle,2100.0,1700.0,1600.0,0.393
+A-11254,Nakatomi Holdings,Media,Mid-Market,1349,210480000.0,NA-East,New York,3400.0,7300.0,3300.0,0.518
+A-11255,Oscorp Solutions,Manufacturing,Mid-Market,667,431332000.0,NA-East,Atlanta,8000.0,5200.0,3900.0,0.249
+A-11256,Sterling Holdings,Manufacturing,Enterprise,41623,10662730000.0,NA-West,Phoenix,26000.0,16400.0,19600.0,0.769
+A-11257,Nakatomi Digital,Energy,Enterprise,11422,6062200000.0,APAC,Seoul,24400.0,15300.0,18600.0,0.698
+A-11258,Cogswell Holdings,Energy,Enterprise,40984,15792854000.0,NA-East,Atlanta,6800.0,22000.0,15400.0,0.402
+A-11259,Aperture Cloud,Telecom,Mid-Market,1880,316620000.0,EMEA,Berlin,6000.0,8000.0,5400.0,0.583
+A-11260,Tyrell Partners,Media,SMB,20,29790000.0,APAC,Singapore,2500.0,2600.0,1200.0,0.275
+A-11261,Dunder Cloud,Media,Enterprise,9858,14233299000.0,NA-West,San Francisco,23900.0,22100.0,9100.0,0.53
+A-11262,Dunder Networks,Energy,Mid-Market,1249,247118000.0,NA-East,Atlanta,7600.0,8200.0,2900.0,0.411
+A-11263,Oscorp Systems,Healthcare,SMB,37,22614000.0,EMEA,Madrid,2500.0,3200.0,1800.0,0.487
+A-11264,Wayne Labs,Retail,SMB,161,11099000.0,NA-East,New York,2100.0,1900.0,2400.0,0.624
+A-11265,Prestige Labs,Financial Services,SMB,119,30878000.0,NA-East,Chicago,3900.0,2200.0,1600.0,0.759
+A-11266,Cogswell Networks,Healthcare,SMB,168,22819000.0,NA-West,Seattle,2400.0,3400.0,2800.0,0.913
+A-11267,Acme Cloud,Energy,Mid-Market,1930,55350000.0,NA-West,Denver,10400.0,7300.0,4600.0,0.649
+A-11268,Prestige Group,Education,Mid-Market,1972,188318000.0,NA-West,Denver,8500.0,6300.0,1500.0,0.248
+A-11269,Wayne Systems,Healthcare,Mid-Market,738,371585000.0,NA-West,Denver,4100.0,7400.0,1800.0,0.327
+A-11270,Gekko Cloud,Education,Enterprise,21245,5284248000.0,NA-West,Phoenix,17400.0,14000.0,15100.0,0.555
+A-11271,Pied Piper Industries,Telecom,SMB,165,12731000.0,NA-West,San Francisco,2100.0,2300.0,1100.0,0.649
+A-11272,Gekko Holdings,Energy,Enterprise,25335,9410247000.0,NA-West,San Francisco,34900.0,10400.0,5800.0,0.267
+A-11273,Hooli Labs,Telecom,Mid-Market,337,451986000.0,NA-East,Chicago,8200.0,5900.0,5800.0,0.605
+A-11274,Hooli Systems,Media,SMB,193,2836000.0,APAC,Tokyo,2800.0,3400.0,1300.0,0.559
+A-11275,Gekko Networks,Manufacturing,Mid-Market,1265,407411000.0,NA-West,Los Angeles,11300.0,10000.0,4700.0,0.744
+A-11276,Sterling Systems,Education,Mid-Market,512,277545000.0,NA-East,New York,9600.0,7200.0,3700.0,0.339
+A-11277,Wayne Digital,Energy,Mid-Market,444,270932000.0,NA-East,Chicago,6500.0,9300.0,3000.0,0.509
+A-11278,Northwind Holdings,Retail,SMB,189,29942000.0,NA-West,Denver,3100.0,3100.0,1900.0,0.541
+A-11279,Cyberdyne Partners,Energy,SMB,95,41641000.0,NA-East,Boston,600.0,1400.0,900.0,0.374
+A-11280,Acme Group,Logistics,SMB,34,7529000.0,NA-East,Austin,1300.0,3200.0,1700.0,0.848
+A-11281,Hooli Labs,Software,Enterprise,4716,13957755000.0,NA-West,Seattle,29100.0,10200.0,5800.0,0.133
+A-11282,Stark Labs,Healthcare,SMB,37,14575000.0,NA-West,Phoenix,3800.0,2100.0,1400.0,0.296
+A-11283,Nakatomi Partners,Healthcare,Enterprise,10905,772781000.0,NA-East,Austin,34100.0,14500.0,6500.0,0.442
+A-11284,Vandelay Systems,Energy,SMB,12,27762000.0,NA-East,Boston,2000.0,2300.0,2000.0,0.655
+A-11285,Wonka Holdings,Telecom,SMB,192,29586000.0,NA-West,Los Angeles,300.0,2700.0,700.0,0.465
+A-11286,Aperture Holdings,Education,Mid-Market,1030,135278000.0,NA-East,New York,9800.0,7000.0,1800.0,0.372
+A-11287,Pied Piper Technologies,Energy,SMB,37,6878000.0,NA-West,San Francisco,3300.0,1800.0,1600.0,0.283
+A-11288,Acme Solutions,Retail,Mid-Market,751,233178000.0,EMEA,Berlin,11800.0,12400.0,5200.0,0.824
+A-11289,Vandelay Networks,Retail,Enterprise,38255,3267363000.0,NA-West,Seattle,30600.0,13500.0,11400.0,0.627
+A-11290,Acme Holdings,Healthcare,SMB,89,31650000.0,NA-East,Austin,1500.0,2800.0,1100.0,0.391
+A-11291,Umbra Partners,Media,Mid-Market,1688,211591000.0,NA-West,Denver,7400.0,3400.0,3500.0,0.092
+A-11292,Contoso Technologies,Logistics,Enterprise,44280,19870671000.0,NA-West,San Francisco,29600.0,19100.0,13100.0,0.311
+A-11293,Vandelay Solutions,Telecom,SMB,199,45485000.0,EMEA,Madrid,2200.0,1700.0,900.0,0.2
+A-11294,Oscorp Systems,Energy,Mid-Market,724,430867000.0,NA-East,New York,3300.0,4600.0,3400.0,0.299
+A-11295,Cyberdyne Networks,Healthcare,Mid-Market,1700,403440000.0,NA-West,Denver,11800.0,9700.0,6000.0,0.525
+A-11296,Tyrell Industries,Retail,Mid-Market,977,116615000.0,NA-West,Denver,10600.0,7500.0,7500.0,0.782
+A-11297,Vandelay Systems,Software,Enterprise,2989,11196603000.0,APAC,Singapore,18200.0,16400.0,12400.0,0.955
+A-11298,Hooli Labs,Telecom,SMB,161,2134000.0,NA-East,Chicago,3800.0,2300.0,700.0,0.461
+A-11299,Cogswell Solutions,Education,SMB,18,1436000.0,NA-West,Los Angeles,3200.0,2000.0,1600.0,0.349
+A-11300,Oscorp Digital,Retail,Mid-Market,1431,162069000.0,NA-East,New York,3200.0,6000.0,6700.0,0.673
+A-11301,Gekko Group,Education,Enterprise,48216,6526395000.0,EMEA,Madrid,39000.0,13300.0,5900.0,0.144
+A-11302,Cyberdyne Networks,Education,Enterprise,30667,6025979000.0,NA-West,San Francisco,36200.0,13200.0,6800.0,0.101
+A-11303,Prestige Labs,Logistics,Mid-Market,473,111998000.0,NA-East,Chicago,4200.0,5900.0,2700.0,0.059
+A-11304,Soylent Industries,Manufacturing,Mid-Market,940,121896000.0,APAC,Tokyo,11300.0,8400.0,3400.0,0.827
+A-11305,Wayne Labs,Logistics,Mid-Market,409,238403000.0,NA-East,New York,2700.0,11200.0,5000.0,0.69
+A-11306,Acme Systems,Financial Services,Enterprise,8133,5224908000.0,NA-East,Atlanta,10000.0,14200.0,12400.0,0.618
+A-11307,Globex Group,Software,Enterprise,33433,5657593000.0,NA-West,Los Angeles,23600.0,19200.0,5300.0,0.278
+A-11308,Northwind Partners,Healthcare,Mid-Market,1808,490311000.0,NA-East,Chicago,6200.0,5400.0,2900.0,0.326
+A-11309,Vandelay Cloud,Retail,Mid-Market,1085,117005000.0,NA-East,Chicago,4300.0,11900.0,6600.0,0.959
+A-11310,Contoso Technologies,Energy,Mid-Market,1976,279225000.0,NA-East,Chicago,10500.0,9700.0,5000.0,0.578
+A-11311,Stark Solutions,Energy,SMB,167,33457000.0,NA-West,Seattle,2400.0,2600.0,1600.0,0.34
+A-11312,Wayne Partners,Manufacturing,Mid-Market,753,188257000.0,NA-West,San Francisco,6200.0,9200.0,2300.0,0.412
+A-11313,Hooli Networks,Healthcare,SMB,13,20584000.0,NA-West,Los Angeles,2900.0,2100.0,600.0,0.203
+A-11314,Acme Analytics,Telecom,SMB,54,12042000.0,NA-East,New York,2800.0,2800.0,1700.0,0.792
+A-11315,Cyberdyne Technologies,Retail,SMB,174,1896000.0,NA-East,Austin,3400.0,3300.0,1700.0,0.681
+A-11316,Cogswell Group,Manufacturing,SMB,174,6805000.0,APAC,Singapore,1800.0,2300.0,600.0,0.264
+A-11317,Gekko Technologies,Software,Mid-Market,1977,141186000.0,NA-East,Austin,2600.0,9400.0,5100.0,0.62
+A-11318,Northwind Systems,Manufacturing,SMB,66,46903000.0,NA-West,Denver,3300.0,1200.0,1800.0,0.468
+A-11319,Initech Analytics,Telecom,Mid-Market,1791,120015000.0,EMEA,Madrid,11900.0,8000.0,6000.0,0.669
+A-11320,Gekko Industries,Media,Mid-Market,1858,332909000.0,NA-East,New York,2800.0,10600.0,4200.0,0.589
+A-11321,Aperture Digital,Software,SMB,99,39190000.0,NA-West,Seattle,2500.0,3100.0,2400.0,0.904
+A-11322,Vandelay Analytics,Education,Enterprise,44197,11967534000.0,NA-West,San Francisco,39600.0,24800.0,6300.0,0.298
+A-11323,Acme Analytics,Logistics,Mid-Market,859,208354000.0,NA-East,New York,10700.0,7300.0,4100.0,0.788
+A-11324,Cyberdyne Networks,Software,Mid-Market,1620,223003000.0,NA-West,Seattle,8700.0,5000.0,4400.0,0.327
+A-11325,Tyrell Networks,Financial Services,Mid-Market,642,432367000.0,NA-West,Denver,11100.0,10700.0,4600.0,0.838
+A-11326,Acme Holdings,Manufacturing,Mid-Market,855,490651000.0,NA-East,Boston,11500.0,4700.0,3300.0,0.336
+A-11327,Stark Digital,Financial Services,Mid-Market,596,54599000.0,EMEA,Paris,11100.0,5000.0,3500.0,0.348
+A-11328,Sterling Digital,Telecom,SMB,142,20810000.0,NA-East,New York,3200.0,2000.0,1100.0,0.404
+A-11329,Nakatomi Technologies,Retail,Mid-Market,1583,119961000.0,EMEA,Amsterdam,7100.0,10400.0,3500.0,0.631
+A-11330,Prestige Labs,Energy,SMB,182,17146000.0,EMEA,London,700.0,3200.0,800.0,0.489
+A-11331,Dunder Networks,Energy,Mid-Market,489,380458000.0,NA-West,Phoenix,2200.0,9900.0,4900.0,0.58
+A-11332,Acme Solutions,Manufacturing,Mid-Market,310,275018000.0,NA-West,Seattle,3200.0,7800.0,4500.0,0.688
+A-11333,Wayne Partners,Manufacturing,Mid-Market,1154,399343000.0,NA-West,Denver,10900.0,6100.0,2800.0,0.684
+A-11334,Wayne Partners,Telecom,Mid-Market,1433,231272000.0,NA-West,Seattle,3500.0,5400.0,4400.0,0.526
+A-11335,Globex Cloud,Manufacturing,Mid-Market,1897,143711000.0,NA-East,Atlanta,7500.0,8300.0,2500.0,0.49
+A-11336,Sterling Systems,Retail,SMB,108,46870000.0,NA-East,Boston,4000.0,1000.0,1900.0,0.414
+A-11337,Umbra Solutions,Manufacturing,Mid-Market,1239,383992000.0,NA-West,San Francisco,11600.0,8800.0,6400.0,0.698
+A-11338,Massive Solutions,Energy,Mid-Market,1479,204918000.0,EMEA,Madrid,3600.0,4300.0,3000.0,0.26
+A-11339,Cogswell Group,Energy,SMB,148,9833000.0,NA-East,New York,2900.0,2100.0,1900.0,0.486
+A-11340,Massive Labs,Energy,Enterprise,7117,3705443000.0,NA-East,Chicago,32300.0,16200.0,7100.0,0.101
+A-11341,Initech Technologies,Education,Enterprise,2377,11898026000.0,EMEA,Berlin,33200.0,12500.0,7500.0,0.213
+A-11342,Globex Solutions,Energy,Enterprise,44409,15309728000.0,EMEA,Madrid,37300.0,16500.0,5000.0,0.3
+A-11343,Hooli Technologies,Education,SMB,52,6543000.0,NA-West,Los Angeles,3300.0,3400.0,1000.0,0.664
+A-11344,Cyberdyne Industries,Retail,Enterprise,4921,17679040000.0,NA-West,Denver,26600.0,27600.0,5900.0,0.43
+A-11345,Nakatomi Group,Logistics,Mid-Market,1750,122029000.0,APAC,Tokyo,7700.0,5200.0,1700.0,0.14
+A-11346,Contoso Solutions,Healthcare,SMB,115,15882000.0,NA-West,San Francisco,3900.0,1600.0,1100.0,0.196
+A-11347,Tyrell Cloud,Energy,Mid-Market,1988,389092000.0,NA-West,Phoenix,10500.0,9900.0,7800.0,0.982
+A-11348,Contoso Labs,Media,Enterprise,39278,18917681000.0,NA-West,San Francisco,35900.0,15800.0,7000.0,0.561
+A-11349,Soylent Holdings,Healthcare,Mid-Market,211,125498000.0,NA-West,Seattle,5600.0,5700.0,5700.0,0.475
+A-11350,Wayne Cloud,Software,Enterprise,12849,8393992000.0,EMEA,Berlin,22700.0,18600.0,12000.0,0.693
+A-11351,Contoso Networks,Telecom,Mid-Market,438,415331000.0,NA-East,Boston,2300.0,7600.0,3600.0,0.719
+A-11352,Northwind Solutions,Media,Mid-Market,1552,226770000.0,NA-East,Boston,11100.0,3800.0,3500.0,0.13
+A-11353,Wonka Partners,Healthcare,Mid-Market,318,56699000.0,NA-East,New York,3800.0,5900.0,2400.0,0.24
+A-11354,Cyberdyne Solutions,Financial Services,SMB,143,5894000.0,NA-West,San Francisco,1700.0,1400.0,900.0,0.63
+A-11355,Umbra Cloud,Software,SMB,179,21860000.0,NA-West,Denver,2000.0,1500.0,700.0,0.387
+A-11356,Northwind Holdings,Healthcare,SMB,143,4077000.0,NA-West,Phoenix,2900.0,1500.0,600.0,0.283
+A-11357,Aperture Solutions,Education,SMB,97,7843000.0,NA-West,Seattle,2000.0,1900.0,500.0,0.163
+A-11358,Prestige Labs,Education,SMB,44,46456000.0,NA-West,Seattle,300.0,2100.0,700.0,0.139
+A-11359,Prestige Technologies,Media,SMB,28,43758000.0,NA-East,New York,3800.0,1600.0,1800.0,0.648
+A-11360,Wonka Cloud,Logistics,Enterprise,27459,16676075000.0,NA-East,Austin,24000.0,21200.0,14700.0,0.723
+A-11361,Nakatomi Group,Education,SMB,157,18758000.0,NA-West,Denver,3700.0,3200.0,1200.0,0.677
+A-11362,Prestige Group,Media,SMB,148,33521000.0,NA-East,Atlanta,2700.0,2200.0,2300.0,0.762
+A-11363,Globex Group,Healthcare,Enterprise,13792,5833776000.0,EMEA,Berlin,15100.0,31700.0,16100.0,0.673
+A-11364,Cyberdyne Systems,Retail,Mid-Market,1853,451335000.0,NA-East,New York,10300.0,7900.0,2800.0,0.621
+A-11365,Globex Systems,Financial Services,Enterprise,29596,5289401000.0,NA-East,Chicago,31700.0,8900.0,5700.0,0.147
+A-11366,Northwind Technologies,Software,Mid-Market,1877,114605000.0,NA-West,Los Angeles,6900.0,8000.0,2400.0,0.703
+A-11367,Umbra Technologies,Retail,Enterprise,12482,10751571000.0,NA-West,Denver,37900.0,16700.0,8600.0,0.267
+A-11368,Soylent Analytics,Financial Services,Enterprise,11868,17413260000.0,NA-East,Boston,11900.0,20000.0,7900.0,0.523
+A-11369,Cogswell Holdings,Energy,Mid-Market,521,261441000.0,NA-West,Phoenix,10900.0,8500.0,2300.0,0.414
+A-11370,Hooli Technologies,Financial Services,Mid-Market,1052,436257000.0,NA-East,Chicago,3000.0,4900.0,4600.0,0.28
+A-11371,Contoso Partners,Logistics,Mid-Market,594,188444000.0,NA-West,San Francisco,9700.0,7300.0,3200.0,0.661
+A-11372,Aperture Networks,Software,Enterprise,9944,17545856000.0,NA-East,Boston,32000.0,25800.0,12300.0,0.454
+A-11373,Sterling Partners,Financial Services,Mid-Market,1375,490664000.0,NA-West,Los Angeles,2000.0,6400.0,4100.0,0.587
+A-11374,Soylent Industries,Education,Mid-Market,1286,425853000.0,NA-East,Atlanta,2300.0,5100.0,4500.0,0.422
+A-11375,Stark Holdings,Energy,SMB,105,45420000.0,NA-East,New York,1300.0,2500.0,1700.0,0.47
+A-11376,Tyrell Solutions,Healthcare,Mid-Market,1422,224465000.0,NA-West,Denver,4300.0,4500.0,2100.0,0.086
+A-11377,Oscorp Systems,Software,Mid-Market,468,263920000.0,EMEA,London,9000.0,7700.0,4100.0,0.313
+A-11378,Soylent Industries,Telecom,Mid-Market,1555,242782000.0,NA-West,Phoenix,5400.0,7300.0,1900.0,0.411
+A-11379,Dunder Holdings,Software,Enterprise,41236,9684562000.0,NA-East,Chicago,32700.0,16900.0,11700.0,0.353
+A-11380,Globex Networks,Software,SMB,156,23154000.0,NA-East,Boston,2700.0,2800.0,1400.0,0.342
+A-11381,Stark Analytics,Healthcare,Mid-Market,1453,362120000.0,NA-West,Seattle,10700.0,7900.0,5100.0,0.897
+A-11382,Pied Piper Partners,Education,Mid-Market,448,422796000.0,NA-East,Chicago,8900.0,5900.0,3000.0,0.051
+A-11383,Tyrell Technologies,Manufacturing,Enterprise,10967,1693249000.0,NA-East,Austin,7400.0,29700.0,14400.0,0.777
+A-11384,Globex Analytics,Education,SMB,165,46594000.0,NA-East,New York,2100.0,2900.0,1800.0,0.439
+A-11385,Sterling Cloud,Education,Mid-Market,1164,479156000.0,NA-East,Atlanta,4300.0,5600.0,1700.0,0.324
+A-11386,Cyberdyne Networks,Healthcare,SMB,22,17659000.0,NA-East,Boston,2300.0,1300.0,400.0,0.048
+A-11387,Dunder Holdings,Software,Enterprise,35473,15764795000.0,NA-West,Phoenix,29300.0,23900.0,17700.0,0.655
+A-11388,Initech Industries,Logistics,SMB,120,38025000.0,NA-West,Phoenix,3600.0,1200.0,600.0,0.18
+A-11389,Nakatomi Systems,Education,Enterprise,48911,8539193000.0,NA-West,Seattle,15400.0,23700.0,8000.0,0.724
+A-11390,Contoso Technologies,Healthcare,Mid-Market,1151,320287000.0,NA-West,San Francisco,6100.0,9800.0,2300.0,0.497
+A-11391,Umbra Digital,Logistics,Enterprise,33669,19335846000.0,EMEA,Berlin,38300.0,29500.0,8100.0,0.794
+A-11392,Cyberdyne Labs,Healthcare,Enterprise,40390,8419818000.0,NA-East,Atlanta,9600.0,32100.0,20500.0,0.9
+A-11393,Vandelay Analytics,Retail,Mid-Market,705,148254000.0,NA-East,New York,10000.0,6900.0,7000.0,0.722
+A-11394,Cogswell Cloud,Retail,Mid-Market,1658,468701000.0,NA-East,Atlanta,3400.0,3900.0,1900.0,0.218
+A-11395,Soylent Systems,Healthcare,Enterprise,28463,5692073000.0,EMEA,Paris,20800.0,35200.0,14400.0,0.754
+A-11396,Northwind Industries,Media,SMB,52,38441000.0,APAC,Sydney,1200.0,2600.0,1600.0,0.416
+A-11397,Gekko Digital,Healthcare,SMB,32,43840000.0,NA-East,Chicago,2400.0,3300.0,2500.0,0.805
+A-11398,Northwind Technologies,Telecom,SMB,163,30612000.0,NA-West,Seattle,2600.0,3100.0,900.0,0.414
+A-11399,Contoso Group,Software,Mid-Market,1912,133698000.0,NA-West,San Francisco,7200.0,7400.0,4000.0,0.222
+A-11400,Wonka Technologies,Education,Enterprise,49292,18219282000.0,APAC,Seoul,38200.0,22100.0,7900.0,0.478
+A-11401,Cyberdyne Digital,Logistics,SMB,98,25276000.0,NA-West,Phoenix,2600.0,2900.0,1800.0,0.804
+A-11402,Massive Holdings,Financial Services,Mid-Market,789,321405000.0,EMEA,London,9500.0,8700.0,4500.0,0.367
+A-11403,Cyberdyne Group,Education,SMB,147,47251000.0,NA-East,Boston,3800.0,2500.0,1200.0,0.182
+A-11404,Vandelay Digital,Education,Mid-Market,1092,118538000.0,NA-East,Boston,8400.0,6600.0,2700.0,0.608
+A-11405,Dunder Cloud,Healthcare,Mid-Market,734,55110000.0,NA-West,Phoenix,8200.0,7300.0,5800.0,0.664
+A-11406,Massive Labs,Education,SMB,189,28376000.0,NA-West,Phoenix,2600.0,2100.0,1200.0,0.456
+A-11407,Acme Labs,Energy,Enterprise,33626,5297096000.0,APAC,Seoul,37700.0,25600.0,18200.0,0.966
+A-11408,Stark Systems,Retail,Mid-Market,646,472719000.0,NA-East,New York,6900.0,7000.0,4400.0,0.258
+A-11409,Nakatomi Industries,Software,Enterprise,12836,2180139000.0,NA-West,Los Angeles,25100.0,19700.0,10700.0,0.837
+A-11410,Gekko Solutions,Manufacturing,SMB,49,2975000.0,APAC,Singapore,1400.0,2700.0,1500.0,0.465
+A-11411,Tyrell Group,Manufacturing,Enterprise,17130,1780934000.0,NA-West,Seattle,38900.0,20000.0,17600.0,0.503
+A-11412,Sterling Digital,Media,Enterprise,6311,14053992000.0,EMEA,Madrid,38600.0,20300.0,14800.0,0.335
+A-11413,Wonka Digital,Software,Enterprise,18527,11119876000.0,NA-East,Atlanta,7800.0,20300.0,5900.0,0.356
+A-11414,Cyberdyne Systems,Energy,SMB,166,1132000.0,NA-West,Denver,1400.0,1300.0,1300.0,0.293
+A-11415,Soylent Networks,Logistics,Mid-Market,469,86646000.0,EMEA,London,7400.0,11700.0,7400.0,0.73
+A-11416,Hooli Analytics,Software,SMB,135,27175000.0,NA-East,Chicago,300.0,2600.0,1400.0,0.66
+A-11417,Cogswell Holdings,Media,Mid-Market,1497,109468000.0,NA-West,Seattle,2600.0,6800.0,4400.0,0.311
+A-11418,Massive Digital,Energy,Enterprise,49635,1329922000.0,APAC,Tokyo,10900.0,23400.0,14000.0,0.657
+A-11419,Vandelay Analytics,Healthcare,SMB,164,19550000.0,NA-East,Austin,700.0,3500.0,800.0,0.657
+A-11420,Cyberdyne Systems,Retail,Mid-Market,1989,409424000.0,NA-East,Austin,8700.0,4200.0,3000.0,0.182
+A-11421,Stark Solutions,Software,Enterprise,43450,13738474000.0,NA-West,Los Angeles,28800.0,23100.0,21200.0,0.957
+A-11422,Cogswell Holdings,Education,Enterprise,15070,17589785000.0,NA-East,Boston,22000.0,22300.0,10200.0,0.291
+A-11423,Acme Group,Telecom,Mid-Market,332,290579000.0,NA-East,Chicago,2200.0,3700.0,2000.0,0.177
+A-11424,Soylent Systems,Telecom,Mid-Market,912,245288000.0,EMEA,Madrid,2100.0,6200.0,1200.0,0.048
+A-11425,Vandelay Networks,Software,Enterprise,30433,19774514000.0,NA-East,New York,7100.0,20000.0,5200.0,0.355
+A-11426,Wonka Networks,Energy,SMB,142,18967000.0,NA-East,Boston,3500.0,1600.0,2300.0,0.569
+A-11427,Nakatomi Partners,Media,Mid-Market,664,173009000.0,EMEA,Madrid,8300.0,6600.0,2400.0,0.132
+A-11428,Initech Digital,Software,SMB,129,6918000.0,NA-West,Seattle,2300.0,2200.0,1800.0,0.763
+A-11429,Contoso Networks,Media,Mid-Market,468,271996000.0,NA-East,Austin,7000.0,5000.0,2400.0,0.149
+A-11430,Acme Solutions,Software,Mid-Market,733,438662000.0,NA-East,New York,3500.0,6300.0,4700.0,0.639
+A-11431,Globex Solutions,Manufacturing,Mid-Market,1422,335664000.0,APAC,Sydney,2900.0,8300.0,3900.0,0.316
+A-11432,Vandelay Holdings,Education,Mid-Market,787,249052000.0,NA-West,Denver,4700.0,4200.0,2100.0,0.139
+A-11433,Wayne Cloud,Energy,SMB,33,46745000.0,APAC,Tokyo,600.0,3000.0,1400.0,0.422
+A-11434,Tyrell Industries,Telecom,Mid-Market,1793,299178000.0,NA-East,Austin,3900.0,7700.0,3800.0,0.368
+A-11435,Contoso Holdings,Energy,Mid-Market,1725,410580000.0,NA-East,Atlanta,2900.0,7600.0,4400.0,0.633
+A-11436,Umbra Cloud,Education,Mid-Market,1457,145716000.0,EMEA,London,8800.0,6100.0,2700.0,0.476
+A-11437,Cyberdyne Solutions,Telecom,Mid-Market,1311,317183000.0,APAC,Bangalore,3900.0,4800.0,3400.0,0.167
+A-11438,Umbra Holdings,Healthcare,Enterprise,3041,2331454000.0,NA-East,Boston,29100.0,21400.0,9500.0,0.732
+A-11439,Dunder Labs,Education,Enterprise,30367,3412341000.0,NA-East,Boston,26300.0,13600.0,7900.0,0.323
+A-11440,Soylent Labs,Software,SMB,10,41785000.0,NA-East,Atlanta,3200.0,1000.0,1200.0,0.324
+A-11441,Vandelay Labs,Telecom,SMB,178,25805000.0,NA-West,Los Angeles,3900.0,2100.0,1400.0,0.535
+A-11442,Gekko Partners,Healthcare,SMB,129,5156000.0,NA-East,Atlanta,3300.0,2700.0,1000.0,0.604
+A-11443,Contoso Technologies,Energy,Mid-Market,956,217063000.0,EMEA,Berlin,11300.0,8300.0,3200.0,0.411
+A-11444,Cyberdyne Partners,Telecom,SMB,148,14854000.0,NA-East,Boston,2000.0,2800.0,2100.0,0.62
+A-11445,Cogswell Networks,Logistics,Mid-Market,1474,428951000.0,NA-East,Austin,8000.0,8800.0,4700.0,0.492
+A-11446,Massive Cloud,Manufacturing,Enterprise,8860,8630446000.0,NA-East,Austin,35500.0,16100.0,14600.0,0.389
+A-11447,Pied Piper Labs,Financial Services,Mid-Market,793,179742000.0,NA-West,Los Angeles,11300.0,9700.0,6400.0,0.666
+A-11448,Vandelay Networks,Logistics,Mid-Market,1465,186884000.0,NA-West,San Francisco,7000.0,7000.0,1700.0,0.186
+A-11449,Gekko Digital,Healthcare,Enterprise,45631,3010973000.0,EMEA,Paris,20800.0,10700.0,9300.0,0.268
+A-11450,Sterling Cloud,Retail,Mid-Market,1235,216535000.0,NA-East,New York,5100.0,4900.0,4400.0,0.387
+A-11451,Cyberdyne Holdings,Logistics,SMB,55,1182000.0,NA-East,Austin,2600.0,2100.0,1100.0,0.542
+A-11452,Tyrell Industries,Media,SMB,181,36890000.0,NA-West,Denver,2800.0,2400.0,800.0,0.758
+A-11453,Wonka Labs,Healthcare,Mid-Market,658,243929000.0,NA-West,Denver,2100.0,9900.0,6400.0,0.654
+A-11454,Globex Technologies,Telecom,Enterprise,18939,6839374000.0,NA-East,Atlanta,10400.0,14700.0,5400.0,0.314
+A-11455,Vandelay Holdings,Logistics,SMB,87,27186000.0,EMEA,Berlin,1900.0,700.0,1200.0,0.146
+A-11456,Northwind Networks,Retail,Mid-Market,1657,170502000.0,NA-West,Seattle,11200.0,10400.0,3900.0,0.575
+A-11457,Massive Partners,Financial Services,Mid-Market,582,350588000.0,NA-East,Boston,2100.0,5800.0,1700.0,0.088
+A-11458,Hooli Industries,Healthcare,SMB,115,6366000.0,NA-East,Austin,1600.0,1900.0,1100.0,0.262
+A-11459,Stark Digital,Software,Mid-Market,1231,274219000.0,NA-East,Atlanta,8400.0,7400.0,5200.0,0.585
+A-11460,Hooli Partners,Healthcare,Mid-Market,1371,413934000.0,NA-West,San Francisco,2400.0,6200.0,6300.0,0.794
+A-11461,Vandelay Partners,Healthcare,Mid-Market,273,93366000.0,NA-West,Phoenix,9400.0,10300.0,2400.0,0.654
+A-11462,Tyrell Cloud,Retail,SMB,198,34650000.0,NA-East,Austin,3000.0,2700.0,700.0,0.543
+A-11463,Contoso Holdings,Manufacturing,Mid-Market,502,451175000.0,NA-East,Boston,2300.0,6200.0,4100.0,0.464
+A-11464,Vandelay Labs,Energy,Mid-Market,546,51120000.0,NA-East,Chicago,6000.0,9300.0,7500.0,0.813
+A-11465,Gekko Group,Retail,SMB,157,44431000.0,NA-West,San Francisco,3300.0,2600.0,1200.0,0.408
+A-11466,Cogswell Group,Manufacturing,SMB,134,6833000.0,NA-East,Chicago,2600.0,1800.0,1200.0,0.92
+A-11467,Hooli Cloud,Logistics,SMB,129,22953000.0,NA-West,Los Angeles,2800.0,3800.0,1800.0,0.912
+A-11468,Vandelay Networks,Logistics,Mid-Market,339,418344000.0,EMEA,Madrid,10600.0,9000.0,4400.0,0.842
+A-11469,Prestige Networks,Retail,Mid-Market,865,494405000.0,NA-East,Chicago,9600.0,8700.0,6200.0,0.896
+A-11470,Acme Analytics,Energy,Mid-Market,917,117922000.0,NA-West,Phoenix,7900.0,6500.0,4400.0,0.312
+A-11471,Oscorp Analytics,Logistics,SMB,109,19961000.0,NA-West,Phoenix,2700.0,1900.0,400.0,0.066
+A-11472,Oscorp Group,Manufacturing,SMB,101,8190000.0,NA-East,Boston,2400.0,2400.0,500.0,0.226
+A-11473,Aperture Systems,Manufacturing,Mid-Market,1484,69907000.0,NA-East,Boston,6900.0,6200.0,2600.0,0.322
+A-11474,Cogswell Labs,Healthcare,Mid-Market,1711,346190000.0,NA-East,Austin,10800.0,10800.0,4700.0,0.748
+A-11475,Gekko Solutions,Education,Enterprise,30968,17604895000.0,NA-West,San Francisco,12800.0,20500.0,15700.0,0.641
+A-11476,Stark Solutions,Software,Mid-Market,1372,365702000.0,EMEA,Berlin,9500.0,7000.0,2100.0,0.143
+A-11477,Massive Labs,Software,SMB,120,22458000.0,APAC,Tokyo,3500.0,3300.0,2100.0,0.624
+A-11478,Hooli Technologies,Energy,Mid-Market,1234,182050000.0,NA-East,Boston,11100.0,5100.0,2800.0,0.181
+A-11479,Nakatomi Digital,Manufacturing,SMB,175,18398000.0,EMEA,Madrid,3800.0,2800.0,1600.0,0.672
+A-11480,Prestige Cloud,Manufacturing,Mid-Market,1479,111517000.0,NA-East,Boston,10300.0,6800.0,4600.0,0.778
+A-11481,Cogswell Industries,Financial Services,Mid-Market,1189,332073000.0,NA-West,Seattle,4500.0,6500.0,6700.0,0.74
+A-11482,Hooli Technologies,Healthcare,Mid-Market,1508,205420000.0,NA-East,Chicago,8300.0,5300.0,2700.0,0.203
+A-11483,Contoso Group,Financial Services,Mid-Market,1124,92319000.0,NA-West,San Francisco,7600.0,7700.0,3600.0,0.586
+A-11484,Oscorp Partners,Logistics,Enterprise,11762,9993641000.0,EMEA,Berlin,20700.0,30300.0,8600.0,0.789
+A-11485,Vandelay Systems,Healthcare,Enterprise,22388,17128455000.0,APAC,Seoul,17200.0,26800.0,10500.0,0.68
+A-11486,Initech Networks,Telecom,SMB,198,21279000.0,NA-West,Phoenix,3800.0,2300.0,1600.0,0.71
+A-11487,Soylent Partners,Education,Enterprise,30242,1272548000.0,APAC,Bangalore,36500.0,18600.0,19400.0,0.872
+A-11488,Aperture Networks,Financial Services,Mid-Market,789,336049000.0,NA-East,Chicago,4800.0,5200.0,4000.0,0.538
+A-11489,Wonka Technologies,Retail,Mid-Market,452,414052000.0,NA-West,San Francisco,10100.0,6600.0,4800.0,0.39
+A-11490,Pied Piper Technologies,Education,Enterprise,32417,7442293000.0,NA-West,Denver,31500.0,33600.0,20700.0,0.897
+A-11491,Prestige Industries,Software,Mid-Market,1951,384328000.0,NA-East,Chicago,5300.0,11600.0,6800.0,0.813
+A-11492,Cyberdyne Solutions,Healthcare,Enterprise,10667,18256797000.0,NA-East,Boston,13000.0,30500.0,21700.0,0.817
+A-11493,Wonka Labs,Financial Services,Enterprise,14514,15742520000.0,NA-East,Boston,21000.0,26100.0,10100.0,0.706
+A-11494,Aperture Solutions,Telecom,Mid-Market,964,281225000.0,NA-East,Atlanta,2500.0,6200.0,2300.0,0.23
+A-11495,Globex Industries,Financial Services,Mid-Market,1888,162577000.0,NA-West,San Francisco,6300.0,3900.0,1900.0,0.158
+A-11496,Wayne Solutions,Software,Mid-Market,931,296562000.0,NA-West,San Francisco,10400.0,5900.0,2800.0,0.374
+A-11497,Tyrell Industries,Media,Enterprise,45677,867904000.0,NA-East,Austin,16400.0,17200.0,24700.0,0.911
+A-11498,Hooli Industries,Education,SMB,117,1936000.0,NA-West,San Francisco,3900.0,1200.0,1300.0,0.683
+A-11499,Contoso Systems,Media,Mid-Market,880,344757000.0,EMEA,Paris,3000.0,6900.0,2300.0,0.339
+A-11500,Wonka Group,Logistics,SMB,81,48670000.0,NA-East,New York,3200.0,1500.0,1600.0,0.499
+A-11501,Cyberdyne Partners,Retail,Enterprise,31251,8849837000.0,NA-East,Atlanta,5200.0,13400.0,6600.0,0.304
+A-11502,Aperture Analytics,Energy,Mid-Market,1325,440136000.0,NA-East,Chicago,4400.0,11300.0,3600.0,0.695
+A-11503,Contoso Technologies,Telecom,SMB,80,17293000.0,NA-East,Atlanta,3400.0,2700.0,1100.0,0.451
+A-11504,Nakatomi Industries,Manufacturing,Mid-Market,648,432048000.0,EMEA,Madrid,9000.0,8300.0,2900.0,0.718
+A-11505,Tyrell Group,Education,Enterprise,28469,7112136000.0,EMEA,Berlin,13700.0,28900.0,17500.0,0.718
+A-11506,Pied Piper Cloud,Telecom,Mid-Market,1911,385226000.0,EMEA,Madrid,7500.0,5900.0,5100.0,0.618
+A-11507,Initech Technologies,Logistics,Mid-Market,464,304478000.0,NA-West,Seattle,7900.0,6600.0,2900.0,0.302
+A-11508,Gekko Analytics,Manufacturing,Mid-Market,1450,89773000.0,NA-East,Austin,4400.0,4000.0,3600.0,0.153
+A-11509,Prestige Networks,Telecom,Mid-Market,1666,481517000.0,NA-West,Los Angeles,11000.0,5700.0,2800.0,0.657
+A-11510,Vandelay Networks,Retail,Enterprise,39583,9119421000.0,EMEA,Madrid,11400.0,37900.0,14600.0,0.851
+A-11511,Initech Solutions,Healthcare,Mid-Market,1546,313286000.0,EMEA,Amsterdam,10100.0,9800.0,2800.0,0.527
+A-11512,Pied Piper Technologies,Telecom,Mid-Market,1493,305221000.0,NA-West,Los Angeles,2900.0,9500.0,2300.0,0.436
+A-11513,Cyberdyne Labs,Healthcare,Mid-Market,829,398011000.0,APAC,Sydney,2300.0,8800.0,2400.0,0.625
+A-11514,Hooli Holdings,Energy,Mid-Market,1851,238668000.0,NA-East,Austin,6800.0,7900.0,4100.0,0.898
+A-11515,Cogswell Systems,Financial Services,SMB,174,25188000.0,APAC,Tokyo,1100.0,3800.0,1400.0,0.862
+A-11516,Stark Analytics,Healthcare,Enterprise,44894,1253724000.0,NA-West,Phoenix,23500.0,9600.0,4000.0,0.136
+A-11517,Vandelay Partners,Logistics,SMB,180,46792000.0,NA-East,Chicago,1400.0,1300.0,2100.0,0.466
+A-11518,Nakatomi Networks,Financial Services,Mid-Market,569,294595000.0,NA-West,San Francisco,2600.0,6900.0,4000.0,0.356
+A-11519,Umbra Partners,Energy,Mid-Market,1404,51939000.0,NA-East,New York,11700.0,12900.0,7500.0,0.918
+A-11520,Globex Networks,Manufacturing,Mid-Market,1945,264397000.0,EMEA,London,7100.0,8000.0,4600.0,0.303
+A-11521,Stark Networks,Financial Services,Mid-Market,1383,220528000.0,NA-West,Denver,9800.0,4200.0,3500.0,0.274
+A-11522,Wayne Systems,Telecom,SMB,123,22234000.0,NA-West,Los Angeles,2700.0,1300.0,1300.0,0.639
+A-11523,Sterling Solutions,Education,Mid-Market,1177,367154000.0,NA-East,Atlanta,4800.0,8700.0,2300.0,0.514
+A-11524,Wonka Labs,Education,Mid-Market,1982,365340000.0,APAC,Bangalore,5400.0,5600.0,2000.0,0.396
+A-11525,Pied Piper Cloud,Financial Services,Mid-Market,1020,225372000.0,APAC,Bangalore,3300.0,7900.0,2200.0,0.314
+A-11526,Pied Piper Partners,Financial Services,SMB,169,1250000.0,NA-East,New York,3300.0,1100.0,1700.0,0.365
+A-11527,Prestige Networks,Software,Mid-Market,1410,494724000.0,APAC,Bangalore,10000.0,13700.0,5400.0,0.978
+A-11528,Dunder Group,Healthcare,Enterprise,13009,11268177000.0,NA-West,Los Angeles,11300.0,9900.0,10200.0,0.122
+A-11529,Stark Systems,Software,Mid-Market,691,67556000.0,NA-West,Phoenix,9500.0,10800.0,4800.0,0.605
+A-11530,Wayne Holdings,Media,Mid-Market,1940,474656000.0,NA-East,New York,11300.0,6900.0,5300.0,0.635
+A-11531,Dunder Industries,Energy,Enterprise,28713,1298230000.0,NA-East,Austin,31600.0,10000.0,9100.0,0.135
+A-11532,Gekko Labs,Retail,Mid-Market,718,300052000.0,NA-West,Phoenix,10000.0,10300.0,6200.0,0.713
+A-11533,Cyberdyne Holdings,Media,Mid-Market,1095,460727000.0,EMEA,Paris,8400.0,9200.0,2700.0,0.446
+A-11534,Cogswell Cloud,Energy,SMB,57,45968000.0,NA-East,Boston,1200.0,1800.0,2100.0,0.749
+A-11535,Oscorp Partners,Software,SMB,113,14635000.0,NA-East,New York,2400.0,2200.0,1200.0,0.497
+A-11536,Cyberdyne Industries,Telecom,SMB,97,12443000.0,EMEA,Amsterdam,3100.0,1300.0,1000.0,0.075
+A-11537,Stark Networks,Logistics,Mid-Market,305,210971000.0,EMEA,London,8400.0,7000.0,4200.0,0.491
+A-11538,Nakatomi Group,Media,Mid-Market,1644,415216000.0,NA-West,Denver,7300.0,6400.0,3800.0,0.502
+A-11539,Initech Industries,Logistics,SMB,74,23468000.0,NA-West,Los Angeles,3400.0,3200.0,1200.0,0.492
+A-11540,Soylent Holdings,Manufacturing,Mid-Market,1382,329262000.0,NA-West,Los Angeles,5400.0,7100.0,4800.0,0.772
+A-11541,Umbra Networks,Telecom,Mid-Market,906,457169000.0,NA-West,Los Angeles,8900.0,6400.0,5700.0,0.507
+A-11542,Aperture Digital,Healthcare,Mid-Market,1829,211632000.0,NA-East,New York,4400.0,4900.0,2200.0,0.433
+A-11543,Contoso Digital,Software,Enterprise,16499,15714583000.0,NA-East,Austin,33700.0,10700.0,6100.0,0.197
+A-11544,Soylent Solutions,Education,Enterprise,25386,12272205000.0,NA-West,Denver,5100.0,16100.0,10300.0,0.482
+A-11545,Dunder Partners,Energy,Mid-Market,315,382983000.0,NA-West,Phoenix,5500.0,7500.0,5600.0,0.655
+A-11546,Umbra Cloud,Manufacturing,Mid-Market,349,223282000.0,NA-West,Denver,8300.0,9800.0,6900.0,0.671
+A-11547,Cogswell Labs,Education,Mid-Market,732,390622000.0,EMEA,London,4000.0,5700.0,1900.0,0.403
+A-11548,Contoso Analytics,Energy,Mid-Market,1366,391850000.0,APAC,Sydney,2700.0,7900.0,2500.0,0.64
+A-11549,Cogswell Networks,Software,Enterprise,9482,5295176000.0,NA-East,Austin,28600.0,16000.0,5400.0,0.283
+A-11550,Vandelay Analytics,Energy,Mid-Market,421,210081000.0,NA-East,Chicago,3600.0,4600.0,1600.0,0.11
+A-11551,Umbra Networks,Retail,SMB,46,2962000.0,NA-West,Phoenix,3800.0,2600.0,900.0,0.703
+A-11552,Wonka Networks,Logistics,Mid-Market,1732,220995000.0,EMEA,Paris,4100.0,7000.0,3600.0,0.694
+A-11553,Wayne Holdings,Logistics,SMB,36,5618000.0,EMEA,Amsterdam,3200.0,2300.0,2000.0,0.484
+A-11554,Wonka Labs,Healthcare,SMB,102,49678000.0,NA-West,Denver,1500.0,3100.0,2000.0,0.498
+A-11555,Tyrell Partners,Logistics,Mid-Market,994,182077000.0,APAC,Singapore,6300.0,8000.0,4000.0,0.391
+A-11556,Tyrell Networks,Healthcare,Enterprise,48593,8666730000.0,EMEA,Amsterdam,18400.0,26100.0,11300.0,0.652
+A-11557,Soylent Cloud,Media,SMB,143,31081000.0,EMEA,Paris,2500.0,2200.0,1500.0,0.485
+A-11558,Vandelay Partners,Energy,Mid-Market,1030,492785000.0,NA-East,Atlanta,8900.0,7900.0,2200.0,0.286
+A-11559,Initech Digital,Retail,SMB,142,3545000.0,NA-East,New York,400.0,2800.0,700.0,0.375
+A-11560,Soylent Holdings,Energy,Mid-Market,1361,446374000.0,NA-East,Boston,8900.0,7100.0,1700.0,0.148
+A-11561,Vandelay Technologies,Manufacturing,SMB,137,42586000.0,NA-East,Atlanta,3200.0,2600.0,600.0,0.451
+A-11562,Northwind Cloud,Logistics,SMB,65,45987000.0,NA-East,New York,800.0,700.0,1200.0,0.086
+A-11563,Gekko Group,Logistics,SMB,124,25440000.0,EMEA,Amsterdam,3000.0,2600.0,1200.0,0.492
+A-11564,Massive Group,Software,Enterprise,28989,7724197000.0,NA-West,San Francisco,19700.0,35600.0,22100.0,0.837
+A-11565,Pied Piper Systems,Financial Services,Mid-Market,394,199311000.0,EMEA,London,5900.0,7700.0,2900.0,0.832
+A-11566,Cogswell Digital,Education,Mid-Market,1350,377714000.0,EMEA,Amsterdam,2400.0,5400.0,6100.0,0.548
+A-11567,Vandelay Industries,Manufacturing,Mid-Market,1140,344539000.0,NA-West,Seattle,4700.0,5900.0,1700.0,0.229
+A-11568,Gekko Industries,Telecom,Mid-Market,707,99495000.0,NA-East,Chicago,10400.0,5400.0,6200.0,0.593
+A-11569,Globex Labs,Media,Mid-Market,1128,225168000.0,NA-West,San Francisco,11800.0,5900.0,1800.0,0.247
+A-11570,Tyrell Labs,Energy,Mid-Market,1765,373738000.0,NA-East,New York,10600.0,6000.0,2800.0,0.494
+A-11571,Sterling Group,Logistics,Mid-Market,865,214136000.0,APAC,Singapore,4400.0,5900.0,2800.0,0.346
+A-11572,Nakatomi Industries,Logistics,Mid-Market,277,356594000.0,NA-East,Austin,7400.0,6300.0,4200.0,0.329
+A-11573,Gekko Industries,Manufacturing,Mid-Market,483,421579000.0,NA-East,Austin,3800.0,8200.0,3800.0,0.957
+A-11574,Gekko Industries,Retail,SMB,91,48446000.0,NA-East,Austin,300.0,1100.0,600.0,0.217
+A-11575,Soylent Digital,Healthcare,Mid-Market,1910,407011000.0,EMEA,London,6700.0,9500.0,4700.0,0.537
+A-11576,Gekko Technologies,Manufacturing,SMB,10,30524000.0,APAC,Sydney,300.0,2300.0,1200.0,0.346
+A-11577,Dunder Systems,Media,SMB,150,24688000.0,NA-West,San Francisco,3300.0,3300.0,1800.0,0.811
+A-11578,Oscorp Analytics,Energy,SMB,30,18873000.0,APAC,Sydney,2600.0,3200.0,1600.0,0.479
+A-11579,Stark Partners,Software,Mid-Market,231,371030000.0,NA-West,Denver,3500.0,6900.0,2600.0,0.383
+A-11580,Globex Networks,Financial Services,SMB,154,12950000.0,EMEA,Paris,2600.0,3000.0,900.0,0.65
+A-11581,Initech Labs,Media,Enterprise,3782,14190931000.0,NA-West,Seattle,6500.0,26500.0,18300.0,0.839
+A-11582,Dunder Partners,Energy,Mid-Market,1837,319043000.0,EMEA,Paris,10600.0,10000.0,6600.0,0.854
+A-11583,Stark Networks,Telecom,SMB,99,5473000.0,NA-West,Seattle,1200.0,1300.0,1000.0,0.564
+A-11584,Acme Holdings,Financial Services,Mid-Market,1896,477369000.0,EMEA,Amsterdam,8900.0,11700.0,7100.0,0.847
+A-11585,Contoso Cloud,Energy,SMB,137,15215000.0,NA-East,Atlanta,400.0,1500.0,1700.0,0.364
+A-11586,Wayne Labs,Education,Enterprise,3156,15430958000.0,EMEA,Paris,14800.0,22800.0,13500.0,0.373
+A-11587,Soylent Industries,Telecom,SMB,170,45569000.0,NA-East,New York,1700.0,2300.0,700.0,0.309
+A-11588,Prestige Solutions,Logistics,SMB,31,1174000.0,EMEA,Paris,3800.0,1700.0,600.0,0.14
+A-11589,Northwind Networks,Manufacturing,SMB,19,13863000.0,NA-East,New York,1100.0,2300.0,1200.0,0.268
+A-11590,Umbra Group,Telecom,Mid-Market,1135,206956000.0,NA-East,Boston,11800.0,8500.0,6000.0,0.65
+A-11591,Soylent Labs,Financial Services,SMB,16,18094000.0,NA-West,Denver,2300.0,3400.0,2300.0,0.631
+A-11592,Umbra Labs,Logistics,Mid-Market,1252,106156000.0,EMEA,Paris,5100.0,4700.0,2200.0,0.06
+A-11593,Initech Digital,Energy,SMB,100,43617000.0,NA-East,Chicago,800.0,1800.0,1100.0,0.287
+A-11594,Cogswell Analytics,Telecom,Mid-Market,1782,402043000.0,EMEA,Paris,3600.0,7800.0,1900.0,0.422
+A-11595,Sterling Holdings,Energy,SMB,132,5196000.0,NA-West,Los Angeles,1800.0,1900.0,1200.0,0.325
+A-11596,Umbra Industries,Media,SMB,128,24533000.0,NA-West,Phoenix,900.0,1800.0,1500.0,0.517
+A-11597,Acme Industries,Software,Mid-Market,1863,463305000.0,NA-East,Chicago,11400.0,5300.0,3600.0,0.226
+A-11598,Umbra Networks,Media,Mid-Market,1761,207913000.0,EMEA,London,2900.0,7500.0,3000.0,0.836
+A-11599,Hooli Partners,Education,Mid-Market,1467,131426000.0,NA-West,San Francisco,11500.0,4500.0,3800.0,0.371
+A-11600,Acme Labs,Financial Services,Mid-Market,1515,117466000.0,EMEA,Berlin,8300.0,8900.0,4400.0,0.508
+A-11601,Soylent Holdings,Telecom,Enterprise,31026,16506376000.0,NA-East,New York,27200.0,13500.0,7400.0,0.401
+A-11602,Sterling Technologies,Healthcare,Enterprise,14458,16196139000.0,NA-West,San Francisco,20800.0,11400.0,7400.0,0.197
+A-11603,Dunder Networks,Media,Mid-Market,1822,355230000.0,APAC,Tokyo,11100.0,7400.0,2600.0,0.293
+A-11604,Prestige Digital,Telecom,Mid-Market,837,443299000.0,NA-East,Austin,4000.0,7000.0,3800.0,0.52
+A-11605,Tyrell Analytics,Healthcare,SMB,172,41774000.0,NA-West,Los Angeles,1100.0,3000.0,1500.0,0.431
+A-11606,Acme Digital,Education,SMB,65,8794000.0,EMEA,Amsterdam,3600.0,1600.0,1000.0,0.182
+A-11607,Massive Cloud,Media,Mid-Market,1759,64253000.0,EMEA,Amsterdam,2200.0,9700.0,3600.0,0.473
+A-11608,Acme Systems,Energy,SMB,47,9439000.0,NA-West,San Francisco,3900.0,1800.0,700.0,0.365
+A-11609,Wonka Analytics,Software,Mid-Market,635,466419000.0,NA-West,San Francisco,2600.0,8300.0,6000.0,0.821
+A-11610,Prestige Labs,Retail,Enterprise,12066,4926029000.0,NA-East,Atlanta,7300.0,16200.0,11300.0,0.88
+A-11611,Cogswell Cloud,Financial Services,SMB,31,12711000.0,NA-East,Boston,1600.0,2000.0,800.0,0.648
+A-11612,Cyberdyne Group,Media,Enterprise,7328,1496695000.0,APAC,Singapore,17700.0,21300.0,15500.0,0.465
+A-11613,Massive Analytics,Financial Services,Mid-Market,1252,195881000.0,NA-West,Seattle,2800.0,8500.0,2700.0,0.74
+A-11614,Prestige Labs,Telecom,SMB,96,13125000.0,APAC,Tokyo,1200.0,2000.0,1300.0,0.49
+A-11615,Contoso Technologies,Retail,Enterprise,44382,3889097000.0,EMEA,London,19900.0,28400.0,19200.0,0.668
+A-11616,Tyrell Holdings,Software,Mid-Market,1622,155692000.0,NA-East,Austin,8200.0,7000.0,2000.0,0.368
+A-11617,Dunder Cloud,Telecom,Mid-Market,993,354514000.0,NA-West,Denver,3000.0,3900.0,3200.0,0.097
+A-11618,Wonka Labs,Retail,Enterprise,33210,1615094000.0,EMEA,Berlin,17900.0,33000.0,11300.0,0.66
+A-11619,Umbra Solutions,Media,SMB,155,22637000.0,NA-East,Atlanta,2000.0,1100.0,600.0,0.133
+A-11620,Wonka Holdings,Financial Services,Mid-Market,1795,358554000.0,NA-West,Seattle,10600.0,5000.0,4200.0,0.261
+A-11621,Dunder Solutions,Education,SMB,34,45259000.0,NA-East,Chicago,3900.0,2300.0,600.0,0.326
+A-11622,Initech Networks,Logistics,SMB,56,28793000.0,APAC,Singapore,600.0,2800.0,800.0,0.423
+A-11623,Nakatomi Systems,Energy,Mid-Market,1358,205816000.0,NA-West,Denver,7900.0,6600.0,3800.0,0.298
+A-11624,Prestige Solutions,Logistics,Mid-Market,1303,449174000.0,NA-East,Atlanta,9400.0,9600.0,4600.0,0.63
+A-11625,Northwind Partners,Software,Mid-Market,1288,373472000.0,NA-West,San Francisco,4100.0,4500.0,3800.0,0.336
+A-11626,Initech Systems,Financial Services,Mid-Market,1799,423547000.0,NA-East,Atlanta,8700.0,7300.0,3200.0,0.266
+A-11627,Initech Holdings,Logistics,Mid-Market,1383,126077000.0,NA-West,Seattle,10000.0,5400.0,2000.0,0.274
+A-11628,Acme Holdings,Logistics,Enterprise,29136,13517506000.0,EMEA,Paris,8000.0,24900.0,14900.0,0.856
+A-11629,Tyrell Solutions,Healthcare,SMB,18,2134000.0,NA-East,Boston,800.0,3000.0,1900.0,0.663
+A-11630,Dunder Digital,Education,Mid-Market,777,131137000.0,NA-East,New York,6600.0,9800.0,5800.0,0.617
+A-11631,Nakatomi Group,Education,Mid-Market,911,202294000.0,NA-West,San Francisco,10200.0,7000.0,2400.0,0.149
+A-11632,Gekko Technologies,Healthcare,Mid-Market,1723,158233000.0,NA-East,Chicago,5500.0,5900.0,2900.0,0.118
+A-11633,Stark Systems,Healthcare,Enterprise,37013,4739600000.0,NA-East,Chicago,27900.0,32200.0,14300.0,0.722
+A-11634,Dunder Labs,Financial Services,SMB,163,21389000.0,APAC,Bangalore,700.0,3500.0,800.0,0.839
+A-11635,Vandelay Technologies,Retail,Mid-Market,1062,428774000.0,NA-East,New York,5900.0,10800.0,5500.0,0.602
+A-11636,Prestige Holdings,Energy,Mid-Market,1429,464240000.0,APAC,Bangalore,4300.0,6300.0,2200.0,0.525
+A-11637,Massive Labs,Healthcare,SMB,101,3825000.0,NA-East,New York,1500.0,3600.0,2300.0,0.826
+A-11638,Umbra Digital,Healthcare,Mid-Market,705,105835000.0,NA-West,Seattle,3900.0,3700.0,2300.0,0.104
+A-11639,Gekko Networks,Logistics,Enterprise,33496,16736300000.0,NA-West,Phoenix,21700.0,22100.0,15300.0,0.585
+A-11640,Wayne Technologies,Media,Mid-Market,1130,92714000.0,NA-East,Austin,8200.0,8100.0,3900.0,0.564
+A-11641,Tyrell Holdings,Financial Services,SMB,198,10806000.0,APAC,Sydney,600.0,3000.0,1500.0,0.385
+A-11642,Nakatomi Digital,Logistics,Mid-Market,327,308281000.0,APAC,Tokyo,10900.0,5700.0,3000.0,0.335
+A-11643,Initech Holdings,Software,Mid-Market,1099,241708000.0,NA-East,Austin,6900.0,12700.0,6600.0,0.882
+A-11644,Oscorp Systems,Software,Enterprise,16902,12240000000.0,NA-East,Boston,7000.0,24700.0,8700.0,0.373
+A-11645,Soylent Analytics,Education,Mid-Market,1850,296671000.0,NA-West,Seattle,10300.0,6600.0,3600.0,0.479
+A-11646,Globex Analytics,Retail,Enterprise,41939,17419103000.0,EMEA,Paris,36400.0,17800.0,16600.0,0.502
+A-11647,Hooli Industries,Retail,SMB,28,11188000.0,NA-West,Los Angeles,3200.0,2600.0,2100.0,0.916
+A-11648,Wayne Networks,Software,Mid-Market,1371,242892000.0,NA-West,Seattle,8600.0,5700.0,3600.0,0.276
+A-11649,Vandelay Industries,Financial Services,Mid-Market,953,278700000.0,EMEA,Amsterdam,2700.0,5800.0,3400.0,0.239
+A-11650,Sterling Partners,Software,Mid-Market,1471,131117000.0,APAC,Bangalore,3300.0,6800.0,5900.0,0.769
+A-11651,Tyrell Analytics,Manufacturing,Enterprise,10871,5076425000.0,NA-West,Seattle,15900.0,10700.0,9100.0,0.079
+A-11652,Hooli Group,Software,SMB,39,14696000.0,NA-West,Phoenix,3300.0,2400.0,1200.0,0.32
+A-11653,Tyrell Analytics,Financial Services,SMB,196,21410000.0,NA-West,Phoenix,1300.0,1100.0,1400.0,0.277
+A-11654,Northwind Industries,Retail,Mid-Market,1695,110406000.0,NA-East,New York,10400.0,4600.0,2300.0,0.321
+A-11655,Globex Systems,Manufacturing,SMB,70,16657000.0,NA-East,Austin,1300.0,2200.0,1600.0,0.32
+A-11656,Tyrell Networks,Healthcare,SMB,157,28923000.0,NA-East,Boston,1200.0,1500.0,1100.0,0.222
+A-11657,Stark Group,Retail,Mid-Market,1376,436398000.0,NA-West,Seattle,4900.0,11700.0,7000.0,0.848
+A-11658,Soylent Holdings,Retail,Mid-Market,575,216917000.0,NA-East,Austin,11400.0,10400.0,5400.0,0.81
+A-11659,Umbra Digital,Media,SMB,75,23039000.0,NA-West,Phoenix,1100.0,2100.0,1800.0,0.619
+A-11660,Wonka Networks,Retail,SMB,177,46137000.0,NA-West,Seattle,3400.0,1800.0,1200.0,0.253
+A-11661,Wayne Systems,Retail,SMB,97,40326000.0,NA-West,Denver,2200.0,3800.0,1800.0,0.831
+A-11662,Cogswell Cloud,Education,Enterprise,32962,13505759000.0,EMEA,Amsterdam,23100.0,26500.0,16100.0,0.401
+A-11663,Pied Piper Systems,Telecom,Mid-Market,1251,88252000.0,NA-East,Austin,4600.0,9800.0,7800.0,0.932
+A-11664,Tyrell Cloud,Media,Mid-Market,200,202418000.0,NA-West,San Francisco,7400.0,7700.0,3600.0,0.544
+A-11665,Sterling Holdings,Media,Mid-Market,1299,337848000.0,APAC,Sydney,6300.0,9000.0,3000.0,0.582
+A-11666,Soylent Solutions,Media,Mid-Market,759,111071000.0,NA-West,Seattle,9100.0,6000.0,3900.0,0.316
+A-11667,Initech Partners,Software,SMB,170,17191000.0,APAC,Seoul,3900.0,2800.0,1600.0,0.343
+A-11668,Gekko Labs,Telecom,SMB,154,13219000.0,NA-West,Seattle,2700.0,2300.0,2500.0,0.781
+A-11669,Cogswell Labs,Software,Mid-Market,1585,432569000.0,EMEA,Madrid,3400.0,8500.0,3300.0,0.653
+A-11670,Sterling Solutions,Energy,Mid-Market,830,219222000.0,NA-West,Seattle,6700.0,7800.0,2100.0,0.295
+A-11671,Pied Piper Networks,Retail,SMB,86,39263000.0,NA-West,Denver,1700.0,1300.0,700.0,0.162
+A-11672,Nakatomi Cloud,Software,SMB,95,11772000.0,NA-West,San Francisco,800.0,2500.0,1600.0,0.747
+A-11673,Cyberdyne Solutions,Logistics,Mid-Market,763,68513000.0,NA-West,Seattle,8100.0,6600.0,3600.0,0.693
+A-11674,Dunder Partners,Manufacturing,SMB,188,42126000.0,APAC,Seoul,2900.0,2600.0,1300.0,0.317
+A-11675,Soylent Solutions,Telecom,Enterprise,24355,11372667000.0,NA-West,Los Angeles,14800.0,13700.0,16900.0,0.622
+A-11676,Wayne Solutions,Manufacturing,Mid-Market,1373,143582000.0,NA-West,Denver,8200.0,6300.0,2500.0,0.57
+A-11677,Umbra Holdings,Retail,Enterprise,36672,7196403000.0,NA-West,San Francisco,23400.0,25200.0,20500.0,0.892
+A-11678,Tyrell Systems,Software,SMB,173,2804000.0,NA-West,Denver,2000.0,2900.0,2400.0,0.635
+A-11679,Tyrell Labs,Financial Services,SMB,124,38504000.0,NA-East,New York,2200.0,1900.0,700.0,0.087
+A-11680,Cyberdyne Technologies,Financial Services,Mid-Market,761,187886000.0,NA-West,Seattle,6500.0,5600.0,4100.0,0.221
+A-11681,Pied Piper Technologies,Logistics,SMB,178,35700000.0,NA-East,Chicago,400.0,2700.0,1400.0,0.639
+A-11682,Contoso Cloud,Manufacturing,Mid-Market,1444,51624000.0,NA-West,Denver,3800.0,8000.0,3000.0,0.48
+A-11683,Northwind Industries,Financial Services,SMB,51,5324000.0,NA-East,Atlanta,1700.0,3600.0,800.0,0.659
+A-11684,Stark Partners,Healthcare,Enterprise,2127,6882630000.0,NA-East,Chicago,14200.0,19300.0,9900.0,0.579
+A-11685,Sterling Technologies,Telecom,Enterprise,16884,17407750000.0,APAC,Singapore,22400.0,17900.0,11700.0,0.281
+A-11686,Globex Industries,Manufacturing,Mid-Market,1911,471049000.0,NA-West,Los Angeles,9800.0,7400.0,3500.0,0.559
+A-11687,Gekko Partners,Financial Services,Mid-Market,1850,487007000.0,NA-West,San Francisco,7500.0,8700.0,5700.0,0.586
+A-11688,Prestige Holdings,Financial Services,Mid-Market,1257,189972000.0,NA-West,Phoenix,9600.0,11600.0,3800.0,0.896
+A-11689,Contoso Partners,Healthcare,Mid-Market,385,323720000.0,NA-East,New York,5700.0,7600.0,6100.0,0.767
+A-11690,Globex Partners,Telecom,Mid-Market,358,162256000.0,EMEA,London,5300.0,7400.0,3100.0,0.804
+A-11691,Tyrell Industries,Education,Mid-Market,1188,348640000.0,NA-West,San Francisco,5100.0,7100.0,4700.0,0.341
+A-11692,Contoso Networks,Education,Mid-Market,376,232974000.0,NA-East,Chicago,8100.0,5300.0,4000.0,0.437
+A-11693,Tyrell Labs,Telecom,SMB,196,19646000.0,NA-West,Los Angeles,2600.0,2600.0,700.0,0.439
+A-11694,Tyrell Digital,Healthcare,Enterprise,9293,2132514000.0,EMEA,Amsterdam,33400.0,16800.0,15200.0,0.723
+A-11695,Vandelay Analytics,Retail,Mid-Market,1093,409834000.0,NA-East,Boston,9100.0,9900.0,2200.0,0.52
+A-11696,Umbra Group,Logistics,SMB,129,3409000.0,NA-West,Phoenix,1000.0,2700.0,900.0,0.266
+A-11697,Umbra Networks,Media,Enterprise,6241,7026204000.0,NA-West,Denver,36500.0,25100.0,20300.0,0.673
+A-11698,Cyberdyne Systems,Telecom,SMB,18,28068000.0,NA-West,Phoenix,900.0,4400.0,3100.0,0.966
+A-11699,Sterling Networks,Media,SMB,17,29399000.0,NA-West,San Francisco,1300.0,2200.0,2000.0,0.574
+A-11700,Tyrell Group,Manufacturing,Enterprise,26711,10096671000.0,NA-East,Austin,22800.0,23300.0,22100.0,0.872
+A-11701,Umbra Networks,Software,Mid-Market,1792,496531000.0,NA-East,Chicago,10000.0,6900.0,2400.0,0.474
+A-11702,Vandelay Digital,Software,SMB,49,6941000.0,NA-East,New York,3000.0,3000.0,1700.0,0.582
+A-11703,Stark Labs,Education,Mid-Market,1480,104916000.0,APAC,Seoul,6600.0,10200.0,4500.0,0.554
+A-11704,Tyrell Solutions,Manufacturing,Mid-Market,1351,419033000.0,NA-West,Seattle,5300.0,7900.0,4700.0,0.304
+A-11705,Gekko Cloud,Telecom,Mid-Market,1702,199278000.0,NA-East,Chicago,8900.0,8500.0,6000.0,0.646
+A-11706,Contoso Cloud,Logistics,Enterprise,45251,15322663000.0,EMEA,Berlin,8900.0,31400.0,14200.0,0.653
+A-11707,Tyrell Solutions,Telecom,Mid-Market,1350,276072000.0,NA-West,Los Angeles,8100.0,6100.0,3000.0,0.137
+A-11708,Umbra Labs,Manufacturing,Mid-Market,843,140300000.0,NA-West,Phoenix,11400.0,7000.0,2800.0,0.211
+A-11709,Hooli Labs,Financial Services,Mid-Market,1470,181010000.0,NA-West,Seattle,7300.0,6700.0,5100.0,0.556
+A-11710,Nakatomi Technologies,Retail,SMB,73,14143000.0,APAC,Singapore,1800.0,1500.0,1900.0,0.728
+A-11711,Northwind Networks,Manufacturing,SMB,76,25712000.0,NA-West,Seattle,1000.0,1800.0,2100.0,0.704
+A-11712,Gekko Partners,Logistics,SMB,160,11533000.0,NA-West,Los Angeles,3200.0,3400.0,900.0,0.557
+A-11713,Globex Analytics,Logistics,Mid-Market,1947,173567000.0,NA-East,Chicago,9900.0,8400.0,2200.0,0.519
+A-11714,Cogswell Solutions,Financial Services,Enterprise,46570,6862772000.0,NA-West,San Francisco,14500.0,18200.0,8700.0,0.306
+A-11715,Cyberdyne Analytics,Healthcare,SMB,104,3356000.0,NA-West,Phoenix,1500.0,2400.0,1500.0,0.222
+A-11716,Tyrell Solutions,Healthcare,Mid-Market,1645,213994000.0,APAC,Tokyo,2400.0,7700.0,6000.0,0.515
+A-11717,Aperture Industries,Media,SMB,114,5378000.0,EMEA,Berlin,900.0,3400.0,1900.0,0.652
+A-11718,Massive Systems,Energy,Enterprise,41846,2102629000.0,NA-West,Phoenix,32300.0,17800.0,10400.0,0.417
+A-11719,Hooli Partners,Financial Services,Mid-Market,1628,321807000.0,NA-East,New York,3700.0,6100.0,5000.0,0.572
+A-11720,Dunder Networks,Energy,Mid-Market,689,250224000.0,NA-West,Seattle,5500.0,7000.0,4100.0,0.406
+A-11721,Pied Piper Partners,Manufacturing,SMB,196,22164000.0,NA-East,New York,2000.0,2800.0,1900.0,0.608
+A-11722,Wonka Holdings,Media,Mid-Market,1268,259980000.0,NA-West,Denver,11900.0,6700.0,6000.0,0.602
+A-11723,Dunder Labs,Retail,SMB,141,24704000.0,NA-West,Seattle,900.0,2100.0,800.0,0.331
+A-11724,Stark Labs,Telecom,SMB,111,43901000.0,NA-East,Austin,1700.0,3500.0,1700.0,0.581
+A-11725,Dunder Cloud,Education,Mid-Market,1614,426504000.0,NA-East,Boston,6900.0,7200.0,4900.0,0.412
+A-11726,Pied Piper Labs,Manufacturing,Mid-Market,938,157251000.0,EMEA,Berlin,9400.0,7300.0,2400.0,0.275
+A-11727,Aperture Analytics,Financial Services,SMB,58,48975000.0,APAC,Tokyo,2800.0,2900.0,2200.0,0.488
+A-11728,Stark Industries,Telecom,Mid-Market,266,257666000.0,EMEA,Paris,3900.0,8600.0,4000.0,0.506
+A-11729,Northwind Technologies,Energy,SMB,118,32664000.0,NA-West,San Francisco,2400.0,3700.0,1800.0,0.869
+A-11730,Cogswell Industries,Education,Mid-Market,1658,156358000.0,NA-East,Austin,7500.0,8700.0,2300.0,0.394
+A-11731,Sterling Digital,Education,SMB,87,24963000.0,NA-East,Chicago,2000.0,3000.0,1800.0,0.45
+A-11732,Acme Labs,Retail,Enterprise,11098,12270220000.0,NA-East,Atlanta,36900.0,17300.0,10900.0,0.806
+A-11733,Aperture Labs,Retail,Mid-Market,1136,60056000.0,NA-East,Atlanta,9000.0,9700.0,4800.0,0.621
+A-11734,Wonka Digital,Healthcare,SMB,84,2234000.0,EMEA,London,900.0,1900.0,1600.0,0.494
+A-11735,Umbra Digital,Logistics,SMB,84,47010000.0,NA-West,Denver,700.0,2000.0,1300.0,0.181
+A-11736,Oscorp Solutions,Logistics,SMB,117,48944000.0,NA-East,Boston,3400.0,1800.0,2000.0,0.459
+A-11737,Wonka Analytics,Media,SMB,63,46302000.0,EMEA,Madrid,700.0,1700.0,800.0,0.397
+A-11738,Wayne Group,Software,Enterprise,11891,16597825000.0,EMEA,Amsterdam,27500.0,24000.0,7200.0,0.663
+A-11739,Nakatomi Labs,Retail,Enterprise,20336,3124292000.0,NA-East,Chicago,6000.0,25400.0,20400.0,0.714
+A-11740,Acme Holdings,Software,Enterprise,26391,17629769000.0,NA-East,Boston,18800.0,23400.0,18600.0,0.597
+A-11741,Umbra Cloud,Education,Mid-Market,871,267432000.0,APAC,Sydney,8500.0,6100.0,3800.0,0.492
+A-11742,Prestige Systems,Retail,SMB,29,20107000.0,NA-West,Denver,2400.0,2300.0,1500.0,0.54
+A-11743,Initech Networks,Education,Enterprise,5999,1221597000.0,EMEA,Paris,30100.0,23700.0,12000.0,0.537
+A-11744,Nakatomi Analytics,Software,SMB,53,7404000.0,NA-West,San Francisco,3300.0,2700.0,1300.0,0.259
+A-11745,Vandelay Technologies,Logistics,SMB,37,20172000.0,NA-East,Austin,3800.0,1800.0,1400.0,0.441
+A-11746,Acme Group,Healthcare,Mid-Market,403,307124000.0,NA-West,Seattle,11300.0,5300.0,2000.0,0.23
+A-11747,Wonka Digital,Manufacturing,Enterprise,38288,16637344000.0,NA-East,Chicago,11700.0,38100.0,12400.0,0.91
+A-11748,Vandelay Cloud,Media,SMB,33,43928000.0,NA-East,New York,3000.0,3900.0,1500.0,0.762
+A-11749,Oscorp Cloud,Energy,Mid-Market,1219,55370000.0,APAC,Sydney,4200.0,6600.0,5600.0,0.46
+A-11750,Tyrell Digital,Energy,SMB,182,44769000.0,EMEA,Madrid,1400.0,1100.0,700.0,0.532
+A-11751,Soylent Solutions,Telecom,Enterprise,28813,2748415000.0,APAC,Bangalore,24500.0,23900.0,10900.0,0.608
+A-11752,Oscorp Cloud,Energy,SMB,138,33747000.0,NA-East,Chicago,1200.0,2800.0,1600.0,0.296
+A-11753,Aperture Industries,Energy,Enterprise,45014,5648531000.0,EMEA,Paris,35400.0,20100.0,10800.0,0.235
+A-11754,Vandelay Labs,Logistics,Enterprise,6451,7216550000.0,NA-West,Phoenix,5700.0,33900.0,14400.0,0.777
+A-11755,Stark Solutions,Telecom,Mid-Market,1697,97334000.0,NA-West,Denver,2500.0,4400.0,2400.0,0.064
+A-11756,Gekko Networks,Energy,SMB,38,19983000.0,NA-East,Chicago,2400.0,2000.0,1400.0,0.512
+A-11757,Wonka Cloud,Telecom,Mid-Market,220,245243000.0,NA-West,San Francisco,9200.0,9100.0,4500.0,0.6
+A-11758,Aperture Solutions,Education,SMB,81,3003000.0,NA-West,Denver,2700.0,2300.0,1400.0,0.189
+A-11759,Aperture Labs,Financial Services,Mid-Market,299,247012000.0,EMEA,Madrid,4400.0,7200.0,3900.0,0.278
+A-11760,Contoso Partners,Manufacturing,Mid-Market,495,136667000.0,NA-West,Phoenix,11400.0,8100.0,3600.0,0.276
+A-11761,Acme Technologies,Education,Mid-Market,1972,166366000.0,EMEA,Paris,4300.0,10400.0,6400.0,0.711
+A-11762,Stark Labs,Healthcare,SMB,106,12880000.0,NA-West,Seattle,2900.0,2000.0,900.0,0.626
+A-11763,Soylent Labs,Financial Services,Enterprise,48168,12819148000.0,EMEA,Berlin,31800.0,17700.0,14200.0,0.32
+A-11764,Stark Group,Media,Mid-Market,799,63439000.0,NA-West,Los Angeles,7600.0,9700.0,7200.0,0.93
+A-11765,Umbra Group,Financial Services,SMB,57,4683000.0,NA-East,Austin,2100.0,1200.0,2000.0,0.638
+A-11766,Prestige Solutions,Education,SMB,109,24718000.0,NA-West,Seattle,3700.0,2200.0,1200.0,0.216
+A-11767,Initech Solutions,Education,Mid-Market,906,185188000.0,NA-West,San Francisco,6300.0,6800.0,4100.0,0.458
+A-11768,Nakatomi Partners,Media,Mid-Market,1432,117528000.0,EMEA,Amsterdam,2200.0,11700.0,4000.0,0.963
+A-11769,Gekko Solutions,Education,SMB,36,43380000.0,NA-East,New York,600.0,1300.0,900.0,0.257
+A-11770,Hooli Partners,Healthcare,SMB,166,12261000.0,NA-West,Denver,3000.0,2700.0,1600.0,0.548
+A-11771,Soylent Cloud,Logistics,Enterprise,12376,10930720000.0,NA-East,Atlanta,27500.0,27500.0,16400.0,0.878
+A-11772,Dunder Digital,Media,Mid-Market,1100,94875000.0,EMEA,Berlin,8300.0,8300.0,3500.0,0.644
+A-11773,Prestige Group,Logistics,Enterprise,36743,7380217000.0,NA-West,San Francisco,13300.0,17500.0,9500.0,0.778
+A-11774,Gekko Group,Education,SMB,182,17840000.0,APAC,Bangalore,3900.0,3200.0,1800.0,0.688
+A-11775,Aperture Industries,Energy,Mid-Market,744,436645000.0,NA-West,Seattle,11900.0,9000.0,6800.0,0.65
+A-11776,Globex Digital,Logistics,SMB,55,4434000.0,APAC,Tokyo,1400.0,2200.0,1400.0,0.693
+A-11777,Vandelay Analytics,Retail,Mid-Market,555,447504000.0,APAC,Bangalore,10600.0,9000.0,2900.0,0.451
+A-11778,Sterling Partners,Manufacturing,Mid-Market,1809,439947000.0,NA-East,Chicago,8500.0,5900.0,3100.0,0.344
+A-11779,Stark Solutions,Education,SMB,174,48089000.0,NA-East,Austin,2600.0,800.0,800.0,0.238
+A-11780,Contoso Technologies,Telecom,SMB,141,48481000.0,NA-East,New York,3400.0,2200.0,1200.0,0.642
+A-11781,Aperture Holdings,Financial Services,Enterprise,47322,2716153000.0,NA-West,Los Angeles,21100.0,13600.0,9800.0,0.479
+A-11782,Pied Piper Labs,Logistics,SMB,60,46002000.0,NA-West,San Francisco,3200.0,2800.0,1900.0,0.452
+A-11783,Tyrell Analytics,Telecom,Mid-Market,1840,266585000.0,NA-West,Phoenix,6800.0,7000.0,2700.0,0.319
+A-11784,Cogswell Holdings,Healthcare,SMB,124,1779000.0,APAC,Singapore,400.0,1700.0,500.0,0.302
+A-11785,Sterling Industries,Media,SMB,59,46979000.0,NA-West,Seattle,2900.0,2700.0,2600.0,0.826
+A-11786,Wonka Partners,Education,Mid-Market,604,138404000.0,NA-East,New York,11600.0,6100.0,4400.0,0.69
+A-11787,Sterling Industries,Healthcare,SMB,107,28339000.0,NA-East,New York,1100.0,2400.0,1400.0,0.24
+A-11788,Dunder Holdings,Software,Mid-Market,525,153501000.0,NA-West,Phoenix,5100.0,7500.0,3700.0,0.727
+A-11789,Northwind Industries,Financial Services,SMB,85,7150000.0,NA-West,Denver,3300.0,1000.0,900.0,0.409
+A-11790,Hooli Analytics,Software,Mid-Market,692,118541000.0,EMEA,Madrid,8500.0,8700.0,6300.0,0.701
+A-11791,Umbra Industries,Manufacturing,SMB,107,40820000.0,NA-West,Seattle,3800.0,2700.0,1700.0,0.385
+A-11792,Cogswell Holdings,Retail,SMB,126,13442000.0,NA-West,San Francisco,3100.0,3400.0,1300.0,0.597
+A-11793,Soylent Group,Logistics,Enterprise,32326,3063488000.0,NA-East,Chicago,14700.0,22600.0,8200.0,0.232
+A-11794,Tyrell Holdings,Media,Mid-Market,436,443300000.0,EMEA,Madrid,2000.0,5000.0,3900.0,0.174
+A-11795,Pied Piper Technologies,Education,Mid-Market,1001,444769000.0,NA-West,San Francisco,5100.0,6400.0,2800.0,0.316
+A-11796,Stark Technologies,Financial Services,SMB,171,36901000.0,NA-East,Chicago,2500.0,1000.0,600.0,0.417
+A-11797,Initech Technologies,Manufacturing,Mid-Market,1198,101247000.0,NA-East,Austin,11700.0,11600.0,4300.0,0.713
+A-11798,Pied Piper Systems,Education,Mid-Market,887,496967000.0,NA-East,Atlanta,9600.0,6500.0,4600.0,0.27
+A-11799,Initech Analytics,Retail,Mid-Market,1005,334523000.0,NA-West,Denver,6600.0,8600.0,5900.0,0.495
+A-11800,Gekko Networks,Education,Mid-Market,1331,306362000.0,NA-West,Denver,3000.0,6900.0,3700.0,0.49
+A-11801,Gekko Cloud,Telecom,Mid-Market,1008,80770000.0,APAC,Seoul,7600.0,10000.0,3700.0,0.539
+A-11802,Vandelay Partners,Manufacturing,SMB,185,5381000.0,EMEA,London,500.0,3700.0,2500.0,0.83
+A-11803,Nakatomi Solutions,Manufacturing,Mid-Market,233,140028000.0,NA-East,Austin,5800.0,4600.0,2600.0,0.174
+A-11804,Initech Group,Retail,SMB,136,7786000.0,NA-East,Austin,1700.0,2800.0,1200.0,0.877
+A-11805,Northwind Analytics,Education,SMB,121,27978000.0,NA-West,San Francisco,1100.0,2600.0,2200.0,0.707
+A-11806,Stark Holdings,Logistics,SMB,51,33891000.0,NA-East,Chicago,400.0,2100.0,700.0,0.598
+A-11807,Hooli Labs,Energy,Mid-Market,1984,304877000.0,NA-West,Seattle,8400.0,4900.0,3400.0,0.074
+A-11808,Contoso Group,Media,Mid-Market,479,400095000.0,NA-West,Denver,8300.0,5700.0,3600.0,0.188
+A-11809,Initech Group,Media,Enterprise,5783,7694770000.0,NA-West,Los Angeles,24700.0,20100.0,11800.0,0.168
+A-11810,Contoso Holdings,Education,Enterprise,8100,10780486000.0,NA-West,Phoenix,15300.0,26700.0,9500.0,0.783
+A-11811,Wayne Digital,Retail,Mid-Market,744,119882000.0,NA-East,New York,3400.0,6800.0,4400.0,0.735
+A-11812,Wonka Systems,Manufacturing,SMB,189,42042000.0,NA-West,Phoenix,3500.0,1700.0,800.0,0.619
+A-11813,Soylent Analytics,Education,SMB,87,19779000.0,NA-West,Los Angeles,400.0,1500.0,700.0,0.381
+A-11814,Cyberdyne Analytics,Education,Mid-Market,457,186698000.0,EMEA,London,6900.0,7700.0,4600.0,0.441
+A-11815,Gekko Labs,Financial Services,Mid-Market,1898,499739000.0,NA-East,Boston,7600.0,5700.0,5300.0,0.553
+A-11816,Aperture Systems,Logistics,Enterprise,19335,526590000.0,NA-West,Seattle,31100.0,26300.0,10900.0,0.618
+A-11817,Initech Partners,Media,SMB,154,20097000.0,EMEA,Madrid,1500.0,1200.0,500.0,0.274
+A-11818,Soylent Holdings,Energy,Enterprise,14745,12555619000.0,EMEA,Madrid,25300.0,17700.0,7800.0,0.344
+A-11819,Massive Partners,Financial Services,SMB,45,31874000.0,NA-East,New York,3900.0,1900.0,2100.0,0.497
+A-11820,Globex Analytics,Software,Enterprise,5898,19930790000.0,EMEA,London,26100.0,24100.0,8600.0,0.3
+A-11821,Stark Digital,Telecom,Mid-Market,1034,185141000.0,NA-West,San Francisco,7600.0,6000.0,3800.0,0.719
+A-11822,Initech Systems,Software,SMB,185,23344000.0,NA-East,Austin,2000.0,3300.0,1000.0,0.543
+A-11823,Initech Labs,Financial Services,SMB,94,29113000.0,NA-East,Boston,3100.0,2900.0,1200.0,0.386
+A-11824,Wonka Industries,Education,SMB,90,14686000.0,APAC,Tokyo,1200.0,1500.0,2900.0,0.831
+A-11825,Acme Holdings,Manufacturing,SMB,78,45437000.0,NA-East,Austin,3500.0,1600.0,2400.0,0.821
+A-11826,Cogswell Networks,Energy,SMB,133,23362000.0,NA-West,Phoenix,700.0,3000.0,1900.0,0.603
+A-11827,Vandelay Cloud,Logistics,Mid-Market,1680,430609000.0,APAC,Tokyo,5800.0,10900.0,3500.0,0.84
+A-11828,Globex Holdings,Retail,Mid-Market,1237,405964000.0,NA-East,Austin,10900.0,5900.0,1900.0,0.138
+A-11829,Umbra Labs,Financial Services,Mid-Market,899,202551000.0,NA-East,Chicago,5900.0,10700.0,4700.0,0.719
+A-11830,Initech Partners,Media,SMB,78,1240000.0,NA-East,Boston,3500.0,2800.0,1400.0,0.544
+A-11831,Oscorp Group,Media,Mid-Market,779,321952000.0,NA-West,Los Angeles,10500.0,8500.0,7400.0,0.772
+A-11832,Globex Technologies,Financial Services,Enterprise,42612,9463626000.0,NA-West,Los Angeles,24700.0,11800.0,8300.0,0.34
+A-11833,Vandelay Digital,Retail,SMB,136,19398000.0,APAC,Seoul,2400.0,3200.0,1200.0,0.985
+A-11834,Dunder Solutions,Manufacturing,Enterprise,32150,8547493000.0,NA-East,Austin,36500.0,18800.0,8700.0,0.657
+A-11835,Globex Digital,Telecom,Mid-Market,1679,104704000.0,NA-West,Denver,5800.0,4200.0,2500.0,0.173
+A-11836,Wayne Analytics,Education,Mid-Market,1263,236222000.0,NA-East,Boston,6600.0,5400.0,3400.0,0.34
+A-11837,Wayne Group,Logistics,Mid-Market,468,449092000.0,EMEA,Paris,10100.0,7100.0,3200.0,0.69
+A-11838,Contoso Group,Media,SMB,45,31130000.0,APAC,Singapore,3100.0,2900.0,1400.0,0.452
+A-11839,Initech Labs,Retail,Mid-Market,1609,150153000.0,NA-East,Atlanta,2500.0,7100.0,2400.0,0.495
+A-11840,Dunder Analytics,Software,Mid-Market,1587,459431000.0,NA-East,Austin,9000.0,4500.0,2100.0,0.111
+A-11841,Cogswell Systems,Manufacturing,Enterprise,8996,6818017000.0,NA-East,Chicago,15400.0,32100.0,14500.0,0.851
+A-11842,Aperture Networks,Manufacturing,Mid-Market,1282,211551000.0,NA-West,Phoenix,6900.0,6400.0,2500.0,0.344
+A-11843,Globex Solutions,Manufacturing,Mid-Market,1977,483429000.0,EMEA,London,6600.0,7700.0,3000.0,0.763
+A-11844,Contoso Holdings,Manufacturing,Mid-Market,255,56486000.0,NA-East,Boston,2400.0,12300.0,4200.0,0.833
+A-11845,Aperture Holdings,Healthcare,Mid-Market,1638,67692000.0,NA-West,Phoenix,6700.0,10200.0,3300.0,0.805
+A-11846,Wonka Group,Healthcare,SMB,10,7553000.0,NA-East,New York,500.0,2100.0,700.0,0.191
+A-11847,Vandelay Analytics,Telecom,Mid-Market,787,120655000.0,NA-West,Seattle,9300.0,6000.0,2500.0,0.183
+A-11848,Hooli Cloud,Healthcare,Mid-Market,431,444701000.0,NA-West,San Francisco,4100.0,6700.0,3800.0,0.29
+A-11849,Pied Piper Partners,Manufacturing,Enterprise,49796,6952434000.0,NA-West,San Francisco,12200.0,33300.0,21000.0,0.982
+A-11850,Soylent Labs,Telecom,Enterprise,42331,15798913000.0,NA-East,Austin,26400.0,32600.0,17800.0,0.724
+A-11851,Acme Technologies,Financial Services,SMB,92,13931000.0,NA-East,Atlanta,2000.0,3800.0,900.0,0.747
+A-11852,Stark Group,Education,Enterprise,47377,16687643000.0,NA-East,Atlanta,10900.0,32300.0,17200.0,0.944
+A-11853,Vandelay Labs,Media,Enterprise,42149,14312792000.0,NA-West,San Francisco,18000.0,15600.0,17100.0,0.668
+A-11854,Hooli Cloud,Software,SMB,191,42691000.0,NA-East,Boston,1400.0,1900.0,1300.0,0.619
+A-11855,Wayne Group,Media,SMB,70,34605000.0,NA-West,Seattle,3400.0,1400.0,900.0,0.598
+A-11856,Soylent Systems,Retail,Mid-Market,1835,211435000.0,NA-East,Austin,11000.0,7400.0,5200.0,0.693
+A-11857,Umbra Group,Education,SMB,198,11789000.0,NA-East,Austin,3800.0,3100.0,1100.0,0.523
+A-11858,Nakatomi Networks,Education,Mid-Market,1968,89718000.0,NA-East,Atlanta,8800.0,6700.0,3100.0,0.448
+A-11859,Hooli Industries,Financial Services,SMB,26,20064000.0,APAC,Seoul,2300.0,2500.0,900.0,0.201
+A-11860,Contoso Group,Financial Services,SMB,157,10869000.0,EMEA,Amsterdam,2900.0,4100.0,2300.0,0.882
+A-11861,Oscorp Networks,Manufacturing,Mid-Market,212,494775000.0,NA-West,San Francisco,7000.0,10100.0,7200.0,0.801
+A-11862,Massive Group,Energy,Mid-Market,389,457863000.0,NA-West,San Francisco,5300.0,8100.0,6200.0,0.613
+A-11863,Umbra Digital,Media,Mid-Market,1520,483456000.0,NA-West,Los Angeles,7600.0,6400.0,3900.0,0.2
+A-11864,Northwind Cloud,Education,Mid-Market,215,51833000.0,NA-West,San Francisco,4400.0,6500.0,4100.0,0.352
+A-11865,Pied Piper Analytics,Retail,Mid-Market,1765,189368000.0,NA-East,Austin,3100.0,7200.0,4400.0,0.653
+A-11866,Aperture Industries,Education,SMB,30,20159000.0,NA-East,Austin,3800.0,2100.0,900.0,0.295
+A-11867,Oscorp Technologies,Media,SMB,106,16397000.0,NA-West,Phoenix,2200.0,1800.0,1300.0,0.333
+A-11868,Vandelay Partners,Software,Mid-Market,1079,479860000.0,NA-East,Atlanta,4100.0,7200.0,5500.0,0.422
+A-11869,Vandelay Industries,Software,SMB,131,1128000.0,NA-East,New York,2200.0,3600.0,2100.0,0.712
+A-11870,Oscorp Networks,Education,Mid-Market,812,479271000.0,NA-East,Boston,5300.0,5200.0,2200.0,0.302
+A-11871,Contoso Solutions,Manufacturing,SMB,69,33878000.0,NA-East,Boston,1500.0,2700.0,1000.0,0.425
+A-11872,Globex Partners,Telecom,Enterprise,40026,6929915000.0,NA-East,Boston,6200.0,17200.0,12500.0,0.561
+A-11873,Hooli Industries,Education,Mid-Market,693,261548000.0,NA-West,Seattle,5900.0,6900.0,7000.0,0.693
+A-11874,Acme Technologies,Media,SMB,15,37012000.0,NA-West,Phoenix,700.0,2400.0,2100.0,0.663
+A-11875,Sterling Industries,Manufacturing,Enterprise,34217,18767793000.0,EMEA,Amsterdam,18000.0,17500.0,11200.0,0.511
+A-11876,Nakatomi Digital,Education,Mid-Market,1643,190226000.0,APAC,Seoul,9900.0,6900.0,3800.0,0.454
+A-11877,Oscorp Technologies,Healthcare,Mid-Market,1906,240840000.0,NA-West,Denver,11300.0,11600.0,4200.0,0.921
+A-11878,Massive Systems,Telecom,Enterprise,32879,18362155000.0,APAC,Singapore,5800.0,10700.0,6000.0,0.33
+A-11879,Contoso Labs,Telecom,SMB,44,4620000.0,APAC,Sydney,2700.0,2300.0,1600.0,0.659
+A-11880,Pied Piper Networks,Healthcare,SMB,31,42655000.0,EMEA,Paris,1100.0,1200.0,1700.0,0.321
+A-11881,Aperture Systems,Media,Mid-Market,714,301847000.0,NA-West,Denver,6900.0,7400.0,3200.0,0.528
+A-11882,Sterling Cloud,Software,Mid-Market,1927,491383000.0,EMEA,Paris,3700.0,7800.0,6700.0,0.941
+A-11883,Nakatomi Technologies,Software,SMB,170,21431000.0,NA-East,Atlanta,2900.0,1300.0,1900.0,0.428
+A-11884,Vandelay Solutions,Logistics,Enterprise,24357,5386864000.0,NA-East,Atlanta,22300.0,19900.0,11500.0,0.616
+A-11885,Northwind Technologies,Financial Services,SMB,37,31126000.0,NA-West,Denver,2200.0,1300.0,700.0,0.029
+A-11886,Cyberdyne Analytics,Financial Services,Mid-Market,1473,390150000.0,APAC,Seoul,4600.0,9100.0,7500.0,0.751
+A-11887,Vandelay Labs,Telecom,Mid-Market,880,499756000.0,NA-West,Los Angeles,11700.0,7600.0,4500.0,0.607
+A-11888,Hooli Group,Logistics,Mid-Market,1432,157200000.0,NA-West,San Francisco,5700.0,5600.0,4800.0,0.452
+A-11889,Sterling Labs,Energy,SMB,10,26207000.0,NA-West,Denver,3000.0,1100.0,1300.0,0.528
+A-11890,Stark Systems,Retail,Mid-Market,606,241092000.0,EMEA,London,7500.0,9300.0,3700.0,0.44
+A-11891,Oscorp Systems,Software,Mid-Market,1417,72948000.0,NA-East,Chicago,3100.0,4800.0,1900.0,0.374
+A-11892,Dunder Networks,Healthcare,Mid-Market,258,55380000.0,NA-West,Los Angeles,8700.0,9100.0,2700.0,0.425
+A-11893,Soylent Networks,Telecom,Mid-Market,778,440181000.0,EMEA,Berlin,11900.0,8400.0,2900.0,0.382
+A-11894,Contoso Systems,Retail,SMB,25,14926000.0,NA-West,Los Angeles,1600.0,2400.0,1400.0,0.311
+A-11895,Cyberdyne Cloud,Education,SMB,156,34650000.0,NA-East,New York,2000.0,1900.0,1200.0,0.411
+A-11896,Northwind Industries,Logistics,Mid-Market,736,375614000.0,NA-East,Chicago,7200.0,6400.0,3700.0,0.35
+A-11897,Acme Networks,Education,Enterprise,29722,9016229000.0,NA-West,Phoenix,11400.0,17700.0,7900.0,0.359
+A-11898,Sterling Labs,Logistics,Mid-Market,650,354843000.0,NA-West,Los Angeles,11000.0,9800.0,4200.0,0.53
+A-11899,Dunder Holdings,Software,Mid-Market,1673,254282000.0,NA-East,Atlanta,8900.0,10000.0,3300.0,0.841
+A-11900,Acme Industries,Media,SMB,66,41485000.0,NA-East,Austin,3300.0,1500.0,1200.0,0.084
+A-11901,Prestige Partners,Energy,Mid-Market,749,52214000.0,EMEA,Madrid,3700.0,5800.0,2700.0,0.112
+A-11902,Hooli Technologies,Financial Services,Mid-Market,1024,274566000.0,NA-East,New York,7400.0,10000.0,3100.0,0.642
+A-11903,Gekko Digital,Education,SMB,96,49664000.0,NA-West,Los Angeles,2200.0,3300.0,1800.0,0.614
+A-11904,Initech Networks,Healthcare,SMB,147,29481000.0,NA-West,Seattle,2900.0,1100.0,1000.0,0.426
+A-11905,Sterling Networks,Manufacturing,Mid-Market,652,453116000.0,APAC,Sydney,7200.0,7500.0,6900.0,0.649
+A-11906,Dunder Industries,Telecom,Enterprise,7703,17798194000.0,NA-West,Seattle,39300.0,17000.0,15400.0,0.552
+A-11907,Acme Analytics,Telecom,Mid-Market,803,163545000.0,EMEA,Paris,2300.0,11900.0,6600.0,0.763
+A-11908,Aperture Analytics,Healthcare,Mid-Market,1655,461116000.0,NA-West,Denver,9200.0,4400.0,1400.0,0.142
+A-11909,Globex Labs,Healthcare,SMB,128,11276000.0,NA-West,Denver,2900.0,2100.0,1100.0,0.693
+A-11910,Gekko Industries,Logistics,Mid-Market,922,154241000.0,EMEA,Amsterdam,6300.0,11100.0,4200.0,0.729
+A-11911,Gekko Cloud,Logistics,SMB,82,29616000.0,NA-West,Phoenix,3700.0,4200.0,2800.0,0.871
+A-11912,Contoso Cloud,Logistics,Mid-Market,1982,252053000.0,APAC,Tokyo,2400.0,5300.0,3500.0,0.376
+A-11913,Acme Holdings,Telecom,Enterprise,47342,10697609000.0,NA-West,Los Angeles,39300.0,14800.0,7300.0,0.423
+A-11914,Soylent Group,Software,Enterprise,26279,18298985000.0,NA-East,Chicago,20700.0,22700.0,8000.0,0.756
+A-11915,Pied Piper Cloud,Media,Mid-Market,1064,203955000.0,NA-West,San Francisco,6300.0,6900.0,4300.0,0.234
+A-11916,Sterling Networks,Energy,Enterprise,12479,18859607000.0,NA-East,Chicago,32200.0,20500.0,16900.0,0.869
+A-11917,Wayne Industries,Media,Mid-Market,722,234745000.0,NA-East,Boston,8000.0,8900.0,5900.0,0.507
+A-11918,Globex Industries,Education,SMB,90,39433000.0,NA-East,Austin,1400.0,2600.0,1900.0,0.785
+A-11919,Hooli Cloud,Telecom,SMB,104,12185000.0,NA-East,Austin,1000.0,2200.0,2400.0,0.916
+A-11920,Dunder Technologies,Healthcare,Enterprise,13479,12491723000.0,EMEA,Paris,37900.0,23500.0,6100.0,0.454
+A-11921,Sterling Systems,Manufacturing,Mid-Market,1747,160223000.0,NA-East,Atlanta,7100.0,4100.0,1400.0,0.092
+A-11922,Massive Systems,Media,SMB,179,27858000.0,NA-West,Phoenix,4000.0,1700.0,1400.0,0.572
+A-11923,Acme Group,Energy,Enterprise,25568,10474129000.0,NA-East,New York,21100.0,14900.0,10300.0,0.446
+A-11924,Wonka Solutions,Media,SMB,117,30969000.0,APAC,Tokyo,1700.0,2700.0,2300.0,0.638
+A-11925,Stark Labs,Logistics,Mid-Market,603,205238000.0,EMEA,Berlin,3600.0,11700.0,7700.0,0.815
+A-11926,Globex Technologies,Media,Mid-Market,373,80195000.0,NA-East,Atlanta,8300.0,5400.0,3300.0,0.149
+A-11927,Dunder Group,Energy,Enterprise,32272,15418167000.0,NA-West,Seattle,35900.0,17000.0,17100.0,0.603
+A-11928,Cogswell Labs,Healthcare,Mid-Market,1528,178031000.0,NA-West,Phoenix,11900.0,8100.0,2800.0,0.451
+A-11929,Hooli Labs,Healthcare,Enterprise,40266,2226668000.0,NA-East,Austin,24300.0,25700.0,6100.0,0.472
+A-11930,Nakatomi Networks,Retail,Enterprise,6249,16109306000.0,NA-East,Boston,27900.0,11200.0,14800.0,0.368
+A-11931,Stark Cloud,Manufacturing,SMB,59,25615000.0,NA-West,Denver,1700.0,1800.0,500.0,0.048
+A-11932,Stark Group,Financial Services,Enterprise,38864,3439378000.0,NA-West,Phoenix,32100.0,13400.0,11700.0,0.483
+A-11933,Contoso Networks,Logistics,Mid-Market,1911,72833000.0,EMEA,Paris,7500.0,12000.0,5800.0,0.864
+A-11934,Oscorp Networks,Software,Mid-Market,1123,81547000.0,NA-West,Denver,4200.0,10400.0,2900.0,0.681
+A-11935,Northwind Partners,Financial Services,Mid-Market,1840,88284000.0,APAC,Singapore,10600.0,8200.0,3100.0,0.35
+A-11936,Acme Labs,Manufacturing,Mid-Market,1499,401775000.0,NA-East,Austin,2200.0,4900.0,2300.0,0.208
+A-11937,Sterling Group,Media,SMB,144,32998000.0,NA-West,Seattle,900.0,3000.0,1500.0,0.616
+A-11938,Dunder Cloud,Software,Enterprise,17141,17831850000.0,NA-West,Los Angeles,31400.0,10800.0,13100.0,0.24
+A-11939,Aperture Systems,Software,SMB,75,30769000.0,APAC,Singapore,1800.0,1300.0,1500.0,0.721
+A-11940,Gekko Systems,Software,Mid-Market,1243,439992000.0,EMEA,Madrid,2700.0,5400.0,4500.0,0.462
+A-11941,Stark Cloud,Logistics,SMB,141,28051000.0,NA-East,Boston,2600.0,1800.0,1000.0,0.218
+A-11942,Umbra Analytics,Media,SMB,114,17546000.0,NA-West,Seattle,1300.0,3300.0,2000.0,0.531
+A-11943,Stark Digital,Healthcare,Mid-Market,1600,155843000.0,EMEA,Paris,7000.0,5200.0,2900.0,0.526
+A-11944,Gekko Partners,Telecom,Mid-Market,957,409803000.0,NA-West,Denver,7200.0,8500.0,4700.0,0.758
+A-11945,Oscorp Solutions,Energy,SMB,85,6970000.0,APAC,Tokyo,1600.0,1500.0,1500.0,0.26
+A-11946,Stark Cloud,Manufacturing,Mid-Market,1465,451235000.0,NA-East,New York,2700.0,5700.0,2400.0,0.459
+A-11947,Cyberdyne Cloud,Software,Mid-Market,1608,203763000.0,NA-West,Seattle,9100.0,6000.0,5000.0,0.632
+A-11948,Soylent Solutions,Energy,Mid-Market,361,170113000.0,APAC,Tokyo,2300.0,7200.0,4000.0,0.177
+A-11949,Acme Labs,Financial Services,Mid-Market,1281,236148000.0,EMEA,Berlin,11800.0,8000.0,2400.0,0.659
+A-11950,Aperture Cloud,Manufacturing,Enterprise,20747,10842351000.0,EMEA,Paris,23700.0,22600.0,13800.0,0.438
+A-11951,Sterling Networks,Education,SMB,26,34465000.0,EMEA,Amsterdam,3700.0,2300.0,900.0,0.423
+A-11952,Hooli Digital,Retail,Enterprise,28974,4181979000.0,NA-West,Los Angeles,31100.0,28000.0,6800.0,0.599
+A-11953,Sterling Labs,Retail,Mid-Market,1660,317263000.0,NA-East,New York,5600.0,9400.0,4800.0,0.621
+A-11954,Sterling Cloud,Media,Mid-Market,1720,108694000.0,NA-East,Chicago,5400.0,7500.0,3200.0,0.319
+A-11955,Aperture Holdings,Retail,Mid-Market,750,310981000.0,APAC,Sydney,9800.0,6500.0,1600.0,0.198
+A-11956,Tyrell Partners,Logistics,SMB,125,36203000.0,NA-West,Los Angeles,2800.0,1700.0,1300.0,0.176
+A-11957,Cyberdyne Labs,Manufacturing,SMB,17,14259000.0,NA-West,San Francisco,4000.0,2200.0,1000.0,0.361
+A-11958,Sterling Industries,Healthcare,SMB,159,44463000.0,NA-East,Austin,3600.0,2500.0,800.0,0.26
+A-11959,Prestige Labs,Manufacturing,Mid-Market,286,112334000.0,NA-West,Los Angeles,10900.0,8100.0,4200.0,0.474
+A-11960,Gekko Solutions,Software,Mid-Market,1415,284783000.0,NA-East,Chicago,7900.0,6600.0,4200.0,0.208
+A-11961,Hooli Partners,Telecom,Enterprise,36203,2093655000.0,NA-East,New York,8600.0,16100.0,21600.0,0.758
+A-11962,Dunder Digital,Logistics,Mid-Market,1744,394427000.0,NA-East,New York,11700.0,7400.0,5800.0,0.493
+A-11963,Pied Piper Group,Media,Enterprise,13628,7019519000.0,NA-East,Chicago,8300.0,26300.0,20600.0,0.74
+A-11964,Northwind Networks,Telecom,Enterprise,33960,8532727000.0,NA-East,Austin,5700.0,26700.0,24100.0,0.864
+A-11965,Cyberdyne Analytics,Logistics,Mid-Market,440,98788000.0,NA-West,Los Angeles,9200.0,7200.0,3600.0,0.487
+A-11966,Nakatomi Digital,Software,SMB,110,26094000.0,NA-West,Denver,3000.0,1300.0,1000.0,0.052
+A-11967,Gekko Holdings,Retail,SMB,105,30100000.0,NA-East,Chicago,2800.0,2600.0,1500.0,0.459
+A-11968,Hooli Industries,Telecom,SMB,70,7528000.0,NA-East,Atlanta,2000.0,2300.0,1100.0,0.576
+A-11969,Acme Systems,Manufacturing,Mid-Market,753,394121000.0,NA-West,Phoenix,9500.0,7700.0,4500.0,0.536
+A-11970,Hooli Industries,Healthcare,Enterprise,47745,7738732000.0,NA-East,Boston,20500.0,29700.0,11900.0,0.616
+A-11971,Gekko Industries,Healthcare,Mid-Market,1365,172293000.0,NA-East,New York,6000.0,6200.0,2400.0,0.512
+A-11972,Wonka Holdings,Telecom,Mid-Market,1501,395181000.0,NA-West,Seattle,8000.0,9600.0,2200.0,0.462
+A-11973,Gekko Holdings,Energy,Mid-Market,451,403935000.0,NA-West,Denver,10500.0,7300.0,4000.0,0.6
+A-11974,Cogswell Cloud,Software,Mid-Market,212,361817000.0,NA-East,Boston,5100.0,7200.0,4700.0,0.704
+A-11975,Initech Analytics,Logistics,SMB,178,26217000.0,NA-West,San Francisco,2300.0,3000.0,900.0,0.45
+A-11976,Sterling Analytics,Media,Mid-Market,1554,359187000.0,NA-East,New York,3100.0,8900.0,5700.0,0.803
+A-11977,Stark Partners,Healthcare,SMB,28,24984000.0,NA-East,Chicago,2900.0,1800.0,1600.0,0.433
+A-11978,Massive Technologies,Logistics,SMB,110,31220000.0,NA-East,Boston,1300.0,3300.0,1100.0,0.652
+A-11979,Dunder Analytics,Logistics,SMB,173,34208000.0,NA-East,Austin,600.0,3000.0,2000.0,0.753
+A-11980,Globex Analytics,Software,Mid-Market,429,55257000.0,NA-West,San Francisco,6400.0,9900.0,5200.0,0.507
+A-11981,Tyrell Solutions,Financial Services,SMB,175,41613000.0,NA-East,Austin,2400.0,2000.0,1400.0,0.84
+A-11982,Stark Group,Energy,Mid-Market,886,118717000.0,NA-West,Phoenix,5300.0,7700.0,4400.0,0.823
+A-11983,Vandelay Digital,Education,Mid-Market,826,404544000.0,NA-East,Chicago,4900.0,8200.0,2600.0,0.322
+A-11984,Globex Systems,Healthcare,Mid-Market,1525,475209000.0,EMEA,Berlin,11400.0,4400.0,4000.0,0.302
+A-11985,Gekko Solutions,Retail,Mid-Market,1215,319275000.0,NA-West,Los Angeles,2700.0,8200.0,2200.0,0.298
+A-11986,Cogswell Systems,Energy,SMB,49,43084000.0,NA-West,San Francisco,900.0,2800.0,2500.0,0.944
+A-11987,Massive Industries,Retail,Mid-Market,364,496274000.0,APAC,Bangalore,9900.0,9200.0,4600.0,0.633
+A-11988,Wonka Solutions,Manufacturing,SMB,145,21505000.0,NA-East,New York,3900.0,2300.0,600.0,0.461
+A-11989,Sterling Industries,Healthcare,SMB,105,29057000.0,NA-West,Denver,2700.0,2800.0,1900.0,0.521
+A-11990,Gekko Holdings,Energy,Mid-Market,692,416880000.0,NA-West,San Francisco,5500.0,8000.0,5300.0,0.56
+A-11991,Gekko Networks,Education,Mid-Market,1691,225471000.0,NA-East,Atlanta,5900.0,5800.0,3300.0,0.629
+A-11992,Cyberdyne Systems,Manufacturing,Mid-Market,1107,78574000.0,NA-East,Atlanta,7200.0,10700.0,5800.0,0.722
+A-11993,Nakatomi Technologies,Retail,Enterprise,23182,9461339000.0,NA-West,Seattle,30700.0,22500.0,6700.0,0.496
+A-11994,Oscorp Analytics,Telecom,Mid-Market,1457,490565000.0,NA-East,New York,7500.0,11800.0,3600.0,0.731
+A-11995,Massive Holdings,Manufacturing,Mid-Market,590,108960000.0,NA-East,New York,7400.0,8600.0,4500.0,0.891
+A-11996,Oscorp Industries,Energy,SMB,46,26414000.0,NA-East,New York,700.0,2400.0,500.0,0.307
+A-11997,Pied Piper Labs,Education,SMB,66,28842000.0,NA-West,Los Angeles,2400.0,2700.0,1500.0,0.717
+A-11998,Soylent Networks,Telecom,Enterprise,27548,2088936000.0,NA-East,Atlanta,20200.0,22800.0,12900.0,0.321
+A-11999,Prestige Cloud,Media,SMB,13,46002000.0,NA-West,San Francisco,2900.0,2900.0,1700.0,0.456
+A-12000,Umbra Systems,Education,Mid-Market,1768,436822000.0,NA-West,Phoenix,10100.0,9000.0,3100.0,0.674
+A-12001,Hooli Digital,Software,Enterprise,20655,2571228000.0,NA-West,Los Angeles,29200.0,20000.0,15600.0,0.568
+A-12002,Oscorp Industries,Financial Services,SMB,91,25029000.0,APAC,Bangalore,600.0,3300.0,2300.0,0.553
+A-12003,Dunder Networks,Education,Enterprise,46455,4315508000.0,NA-East,New York,11400.0,17300.0,9600.0,0.122
+A-12004,Dunder Cloud,Logistics,Mid-Market,1462,498399000.0,EMEA,Amsterdam,10200.0,6600.0,3700.0,0.482
+A-12005,Wonka Group,Financial Services,SMB,22,37972000.0,EMEA,Madrid,3400.0,3700.0,1300.0,0.631
+A-12006,Hooli Cloud,Telecom,SMB,169,43946000.0,NA-West,San Francisco,2900.0,2800.0,800.0,0.736
+A-12007,Hooli Networks,Media,SMB,15,20793000.0,NA-East,New York,2500.0,1700.0,900.0,0.324
+A-12008,Prestige Holdings,Education,SMB,131,45813000.0,NA-East,Austin,1600.0,1200.0,800.0,0.084
+A-12009,Wonka Solutions,Energy,SMB,182,9778000.0,NA-East,Boston,3400.0,2900.0,1300.0,0.675
+A-12010,Initech Technologies,Retail,SMB,104,26697000.0,NA-East,Atlanta,2600.0,2700.0,800.0,0.413
+A-12011,Cyberdyne Technologies,Healthcare,Enterprise,38898,11032794000.0,APAC,Bangalore,20200.0,37700.0,9600.0,0.863
+A-12012,Dunder Technologies,Energy,SMB,133,7122000.0,NA-West,Phoenix,1700.0,2700.0,1700.0,0.294
+A-12013,Umbra Industries,Healthcare,Enterprise,15128,19239967000.0,NA-East,Chicago,16900.0,10200.0,4500.0,0.136
+A-12014,Wonka Systems,Media,Mid-Market,1590,53715000.0,NA-East,New York,5600.0,6600.0,3500.0,0.804
+A-12015,Soylent Group,Healthcare,SMB,147,35844000.0,NA-West,Los Angeles,300.0,1200.0,1200.0,0.195
+A-12016,Sterling Analytics,Financial Services,Enterprise,15489,1103893000.0,NA-West,Phoenix,36600.0,20700.0,6800.0,0.234
+A-12017,Nakatomi Networks,Logistics,SMB,38,43820000.0,NA-East,Boston,500.0,1800.0,1300.0,0.164
+A-12018,Oscorp Technologies,Healthcare,Enterprise,43352,3671185000.0,APAC,Bangalore,19300.0,22500.0,11100.0,0.21
+A-12019,Stark Industries,Healthcare,SMB,89,38595000.0,NA-East,Austin,1400.0,2700.0,1700.0,0.801
+A-12020,Wayne Labs,Financial Services,Mid-Market,1818,486499000.0,NA-East,Boston,8800.0,6800.0,4100.0,0.749
+A-12021,Nakatomi Group,Software,SMB,197,22628000.0,NA-East,Atlanta,2000.0,2100.0,600.0,0.205
+A-12022,Umbra Systems,Energy,Mid-Market,764,82515000.0,NA-West,San Francisco,10400.0,6600.0,4400.0,0.393
+A-12023,Dunder Analytics,Software,Mid-Market,1065,182990000.0,APAC,Seoul,11000.0,5600.0,2500.0,0.493
+A-12024,Wonka Group,Education,Enterprise,39845,12151296000.0,EMEA,Berlin,37600.0,14600.0,18800.0,0.601
+A-12025,Soylent Holdings,Retail,Mid-Market,1613,469777000.0,NA-East,Atlanta,3600.0,8900.0,3700.0,0.567
+A-12026,Massive Networks,Energy,Mid-Market,855,370148000.0,NA-East,New York,9000.0,4600.0,2000.0,0.125
+A-12027,Sterling Group,Financial Services,SMB,79,29947000.0,NA-East,New York,2100.0,2900.0,900.0,0.87
+A-12028,Initech Group,Healthcare,Mid-Market,535,441925000.0,NA-East,Boston,5200.0,10800.0,3200.0,0.635
+A-12029,Gekko Holdings,Telecom,Mid-Market,1200,189344000.0,APAC,Bangalore,6700.0,5500.0,3000.0,0.051
+A-12030,Acme Analytics,Energy,SMB,81,36135000.0,NA-West,Denver,900.0,1900.0,800.0,0.109
+A-12031,Tyrell Digital,Healthcare,SMB,101,39717000.0,EMEA,London,3100.0,1900.0,2600.0,0.832
+A-12032,Tyrell Networks,Healthcare,Enterprise,33788,1215338000.0,NA-West,Los Angeles,19100.0,35300.0,19800.0,0.944
+A-12033,Wayne Digital,Retail,SMB,119,49984000.0,NA-West,Seattle,600.0,3200.0,1300.0,0.803
+A-12034,Aperture Digital,Financial Services,SMB,100,35669000.0,NA-East,Chicago,1400.0,3200.0,1900.0,0.561
+A-12035,Wonka Cloud,Logistics,SMB,163,35778000.0,APAC,Bangalore,2400.0,3100.0,1800.0,0.663
+A-12036,Aperture Technologies,Logistics,Mid-Market,1086,269652000.0,NA-West,Los Angeles,7700.0,6800.0,3500.0,0.387
+A-12037,Soylent Digital,Software,Mid-Market,1927,343561000.0,NA-East,New York,10000.0,8900.0,4900.0,0.639
+A-12038,Acme Systems,Financial Services,Enterprise,5599,4866905000.0,EMEA,Paris,8700.0,34800.0,9900.0,0.842
+A-12039,Hooli Networks,Education,Mid-Market,222,51141000.0,APAC,Tokyo,9300.0,7600.0,4600.0,0.418
+A-12040,Pied Piper Analytics,Education,SMB,118,5389000.0,NA-West,Denver,3900.0,3000.0,1400.0,0.795
+A-12041,Northwind Networks,Telecom,Mid-Market,412,410434000.0,NA-East,New York,9600.0,5600.0,3400.0,0.39
+A-12042,Massive Solutions,Financial Services,Mid-Market,1396,388815000.0,NA-East,Boston,5600.0,9200.0,5500.0,0.467
+A-12043,Massive Labs,Energy,SMB,138,11074000.0,NA-East,Boston,3300.0,2200.0,900.0,0.29
+A-12044,Pied Piper Analytics,Logistics,SMB,89,4079000.0,EMEA,London,3700.0,2700.0,1700.0,0.7
+A-12045,Oscorp Partners,Manufacturing,Mid-Market,1908,462113000.0,NA-East,Chicago,11900.0,8400.0,4600.0,0.375
+A-12046,Wonka Networks,Telecom,Mid-Market,1655,409323000.0,NA-West,Denver,9400.0,6500.0,3100.0,0.335
+A-12047,Wonka Analytics,Manufacturing,Mid-Market,695,249509000.0,NA-East,Chicago,4500.0,6600.0,2000.0,0.386
+A-12048,Cogswell Partners,Logistics,Mid-Market,1300,191669000.0,NA-West,Los Angeles,4300.0,8100.0,2000.0,0.509
+A-12049,Nakatomi Digital,Software,Mid-Market,874,289443000.0,NA-West,San Francisco,4000.0,9100.0,4700.0,0.422
+A-12050,Gekko Systems,Retail,Mid-Market,1660,63129000.0,APAC,Seoul,4200.0,7300.0,6300.0,0.575
+A-12051,Soylent Digital,Energy,Mid-Market,1336,244347000.0,APAC,Tokyo,4000.0,7700.0,4900.0,0.93
+A-12052,Umbra Solutions,Manufacturing,Mid-Market,1680,306669000.0,NA-West,Seattle,6700.0,7200.0,2300.0,0.285
+A-12053,Contoso Analytics,Energy,Enterprise,22938,9917305000.0,NA-East,New York,23700.0,15400.0,8800.0,0.74
+A-12054,Vandelay Digital,Manufacturing,SMB,199,43289000.0,NA-East,New York,400.0,2300.0,1800.0,0.585
+A-12055,Wayne Systems,Media,Enterprise,34096,15486413000.0,NA-West,Seattle,29000.0,23400.0,9500.0,0.611
+A-12056,Globex Analytics,Logistics,Mid-Market,1424,103888000.0,NA-West,Denver,3600.0,6000.0,1400.0,0.11
+A-12057,Stark Analytics,Financial Services,Enterprise,35594,19337623000.0,EMEA,Madrid,36800.0,23600.0,13600.0,0.545
+A-12058,Northwind Analytics,Telecom,Mid-Market,1721,213514000.0,NA-East,Austin,10900.0,4500.0,3700.0,0.355
+A-12059,Cogswell Partners,Logistics,SMB,194,40471000.0,NA-West,Denver,1100.0,2000.0,1000.0,0.246
+A-12060,Hooli Networks,Healthcare,Mid-Market,1062,281333000.0,EMEA,Madrid,8100.0,7800.0,5000.0,0.415
+A-12061,Hooli Partners,Retail,Enterprise,44660,11241105000.0,EMEA,Amsterdam,28100.0,29300.0,14300.0,0.688
+A-12062,Tyrell Systems,Media,SMB,39,31346000.0,APAC,Seoul,3200.0,2200.0,2100.0,0.526
+A-12063,Massive Group,Manufacturing,Enterprise,19194,19304373000.0,NA-West,Los Angeles,17300.0,21400.0,10100.0,0.668
+A-12064,Contoso Analytics,Energy,SMB,49,9004000.0,APAC,Sydney,700.0,3500.0,2400.0,0.736
+A-12065,Sterling Systems,Telecom,SMB,187,7189000.0,NA-East,Atlanta,3700.0,2500.0,1400.0,0.441
+A-12066,Aperture Holdings,Logistics,Mid-Market,846,390419000.0,EMEA,London,6900.0,8300.0,4300.0,0.857
+A-12067,Gekko Group,Telecom,Mid-Market,1877,433378000.0,NA-West,Phoenix,7900.0,7400.0,6400.0,0.859
+A-12068,Dunder Cloud,Financial Services,SMB,73,17584000.0,NA-West,Seattle,500.0,2200.0,1400.0,0.23
+A-12069,Wayne Systems,Retail,Enterprise,26599,5993636000.0,NA-East,Austin,30900.0,21400.0,7800.0,0.575
+A-12070,Wayne Systems,Energy,SMB,187,21236000.0,EMEA,London,3700.0,1900.0,1100.0,0.655
+A-12071,Dunder Group,Energy,Mid-Market,989,198381000.0,NA-West,Los Angeles,6500.0,7000.0,4400.0,0.417
+A-12072,Gekko Solutions,Healthcare,SMB,171,37096000.0,NA-East,Chicago,3300.0,2900.0,900.0,0.576
+A-12073,Stark Digital,Retail,Mid-Market,1224,381745000.0,NA-East,Austin,6600.0,6300.0,2600.0,0.085
+A-12074,Initech Group,Media,Mid-Market,855,149449000.0,NA-East,New York,11000.0,6300.0,4600.0,0.36
+A-12075,Umbra Solutions,Healthcare,SMB,139,20468000.0,EMEA,Madrid,1000.0,1100.0,700.0,0.291
+A-12076,Soylent Partners,Media,Enterprise,19071,19286805000.0,NA-West,Seattle,36100.0,34300.0,12200.0,0.714
+A-12077,Sterling Technologies,Telecom,Mid-Market,1116,302221000.0,NA-East,Boston,9800.0,11500.0,5600.0,0.708
+A-12078,Nakatomi Digital,Media,Mid-Market,1578,92070000.0,NA-West,Phoenix,9200.0,6100.0,2900.0,0.371
+A-12079,Dunder Analytics,Telecom,Mid-Market,264,309089000.0,NA-West,Denver,11600.0,8700.0,4700.0,0.355
+A-12080,Wonka Holdings,Healthcare,Mid-Market,278,232654000.0,NA-East,Atlanta,2500.0,5500.0,1400.0,0.108
+A-12081,Dunder Analytics,Manufacturing,Mid-Market,1178,336327000.0,NA-West,Los Angeles,7200.0,5900.0,6500.0,0.66
+A-12082,Tyrell Solutions,Telecom,SMB,86,37639000.0,APAC,Sydney,1300.0,3300.0,1500.0,0.518
+A-12083,Tyrell Partners,Energy,SMB,62,36669000.0,NA-West,San Francisco,1800.0,1300.0,1700.0,0.405
+A-12084,Tyrell Holdings,Energy,Mid-Market,1268,343042000.0,NA-West,Denver,7200.0,7300.0,5200.0,0.477
+A-12085,Hooli Technologies,Education,SMB,51,39865000.0,NA-East,Chicago,2600.0,1300.0,2400.0,0.627
+A-12086,Umbra Analytics,Telecom,Mid-Market,1626,312501000.0,NA-West,Seattle,2100.0,8200.0,2100.0,0.513
+A-12087,Initech Analytics,Logistics,Mid-Market,527,112597000.0,NA-East,Chicago,9800.0,9300.0,3800.0,0.421
+A-12088,Nakatomi Cloud,Logistics,Enterprise,39129,1538058000.0,NA-East,Boston,18500.0,17600.0,9500.0,0.617
+A-12089,Wayne Industries,Education,SMB,83,40204000.0,NA-West,Denver,3600.0,1200.0,1100.0,0.598
+A-12090,Prestige Analytics,Software,SMB,20,18276000.0,NA-East,Chicago,500.0,2700.0,1300.0,0.4
+A-12091,Soylent Group,Energy,SMB,16,21143000.0,APAC,Bangalore,1200.0,1800.0,1500.0,0.727
+A-12092,Northwind Holdings,Media,Mid-Market,349,308497000.0,NA-West,Seattle,7700.0,4100.0,2400.0,0.191
+A-12093,Wayne Systems,Logistics,Mid-Market,357,168400000.0,NA-East,New York,3900.0,7200.0,6100.0,0.626
+A-12094,Umbra Holdings,Manufacturing,Enterprise,28302,530495000.0,NA-West,Phoenix,6400.0,25000.0,15400.0,0.506
+A-12095,Pied Piper Partners,Education,SMB,168,20915000.0,EMEA,Amsterdam,2600.0,2700.0,1400.0,0.726
+A-12096,Vandelay Industries,Logistics,Enterprise,41438,1372571000.0,EMEA,Madrid,38000.0,19200.0,8900.0,0.072
+A-12097,Oscorp Solutions,Retail,Enterprise,18279,18749318000.0,NA-East,Atlanta,33800.0,13200.0,9600.0,0.39
+A-12098,Tyrell Technologies,Media,Enterprise,21110,1343097000.0,APAC,Singapore,12800.0,29400.0,9300.0,0.641
+A-12099,Tyrell Solutions,Healthcare,Mid-Market,1809,353503000.0,APAC,Tokyo,6100.0,5300.0,2500.0,0.258
+A-12100,Dunder Technologies,Logistics,SMB,102,21887000.0,NA-East,Boston,300.0,2500.0,2600.0,0.937
+A-12101,Soylent Industries,Manufacturing,Mid-Market,1233,153336000.0,NA-West,San Francisco,9000.0,6200.0,2800.0,0.54
+A-12102,Wayne Solutions,Software,Mid-Market,1813,311757000.0,NA-East,Atlanta,3900.0,4600.0,4500.0,0.319
+A-12103,Pied Piper Analytics,Media,SMB,150,29103000.0,NA-East,Boston,800.0,2000.0,1200.0,0.151
+A-12104,Vandelay Partners,Telecom,Enterprise,39185,14606397000.0,NA-West,San Francisco,12800.0,12600.0,11800.0,0.392
+A-12105,Acme Networks,Logistics,Mid-Market,1819,103783000.0,EMEA,London,9700.0,7100.0,5300.0,0.466
+A-12106,Aperture Systems,Financial Services,Mid-Market,1674,203454000.0,NA-East,Chicago,9000.0,8000.0,4200.0,0.342
+A-12107,Prestige Industries,Telecom,Mid-Market,1152,254306000.0,NA-East,Boston,8100.0,8400.0,4500.0,0.681
+A-12108,Wonka Cloud,Media,Mid-Market,1806,315348000.0,NA-West,San Francisco,9700.0,6000.0,2600.0,0.658
+A-12109,Hooli Cloud,Retail,Mid-Market,277,207673000.0,NA-East,Boston,9200.0,5600.0,5000.0,0.623
+A-12110,Dunder Solutions,Telecom,Mid-Market,1757,53018000.0,APAC,Tokyo,4600.0,11300.0,5000.0,0.787
+A-12111,Acme Group,Telecom,Enterprise,39806,16472107000.0,NA-West,Phoenix,7300.0,23200.0,7600.0,0.463
+A-12112,Hooli Networks,Software,Mid-Market,1666,80259000.0,NA-East,New York,6700.0,9400.0,2800.0,0.727
+A-12113,Nakatomi Systems,Financial Services,Enterprise,15321,11979057000.0,NA-West,Los Angeles,9700.0,18800.0,10700.0,0.401
+A-12114,Tyrell Systems,Energy,Mid-Market,1009,336083000.0,NA-West,San Francisco,11600.0,5900.0,2400.0,0.17
+A-12115,Wonka Technologies,Manufacturing,Mid-Market,1739,378200000.0,NA-East,Austin,7700.0,10600.0,7000.0,0.69
+A-12116,Tyrell Solutions,Retail,SMB,177,36401000.0,NA-East,Atlanta,1800.0,1200.0,1300.0,0.579
+A-12117,Stark Solutions,Energy,Mid-Market,1292,218217000.0,NA-West,San Francisco,11800.0,7800.0,6000.0,0.535
+A-12118,Initech Group,Media,SMB,37,2769000.0,NA-East,Atlanta,600.0,2600.0,1700.0,0.57
+A-12119,Tyrell Networks,Education,Mid-Market,540,216302000.0,NA-East,Atlanta,8800.0,6400.0,2800.0,0.697
+A-12120,Cogswell Solutions,Media,Mid-Market,617,198241000.0,NA-West,Phoenix,5300.0,6100.0,5700.0,0.595
+A-12121,Contoso Digital,Healthcare,Mid-Market,925,434522000.0,NA-West,Los Angeles,7900.0,7600.0,2600.0,0.529
+A-12122,Acme Holdings,Education,Mid-Market,1371,358547000.0,NA-West,Denver,10100.0,7300.0,3800.0,0.508
+A-12123,Globex Solutions,Retail,Mid-Market,566,461583000.0,EMEA,London,8700.0,6100.0,4200.0,0.286
+A-12124,Aperture Group,Software,Mid-Market,1314,282006000.0,NA-East,Boston,9300.0,9400.0,2600.0,0.512
+A-12125,Initech Technologies,Logistics,Enterprise,20123,16622281000.0,NA-East,Atlanta,21100.0,16900.0,8600.0,0.519
+A-12126,Hooli Partners,Financial Services,Enterprise,4901,14478652000.0,NA-East,Atlanta,5500.0,22900.0,10300.0,0.252
+A-12127,Acme Labs,Logistics,Enterprise,40385,10346134000.0,NA-East,Austin,35700.0,15600.0,18300.0,0.574
+A-12128,Aperture Industries,Manufacturing,Mid-Market,1151,408459000.0,NA-East,Austin,10900.0,10000.0,3800.0,0.788
+A-12129,Tyrell Partners,Healthcare,Enterprise,20448,6386815000.0,NA-West,Denver,37900.0,16900.0,10600.0,0.145
+A-12130,Umbra Analytics,Manufacturing,SMB,118,1194000.0,NA-West,Los Angeles,3400.0,1800.0,1100.0,0.162
+A-12131,Hooli Solutions,Software,Enterprise,36595,1487409000.0,NA-East,Atlanta,6800.0,18200.0,10500.0,0.113
+A-12132,Pied Piper Cloud,Financial Services,SMB,150,1022000.0,APAC,Seoul,900.0,1900.0,800.0,0.551
+A-12133,Globex Digital,Media,Mid-Market,685,136285000.0,NA-West,Seattle,8700.0,9100.0,6200.0,0.829
+A-12134,Prestige Labs,Energy,Mid-Market,1364,94507000.0,NA-West,San Francisco,5700.0,9300.0,6200.0,0.616
+A-12135,Initech Analytics,Financial Services,Mid-Market,1370,122015000.0,NA-West,San Francisco,7800.0,5500.0,4900.0,0.423
+A-12136,Contoso Technologies,Media,Mid-Market,476,457594000.0,NA-East,Atlanta,10300.0,4700.0,1800.0,0.243
+A-12137,Tyrell Networks,Logistics,SMB,107,26508000.0,NA-West,Denver,1800.0,3100.0,2200.0,0.768
+A-12138,Initech Technologies,Retail,Mid-Market,1921,362232000.0,NA-East,Austin,7800.0,6300.0,4000.0,0.197
+A-12139,Gekko Industries,Healthcare,SMB,51,18606000.0,APAC,Singapore,3400.0,1400.0,1000.0,0.656
+A-12140,Cogswell Cloud,Retail,Mid-Market,910,474201000.0,NA-West,Los Angeles,6800.0,6000.0,1600.0,0.114
+A-12141,Northwind Solutions,Energy,Enterprise,20473,6563267000.0,NA-West,Los Angeles,9700.0,12600.0,7900.0,0.214
+A-12142,Stark Systems,Logistics,SMB,143,44889000.0,NA-West,Phoenix,2100.0,2800.0,2100.0,0.533
+A-12143,Sterling Systems,Media,SMB,172,1915000.0,NA-West,Denver,2800.0,1200.0,2300.0,0.705
+A-12144,Globex Technologies,Logistics,SMB,122,11161000.0,NA-East,Chicago,1000.0,2600.0,1500.0,0.865
+A-12145,Gekko Networks,Manufacturing,SMB,182,32757000.0,NA-East,Boston,3900.0,1500.0,1800.0,0.74
+A-12146,Contoso Analytics,Manufacturing,Mid-Market,834,461339000.0,EMEA,Madrid,9700.0,11500.0,3000.0,0.911
+A-12147,Dunder Labs,Manufacturing,Mid-Market,773,190608000.0,NA-East,Austin,6700.0,6600.0,3200.0,0.233
+A-12148,Oscorp Partners,Education,Enterprise,31252,15951188000.0,NA-West,Denver,19000.0,26500.0,15300.0,0.411
+A-12149,Wayne Networks,Media,SMB,23,39276000.0,NA-East,Austin,1300.0,2700.0,800.0,0.716
+A-12150,Sterling Systems,Media,Mid-Market,1302,207958000.0,NA-West,Los Angeles,3000.0,8100.0,4600.0,0.367
+A-12151,Tyrell Holdings,Telecom,Mid-Market,1561,380361000.0,NA-East,Atlanta,2100.0,5100.0,3200.0,0.192
+A-12152,Tyrell Cloud,Energy,SMB,170,39555000.0,NA-East,Atlanta,2000.0,900.0,600.0,0.063
+A-12153,Globex Solutions,Financial Services,SMB,178,43787000.0,NA-West,Los Angeles,3300.0,3000.0,1100.0,0.888
+A-12154,Umbra Labs,Financial Services,SMB,181,22621000.0,NA-East,Boston,1500.0,2600.0,900.0,0.316
+A-12155,Wayne Networks,Retail,Mid-Market,1411,61856000.0,NA-West,Denver,4300.0,8400.0,4400.0,0.4
+A-12156,Northwind Group,Financial Services,SMB,105,15923000.0,NA-West,San Francisco,2900.0,1000.0,500.0,0.318
+A-12157,Pied Piper Analytics,Manufacturing,Enterprise,10818,1752502000.0,NA-West,San Francisco,24900.0,18200.0,9800.0,0.29
+A-12158,Vandelay Cloud,Manufacturing,Mid-Market,752,108369000.0,EMEA,London,2400.0,8200.0,5200.0,0.812
+A-12159,Wayne Industries,Media,Mid-Market,1928,254847000.0,EMEA,London,5000.0,6600.0,3100.0,0.737
+A-12160,Sterling Solutions,Healthcare,Enterprise,33532,10037866000.0,NA-East,Boston,32800.0,23700.0,20500.0,0.757
+A-12161,Cogswell Solutions,Media,Enterprise,43508,4745883000.0,NA-East,Austin,21800.0,20400.0,11300.0,0.517
+A-12162,Nakatomi Holdings,Software,SMB,62,6729000.0,NA-West,Los Angeles,1200.0,1500.0,1100.0,0.587
+A-12163,Acme Solutions,Education,Mid-Market,1383,400487000.0,NA-East,Austin,9300.0,7700.0,5600.0,0.509
+A-12164,Prestige Analytics,Media,Enterprise,13444,8130304000.0,NA-East,New York,9900.0,15700.0,13100.0,0.519
+A-12165,Acme Technologies,Manufacturing,Mid-Market,1129,431348000.0,NA-West,Seattle,11000.0,8400.0,3300.0,0.51
+A-12166,Dunder Analytics,Media,Enterprise,36511,15237352000.0,APAC,Bangalore,28600.0,21000.0,8400.0,0.328
+A-12167,Gekko Digital,Logistics,Mid-Market,1949,314518000.0,APAC,Sydney,10800.0,6900.0,3700.0,0.462
+A-12168,Globex Labs,Healthcare,Mid-Market,731,97543000.0,EMEA,Paris,6400.0,6200.0,2800.0,0.214
+A-12169,Hooli Group,Telecom,SMB,33,15325000.0,NA-East,New York,3300.0,2500.0,1200.0,0.655
+A-12170,Aperture Systems,Manufacturing,SMB,56,16989000.0,NA-West,Seattle,3200.0,4200.0,1900.0,0.823
+A-12171,Nakatomi Analytics,Retail,SMB,124,40733000.0,NA-East,Boston,500.0,2100.0,2000.0,0.411
+A-12172,Oscorp Group,Retail,Mid-Market,1040,177129000.0,EMEA,Berlin,7300.0,6800.0,2500.0,0.323
+A-12173,Hooli Industries,Telecom,Enterprise,41148,2389499000.0,APAC,Singapore,32500.0,9700.0,4100.0,0.092
+A-12174,Dunder Solutions,Retail,Enterprise,3360,16344101000.0,NA-West,San Francisco,38900.0,13900.0,7400.0,0.199
+A-12175,Initech Analytics,Financial Services,SMB,31,41962000.0,NA-West,Los Angeles,3600.0,1000.0,900.0,0.297
+A-12176,Umbra Group,Financial Services,Mid-Market,1959,189181000.0,NA-West,San Francisco,3600.0,5500.0,2200.0,0.551
+A-12177,Umbra Industries,Telecom,SMB,32,41793000.0,EMEA,Madrid,700.0,1400.0,1000.0,0.435
+A-12178,Hooli Industries,Media,SMB,49,38396000.0,NA-East,Austin,4000.0,3300.0,900.0,0.677
+A-12179,Oscorp Analytics,Retail,Mid-Market,1941,132338000.0,APAC,Bangalore,3900.0,5300.0,5100.0,0.444
+A-12180,Wayne Analytics,Healthcare,Enterprise,26383,1090067000.0,NA-East,Austin,6000.0,28200.0,20900.0,0.718
+A-12181,Vandelay Industries,Retail,SMB,159,41300000.0,NA-West,Denver,3700.0,2700.0,1400.0,0.583
+A-12182,Oscorp Holdings,Software,Mid-Market,751,177040000.0,NA-West,Denver,2500.0,8600.0,3400.0,0.625
+A-12183,Aperture Industries,Media,Mid-Market,1644,273578000.0,NA-West,Phoenix,7900.0,7000.0,6400.0,0.798
+A-12184,Initech Systems,Retail,SMB,14,8701000.0,EMEA,Amsterdam,1600.0,1100.0,800.0,0.541
+A-12185,Pied Piper Cloud,Retail,SMB,99,22578000.0,NA-West,Los Angeles,800.0,2900.0,800.0,0.334
+A-12186,Northwind Analytics,Manufacturing,SMB,152,48948000.0,NA-West,San Francisco,3200.0,1400.0,1100.0,0.837
+A-12187,Tyrell Labs,Energy,Mid-Market,1264,169068000.0,NA-East,Austin,6100.0,5900.0,5900.0,0.528
+A-12188,Initech Group,Energy,Mid-Market,1505,376542000.0,APAC,Tokyo,6900.0,10300.0,5600.0,0.644
+A-12189,Acme Group,Manufacturing,SMB,123,11225000.0,NA-East,Boston,3500.0,3600.0,1200.0,0.637
+A-12190,Wayne Analytics,Media,SMB,28,9005000.0,NA-East,New York,1700.0,1500.0,1800.0,0.38
+A-12191,Northwind Solutions,Retail,Mid-Market,1422,202329000.0,APAC,Sydney,5600.0,6400.0,3500.0,0.296
+A-12192,Vandelay Industries,Retail,SMB,51,37848000.0,APAC,Singapore,3300.0,1700.0,900.0,0.513
+A-12193,Wonka Labs,Software,SMB,12,19588000.0,NA-East,Boston,2100.0,3400.0,1200.0,0.782
+A-12194,Vandelay Solutions,Financial Services,SMB,78,18467000.0,NA-West,Los Angeles,1200.0,2500.0,1600.0,0.339
+A-12195,Wonka Systems,Energy,SMB,128,42224000.0,NA-West,San Francisco,2000.0,1400.0,2500.0,0.842
+A-12196,Dunder Cloud,Energy,SMB,137,49886000.0,APAC,Sydney,2500.0,3100.0,1800.0,0.475
+A-12197,Prestige Analytics,Energy,SMB,26,8674000.0,NA-East,Austin,3100.0,2600.0,1100.0,0.784
+A-12198,Wayne Networks,Education,Mid-Market,1128,259051000.0,EMEA,Berlin,5500.0,5100.0,2500.0,0.371
+A-12199,Tyrell Systems,Education,Mid-Market,709,80167000.0,NA-East,Austin,5400.0,8300.0,2500.0,0.611

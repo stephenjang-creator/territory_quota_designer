@@ -12,10 +12,10 @@ whole plan.
 
 ![Executive summary and one-click recommended actions](docs/dashboard.png)
 
-> **Worked example** (synthetic data): 14 reps, a **$2.86M/quarter** target. The plan
-> covers **10 of 14**: SMB is short **$233K** of pipeline. The tool says so plainly,
-> then offers three one-click fixes (re-tag 36 accounts into SMB, lower SMB's quota
-> multiple, or accept a lower SMB coverage target), plus a safe hiring plan and a
+> **Worked example** (synthetic data): 36 reps, a **$7.0M/quarter ($28M/year)** target.
+> The plan covers **25 of 36**: SMB is short **$688K** of pipeline. The tool says so
+> plainly, then offers three one-click fixes (re-tag 102 accounts into SMB, lower SMB's
+> quota multiple, or accept a lower SMB coverage target), plus a safe hiring plan and a
 > cost-of-sale check. Change any assumption and everything recomputes.
 
 ## The problem it solves
@@ -125,7 +125,7 @@ OTE is sized for a US SaaS company of ~$100–500M revenue; the default roster
 | SMB · AE | $110K | $440K | **$110K** |
 | SMB · ramping | $88K | $352K | **$88K** |
 
-Company target ≈ **$2.86M/quarter** ($11.5M annual), the sum of the 14-rep team's
+Company target ≈ **$7.0M/quarter** ($28M annual), the sum of the 36-rep team's
 quarterly quotas. Edit any role's OTE or the multiple in the dashboard and every rep
 in that role, plus the target, moves.
 
@@ -142,23 +142,23 @@ the **same** standardized quotas:
 
 | Metric | Naive equal-split | Work-back carve | (target 3×) |
 | --- | ---: | ---: | ---: |
-| **Total capacity gap** (pipeline short, USD) | $233,000 | **$233,000** | structural |
-| **Coverage floor**: worst-covered rep (higher = fairer) | 2.24× | **2.43×** | +8.5% |
-| Reps covered to 3× pipeline (of 14) | 10 | 10 | evenly-spread shortfall |
-| Off-home-region share (lower = compact) | 0.81 | **0.47** | −41.6% |
+| **Total capacity gap** (pipeline short, USD) | $688,000 | **$688,000** | structural |
+| **Coverage floor**: worst-covered rep (higher = fairer) | 2.22× | **2.33×** | +5.0% |
+| Reps covered to 3× pipeline (of 36) | 25 | 25 | evenly-spread shortfall |
+| Off-home-region share (lower = compact) | 0.72 | **0.26** | −63.2% |
 
 The total gap is **identical** between the two carves, and that's the honest point:
-SMB is short by $233K no matter how you slice it, so no assignment can beat it on the
+SMB is short by $688K no matter how you slice it, so no assignment can beat it on the
 total. What the work-back carve *does* is refuse to rob Peter to pay Paul: it spreads
 the shortfall evenly instead of starving one SMB rep to over-fill another, which lifts
-the **worst-covered rep's floor** (2.24× → 2.43×) and keeps books compact (off-home
-−41.6%). The gap that remains is structural:
+the **worst-covered rep's floor** (2.22× → 2.33×) and keeps books compact (off-home
+−63.2%). The gap that remains is structural:
 
 ```
 Per-segment pipeline vs. required at 3×:
-  Enterprise   $5.15M available   vs   $4.03M required   → OK
-  Mid-Market   $4.01M available   vs   $3.31M required   → OK
-  SMB          $1.02M available   vs   $1.25M required   → SHORT by $0.23M
+  Enterprise   $14.06M available   vs   $9.32M required   → OK
+  Mid-Market   $11.46M available   vs   $8.19M required   → OK
+  SMB           $2.81M available   vs   $3.50M required   → SHORT by $0.69M
 ```
 
 SMB simply doesn't hold enough pipeline to cover its standardized quotas to 3×.
@@ -175,10 +175,10 @@ applyable settings delta, same engine, nothing invented in the UI:
 
 | Finding | Levers (each an **Apply**) |
 | --- | --- |
-| **SMB short $233K** | re-tag **36 Mid-Market accounts** into SMB ($241K, every SMB rep then clears 3×, sources stay covered) · lower the SMB multiple to **3.25×** · accept a **2.44×** SMB target |
-| **Hiring capacity** | apply the safe plan, **1 Enterprise + 1 Mid-Market AE**, freeze SMB |
+| **SMB short $688K** | re-tag **102 Mid-Market accounts** into SMB ($701K, every SMB rep then clears 3×, sources stay covered) · lower the SMB multiple to **3.21×** · accept a **2.41×** SMB target |
+| **Hiring capacity** | apply the safe plan, **5 Enterprise + 6 Mid-Market AE**, freeze SMB |
 | **Comp at 85%** | auto-tune the decelerator/base to hold cost-of-sale under a ceiling (a no-op at the default 26%) |
-| **Sensitivity** | drop to a **2.43×** global target, or a **3.24×** multiple, and every rep clears |
+| **Sensitivity** | drop to a **2.32×** global target, or a **3.1×** multiple, and every rep clears |
 
 "Re-tag" is a **true account move**: the tool picks the smallest-addressable
 surplus-segment accounts, changes their segment, and re-carves. It keeps moving
@@ -194,12 +194,12 @@ open req) at any segment and level, and the whole chain recomputes with them in 
 Each hire takes its role's standardized quota, and the carve pulls pipeline from that
 hire's segment, so the scorecard shows immediately whether the larger team still covers:
 
-- **Add an Enterprise AE** → the segment's surplus absorbs it: reps-covered goes 10 → 11
-  and Enterprise required rises $4.03M → $4.87M but still sits under its $5.15M available,
+- **Add an Enterprise AE** → the segment's surplus absorbs it: reps-covered goes 25 → 26
+  and Enterprise required rises $9.32M → $10.16M but still sits under its $14.06M available,
   a **safe hire**.
-- **Add two SMB AEs** → the already-short SMB segment's required jumps $1.25M → $1.91M
-  against the same $1.02M available, the new reps land uncovered, and the coverage floor
-  drops 2.43× → 1.40×, a hire the segment **can't support without more pipeline**.
+- **Add two SMB AEs** → the already-short SMB segment's required jumps $3.50M → $4.16M
+  against the same $2.81M available, the new reps land uncovered, and the coverage floor
+  drops 2.33× → 1.95×, a hire the segment **can't support without more pipeline**.
 
 That's the question the feature answers: *which levels can I hire into without pushing a
 segment below the coverage target.* Over MCP, `whatif_hire(segment, level, count)` returns
@@ -208,18 +208,18 @@ the same diff (company target, reps covered, coverage floor, segment pipeline vs
 ## Worked example (two reps)
 
 ```
-R-101 · Enterprise · Sr. Strategic AE          R-110 · SMB · AE
+R-101 · Enterprise · Sr. Strategic AE          R-125 · SMB · AE
   OTE  (annual)         $420,000                  OTE  (annual)         $110,000
   annual quota = 4×OTE  $1,680,000                annual quota = 4×OTE  $440,000
   quarterly quota       $420,000                  quarterly quota       $110,000
-  pipeline packed       $1,534,100                pipeline packed       $267,700
-  pipeline coverage  1,534,100 / 420,000          pipeline coverage   267,700 / 110,000
-                     = 3.65×   (≥ 3×  ✓)                              = 2.43×   (< 3×  ⚠)
-  capacity gap        none                         capacity gap        $62,300 short of 3×
+  pipeline packed       $1,908,400                pipeline packed       $272,800
+  pipeline coverage  1,908,400 / 420,000          pipeline coverage   272,800 / 110,000
+                     = 4.54×   (≥ 3×  ✓)                              = 2.48×   (< 3×  ⚠)
+  capacity gap        none                         capacity gap        $57,200 short of 3×
 ```
 
 Same-role reps get the identical quota; the carve packs Enterprise books past 3×
-(surplus pipeline) but can only reach ~2.43× for SMB AEs, the SMB segment is
+(surplus pipeline) but can only reach ~2.48× for SMB AEs, the SMB segment is
 capacity-constrained. A second lens, the **reverse waterfall**, works the quota
 back up the funnel (won deals → negotiation → … → required SQLs) to sanity-check
 the packed pipeline against stage win-rates; the dashboard shows both.
@@ -320,7 +320,7 @@ dashboard) and the MCP server over bearer-auth'd HTTP. Pushing to `main` redeplo
 ## Project layout
 
 ```
-generate_territory_data.py   synthetic data generator (curated 14-rep team)
+generate_territory_data.py   synthetic data generator (curated 36-rep team)
 data/                        accounts.csv · reps.csv · conversions.csv
 config.py                    all tunable knobs (OTE, quota multiple, coverage target, comp)
 core/

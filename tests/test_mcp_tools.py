@@ -11,7 +11,7 @@ import mcp_server as S
 def test_list_reps_and_segments():
     out = S.list_reps()
     reps = out["reps"]
-    assert len(reps) == 14
+    assert len(reps) == 36
     assert out["quota_to_ote"] == 4.0
     assert all({"role", "ote", "quota"} <= set(r) for r in reps)
     # same role -> same quota
@@ -27,7 +27,7 @@ def test_plan_summary_shape():
     s = S.plan_summary()
     for k in ("company_target", "coverage_target", "reps_covered", "coverage_floor", "units"):
         assert k in s
-    assert s["reps_covered"]["of"] == 14
+    assert s["reps_covered"]["of"] == 36
 
 
 def test_plan_summary_accepts_settings():
@@ -37,10 +37,11 @@ def test_plan_summary_accepts_settings():
 
 
 def test_list_territories_sorted_worst_first():
-    d = S.list_territories()
+    d = S.list_territories(limit=100)
     covs = [r["pipeline_coverage"] for r in d["territories"]]
     assert covs == sorted(covs)
-    assert d["sort_by"] == "pipeline_coverage" and len(d["territories"]) == 14
+    assert d["sort_by"] == "pipeline_coverage" and len(d["territories"]) == 36
+    assert len(S.list_territories()["territories"]) == 15  # default limit
     assert "error" in S.list_territories(sort_by="not_a_field")
 
 
@@ -139,7 +140,7 @@ def test_recommend_actions():
 
 
 def test_whatif_segment_override_covers_smb():
-    d = S.whatif_segment_override("SMB", quota_to_ote=3.25)
+    d = S.whatif_segment_override("SMB", quota_to_ote=3.0)
     assert "error" not in d
     assert d["coverable"]["default"] is False and d["coverable"]["whatif"] is True
     assert d["company_target"]["whatif"] < d["company_target"]["default"]

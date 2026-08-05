@@ -80,6 +80,7 @@ def carve(
     prefer_home = config.PREFER_HOME_REGION if prefer_home_region is None else prefer_home_region
     generalist = generalist_focus or config.GENERALIST_FOCUS
     mix = config.POTENTIAL_MIX
+    bands = config.CARVE_FILL_BANDS
 
     rep_by_id = {r.rep_id: r for r in reps}
     addr = {a.account_id: _addressable(a) for a in accounts}
@@ -103,13 +104,19 @@ def carve(
         )
         for a in seg_accts:
             needy = [rid for rid in pool if got[rid] < need[rid]] or pool
-            if prefer_home:
-                home = [rid for rid in needy if rep_by_id[rid].home_region == a.region]
-                cands = home or needy
-            else:
-                cands = needy
-            # Furthest-from-target first (lowest fill ratio); tie -> rep_id.
-            rid = min(cands, key=lambda rid: (got[rid] / need[rid] if need[rid] else 1e18, rid))
+            # Furthest-from-target first, but quantize the fill ratio into bands so
+            # reps within the same coverage band count as equally needy; among those,
+            # prefer a home-region rep (compact books), then rep_id for determinism.
+            # Banding is what equalizes a SHORT segment across regions -- raising the
+            # floor -- where a hard home filter would starve reps in a thin geo.
+            rid = min(
+                needy,
+                key=lambda rid: (
+                    round((got[rid] / need[rid] if need[rid] else 1e18) * bands),
+                    0 if prefer_home and rep_by_id[rid].home_region == a.region else 1,
+                    rid,
+                ),
+            )
             assign[a.account_id] = rid
             got[rid] += addr[a.account_id]
 
