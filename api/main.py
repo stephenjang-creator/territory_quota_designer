@@ -21,7 +21,7 @@ import config
 import narrative
 from core import comp, evaluate, quota, views, waterfall
 from core.dataio import load_all
-from core.plan import PlanSettings, run_plan
+from core.plan import PlanSettings, merge_added_reps, run_plan
 
 app = FastAPI(title="Territory & Quota Designer", version="0.1.0")
 _STATIC = Path(__file__).parent / "static"
@@ -46,6 +46,7 @@ class PlanRequest(BaseModel):
     comp: dict | None = None
     attainment: float = 1.0
     attainment_scenarios: list | None = None
+    added_reps: list = Field(default_factory=list)  # what-if hires [{name, segment, level}]
 
     def to_settings(self) -> PlanSettings:
         return PlanSettings(**self.model_dump())
@@ -59,6 +60,16 @@ class ExplainRequest(BaseModel):
 
 def _plan(req: PlanRequest):
     return run_plan(ACCOUNTS, REPS, CONVERSIONS, req.to_settings())
+
+
+def _reps_for(req: PlanRequest) -> list:
+    """The ORIGINAL roster plus this request's what-if hires (materialized Reps)."""
+    return merge_added_reps(REPS, req.added_reps)
+
+
+def _rep_lookup(req: PlanRequest) -> dict:
+    """rep_id -> Rep including added ('NEW-*') hires, so row-rendering endpoints resolve them."""
+    return {r.rep_id: r for r in _reps_for(req)}
 
 
 def _sample_ote_quota(plan):
@@ -223,6 +234,7 @@ def data_summary():
 def balance_endpoint(req: PlanRequest):
     """Stage 1 — the work-back carve: books packed to the coverage target + capacity."""
     plan = _plan(req)
+    rby = _rep_lookup(req)
     sc = plan.scorecard
     return {
         "coverage_target": sc["coverage_target"],
@@ -233,9 +245,9 @@ def balance_endpoint(req: PlanRequest):
         "territories": [
             {
                 "rep_id": t.rep_id,
-                "rep_name": REP_BY_ID[t.rep_id].name,
-                "segment_focus": REP_BY_ID[t.rep_id].segment_focus,
-                "level": REP_BY_ID[t.rep_id].level,
+                "rep_name": rby[t.rep_id].name,
+                "segment_focus": rby[t.rep_id].segment_focus,
+                "level": rby[t.rep_id].level,
                 "account_count": t.account_count,
                 "available_pipeline": round(t.available_potential or 0),
                 "quota": round(t.quota or 0),
@@ -251,14 +263,15 @@ def balance_endpoint(req: PlanRequest):
 def quota_endpoint(req: PlanRequest):
     """Stage 2 — standardized quota by role (same role -> same quota), from OTE."""
     plan = _plan(req)
+    rby = _rep_lookup(req)
     return {
         "company_target": round(plan.company_target),
         "quota_to_ote": plan.settings["quota_to_ote"],
         "territories": [
             {
                 "rep_id": t.rep_id,
-                "rep_name": REP_BY_ID[t.rep_id].name,
-                "role": f"{REP_BY_ID[t.rep_id].segment_focus} · {REP_BY_ID[t.rep_id].level}",
+                "rep_name": rby[t.rep_id].name,
+                "role": f"{rby[t.rep_id].segment_focus} · {rby[t.rep_id].level}",
                 "ote": round(t.ote or 0),
                 "quota": round(t.quota or 0),
                 "quota_to_potential": t.quota_to_potential,
@@ -272,12 +285,14 @@ def quota_endpoint(req: PlanRequest):
 def waterfall_endpoint(req: PlanRequest):
     """Stage 3 — coverage results + under-covered roll-up."""
     plan = _plan(req)
+    reps = _reps_for(req)
+    rby = {r.rep_id: r for r in reps}
     return {
         "company_target": round(plan.company_target),
         "n_under_covered": plan.n_under_covered,
-        "territories": views.list_rows(plan, REPS, sort_by="coverage_ratio", limit=len(REPS)),
+        "territories": views.list_rows(plan, reps, sort_by="coverage_ratio", limit=len(reps)),
         "coverage_gaps": [
-            {**views.territory_row(t, REP_BY_ID[t.rep_id]), "gap": waterfall.gap_analysis(t)}
+            {**views.territory_row(t, rby[t.rep_id]), "gap": waterfall.gap_analysis(t)}
             for t in waterfall.under_covered(plan.territories)
         ],
         "standard_coverage": waterfall.standard_coverage_flags(plan.territories),
@@ -288,6 +303,7 @@ def waterfall_endpoint(req: PlanRequest):
 def comp_endpoint(req: PlanRequest):
     """Stage 4 — payouts, cost-of-sale, scenario compare, and a payout curve."""
     plan = _plan(req)
+    rby = _rep_lookup(req)
     sim = comp.simulate(plan.territories, req.attainment, req.comp)
     scenarios = comp.scenario_compare(
         plan.territories, req.attainment_scenarios or config.ATTAINMENT_SCENARIOS, req.comp
@@ -301,7 +317,7 @@ def comp_endpoint(req: PlanRequest):
         "per_rep": [
             {
                 "rep_id": r["rep_id"],
-                "rep_name": REP_BY_ID[r["rep_id"]].name,
+                "rep_name": rby[r["rep_id"]].name,
                 "ote": round(r["ote"]),
                 "quota": round(r["quota"]),
                 "total_comp": round(r["total_comp"]),
@@ -317,12 +333,13 @@ def comp_endpoint(req: PlanRequest):
 def plan_endpoint(req: PlanRequest):
     """Run the whole chain from one settings payload (the dashboard's hot path)."""
     plan = _plan(req)
+    reps = _reps_for(req)
     sample_ote, sample_quota = _sample_ote_quota(plan)
     return {
         "summary": views.plan_summary(plan),
         "scorecard": plan.scorecard,
         "scorecard_markdown": evaluate.scorecard_markdown(plan.scorecard),
-        "territories": views.list_rows(plan, REPS, sort_by="pipeline_coverage", limit=len(REPS)),
+        "territories": views.list_rows(plan, reps, sort_by="pipeline_coverage", limit=len(reps)),
         "comp": comp.scenario_compare(plan.territories, req.attainment_scenarios, req.comp),
         "comp_params": comp.resolved_params(req.comp),
         "payout_curve": comp.payout_curve(sample_ote, sample_quota, req.comp),
@@ -342,11 +359,14 @@ def territory_detail(rep_id: str):
 @app.post("/territory/{rep_id}")
 def territory_detail_for_settings(rep_id: str, req: PlanRequest):
     """Full single-territory view under the given settings (dashboard funnel drill-in)."""
-    if rep_id not in REP_BY_ID:
+    rby = _rep_lookup(req)  # includes this request's what-if hires
+    if rep_id not in rby:
         raise HTTPException(status_code=404, detail=f"unknown rep_id {rep_id!r}")
     plan = _plan(req)
-    terr = next(t for t in plan.territories if t.rep_id == rep_id)
-    return views.territory_detail(terr, REP_BY_ID[rep_id], ACC_BY_ID)
+    terr = next((t for t in plan.territories if t.rep_id == rep_id), None)
+    if terr is None:
+        raise HTTPException(status_code=404, detail=f"no territory for rep_id {rep_id!r}")
+    return views.territory_detail(terr, rby[rep_id], ACC_BY_ID)
 
 
 @app.post("/explain")

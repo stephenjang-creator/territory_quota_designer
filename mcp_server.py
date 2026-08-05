@@ -55,9 +55,17 @@ _SORT_KEYS = {
 # ----------------------------------------------------------------------
 # Helpers
 # ----------------------------------------------------------------------
-def _plan(quota_to_ote=None, coverage_target=None, ote_overrides=None, overrides=None):
+def _plan(
+    quota_to_ote=None, coverage_target=None, ote_overrides=None, overrides=None, added_reps=None
+):
     """The default plan when nothing is overridden, else a fresh in-memory re-run."""
-    if quota_to_ote is None and coverage_target is None and not ote_overrides and not overrides:
+    if (
+        quota_to_ote is None
+        and coverage_target is None
+        and not ote_overrides
+        and not overrides
+        and not added_reps
+    ):
         return DEFAULT_PLAN
     return run_plan(
         ACCOUNTS,
@@ -68,6 +76,7 @@ def _plan(quota_to_ote=None, coverage_target=None, ote_overrides=None, overrides
             coverage_target=coverage_target,
             ote_overrides=ote_overrides or {},
             overrides=overrides or {},
+            added_reps=added_reps or [],
         ),
     )
 
@@ -225,6 +234,66 @@ def whatif_ote(segment: str, level: str, ote: float) -> dict:
                 "of": plan.scorecard["reps_covered"]["of"],
             },
             "affected_reps": affected,
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@mcp.tool()
+def whatif_hire(segment: str, level: str, count: int = 1, name: str = "TBH") -> dict:
+    """Add `count` planned hires at a (segment, level) role and DIFF vs. the default plan.
+
+    Each hire carries that role's standardized quota, and the carve pulls pipeline
+    from its segment — so this answers "which level can I hire without dropping a
+    segment below the coverage target". Returns the company-target delta, reps
+    covered before/after, the coverage floor, and that segment's pipeline vs.
+    required. Valid segments: call list_segments; levels: ramping / AE / Sr. AE /
+    Sr. Strategic AE. Use 'TBH' as the name for an open req.
+    """
+    try:
+        if segment not in config.SEGMENT_OTE:
+            return {"error": f"unknown segment {segment!r}; valid: {sorted(config.SEGMENT_OTE)}"}
+        if level not in config.AE_LEVELS:
+            return {"error": f"unknown level {level!r}; valid: {config.AE_LEVELS}"}
+        n = max(1, int(count))
+        added = [{"name": name, "segment_focus": segment, "level": level} for _ in range(n)]
+        plan = _plan(added_reps=added)
+        base = DEFAULT_PLAN
+        seg_cap = plan.scorecard["per_segment_capacity"].get(segment, {})
+        base_cap = base.scorecard["per_segment_capacity"].get(segment, {})
+        return {
+            "units": config.UNITS,
+            "role": f"{segment} · {level}",
+            "hires_added": n,
+            "company_target": {
+                "default": round(base.company_target),
+                "whatif": round(plan.company_target),
+            },
+            "reps_covered": {
+                "default": base.scorecard["reps_covered"]["optimized"],
+                "whatif": plan.scorecard["reps_covered"]["optimized"],
+                "of": plan.scorecard["reps_covered"]["of"],
+            },
+            "coverage_floor": {
+                "default": base.scorecard["coverage_floor"]["optimized"],
+                "whatif": plan.scorecard["coverage_floor"]["optimized"],
+            },
+            "segment_capacity": {
+                "segment": segment,
+                "available_pipeline": round(seg_cap.get("available_pipeline", 0)),
+                "required_default": round(base_cap.get("required_pipeline", 0)),
+                "required_whatif": round(seg_cap.get("required_pipeline", 0)),
+                "coverable_whatif": seg_cap.get("coverable"),
+            },
+            "added_reps": [
+                {
+                    "rep_id": t.rep_id,
+                    "quota": round(t.quota or 0),
+                    "pipeline_coverage": t.pipeline_coverage_multiple,
+                }
+                for t in plan.territories
+                if t.rep_id.startswith("NEW-")
+            ],
         }
     except Exception as e:
         return {"error": str(e)}

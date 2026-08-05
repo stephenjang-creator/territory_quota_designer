@@ -115,3 +115,15 @@ def test_tools_never_raise_on_bad_input():
     assert "error" in S.assess_territory("nope")
     assert "error" in S.whatif_conversions(42)
     assert "error" in S.whatif_coverage(0)
+
+
+def test_whatif_hire_diffs_capacity():
+    d = S.whatif_hire("SMB", "AE", count=2)
+    assert "error" not in d
+    assert d["hires_added"] == 2
+    assert d["company_target"]["whatif"] > d["company_target"]["default"]
+    # hiring into the already-short SMB segment raises its required pipeline
+    assert d["segment_capacity"]["required_whatif"] > d["segment_capacity"]["required_default"]
+    assert len(d["added_reps"]) == 2
+    assert "error" in S.whatif_hire("Nope", "AE")
+    assert "error" in S.whatif_hire("SMB", "Principal")

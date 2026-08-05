@@ -119,6 +119,24 @@ No assignment can invent pipeline — the fix is to reassign pipeline in, lower 
 SMB role's quota (OTE or the multiple), or source more. That's the decision the
 tool exists to surface.
 
+## Plan hires against capacity
+
+The roster in the dashboard is **editable**: add a rep — a name, or **"TBH"** for an
+open req — at any segment and level, and the whole chain recomputes with them in it.
+Each hire takes its role's standardized quota, and the carve pulls pipeline from that
+hire's segment, so the scorecard shows immediately whether the larger team still covers:
+
+- **Add an Enterprise AE** → the segment's surplus absorbs it: reps-covered goes 10 → 11
+  and Enterprise required rises $4.03M → $4.87M but still sits under its $5.15M available —
+  a **safe hire**.
+- **Add two SMB AEs** → the already-short SMB segment's required jumps $1.25M → $1.91M
+  against the same $1.02M available, the new reps land uncovered, and the coverage floor
+  drops 2.43× → 1.40× — a hire the segment **can't support without more pipeline**.
+
+That's the question the feature answers: *which levels can I hire into without pushing a
+segment below the coverage target.* Over MCP, `whatif_hire(segment, level, count)` returns
+the same diff (company target, reps covered, coverage floor, segment pipeline vs. required).
+
 ## Worked example (two reps)
 
 ```
@@ -197,13 +215,13 @@ Interactive docs at `/docs`.
 
 Settings a request can send: `quota_to_ote`, `coverage_target`, `ote_overrides`
 (`{segment:{level:ote}}`), `prefer_home_region`, `overrides` (conversions), `comp`,
-`attainment`.
+`attainment`, `added_reps` (`[{name, segment, level}]` — what-if hires).
 
 ## Agent / MCP
 
-The same engine is an **MCP server** (`mcp_server.py`) — ten read-only tools so an
+The same engine is an **MCP server** (`mcp_server.py`) — twelve read-only tools so an
 agent can interrogate a plan conversationally: `plan_summary`, `list_territories`,
-`assess_territory`, `coverage_gaps`, `whatif_ote`, `whatif_coverage`,
+`assess_territory`, `coverage_gaps`, `whatif_ote`, `whatif_hire`, `whatif_coverage`,
 `whatif_conversions`, `comp_scenario`, `get_scorecard`, `list_reps`, `list_segments`.
 See **[EXAMPLES.md](EXAMPLES.md)** for natural-language questions mapped to tools.
 

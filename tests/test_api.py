@@ -103,3 +103,16 @@ def test_territory_detail_get_and_post():
         "won_deals",
     }
     assert client.post("/territory/R-999", json={}).status_code == 404
+
+
+def test_plan_accepts_added_reps():
+    base = client.post("/plan", json={}).json()["summary"]
+    body = {"added_reps": [{"name": "TBH", "segment": "SMB", "level": "AE"}]}
+    got = client.post("/plan", json=body).json()
+    assert got["summary"]["n_territories"] == base["n_territories"] + 1
+    assert got["summary"]["company_target"] > base["company_target"]
+    planned = [r for r in got["territories"] if r["rep_id"].startswith("NEW-")]
+    assert planned and planned[0]["rep_name"] == "TBH" and planned[0]["role"] == "SMB · AE"
+    # the added rep's territory resolves under the same settings (dashboard drill-in)
+    d = client.post("/territory/NEW-1", json=body).json()
+    assert d["role"] == "SMB · AE" and d["quota"] > 0
