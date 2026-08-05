@@ -102,11 +102,14 @@ def _seg_capacity(scorecard: dict) -> dict:
 
 
 def build_recommendations(
-    accounts, reps, conversions, settings: PlanSettings | None = None
+    accounts, reps, conversions, settings: PlanSettings | None = None, plan=None
 ) -> list:
-    """The recommended actions for a plan, each with an applyable settings delta."""
+    """The recommended actions for a plan, each with an applyable settings delta.
+
+    Pass `plan` to reuse an already-computed PlanResult (the /plan endpoint does)."""
     s = settings or PlanSettings()
-    plan = run_plan(accounts, reps, conversions, s)
+    if plan is None:
+        plan = run_plan(accounts, reps, conversions, s)
     sc = plan.scorecard
 
     # Re-derive the same intermediates run_plan used (pure, cheap) so we can compute

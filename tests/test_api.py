@@ -116,3 +116,23 @@ def test_plan_accepts_added_reps():
     # the added rep's territory resolves under the same settings (dashboard drill-in)
     d = client.post("/territory/NEW-1", json=body).json()
     assert d["role"] == "SMB · AE" and d["quota"] > 0
+
+
+def test_plan_returns_recommendations_and_a_lever_resolves_over_the_wire():
+    recs = client.post("/plan", json={}).json()["recommendations"]
+    cats = {x["category"] for x in recs}
+    assert {"pipeline", "hiring", "comp", "sensitivity"} <= cats
+    pipe = next(x for x in recs if x["id"] == "pipeline-SMB")
+    # send a lever's apply-delta back to /plan; SMB should come back coverable
+    delta = next(lv["apply"] for lv in pipe["levers"] if "account_retags" in lv["apply"])
+    got = client.post("/plan", json=delta).json()["summary"]
+    assert got["per_segment_capacity"]["SMB"]["coverable"] is True
+
+
+def test_plan_accepts_segment_override():
+    base = client.post("/plan", json={}).json()["summary"]
+    got = client.post("/plan", json={"segment_overrides": {"SMB": {"quota_to_ote": 3.25}}}).json()[
+        "summary"
+    ]
+    assert got["per_segment_capacity"]["SMB"]["coverable"] is True
+    assert got["company_target"] < base["company_target"]
