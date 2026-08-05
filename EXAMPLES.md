@@ -1,56 +1,54 @@
 # EXAMPLES.md — talking to the Territory Designer over MCP
 
 Natural-language questions a RevOps planner might ask, and the tool call(s) each
-one triggers. The tools return **structured JSON**; the agent narrates. Every
-number comes from the deterministic core — the model only explains it. All dollar
-figures are **MRR**; quota is a **quarterly** new-MRR target.
+triggers. Tools return **structured JSON**; the agent narrates. Every number comes
+from the deterministic engine. Quotas are standardized by role (quota = a multiple
+of OTE); territories are carved back to a pipeline-coverage target (3×). All $ are
+MRR.
 
 ---
 
-### 1. "Which territories can't hit their quota, and why?"
+### 1. "Which reps can't hit their number, and why?"
 
 ```
-coverage_gaps()                    # → the under-covered reps, worst first
-assess_territory("R-101")          # → drill into the worst one for the full funnel
+coverage_gaps()                    # → reps whose book is below the 3× pipeline target
+assess_territory("R-104")          # → drill into one for the full picture
 ```
 
-`coverage_gaps` returns three under-covered reps, worst first: the two **Sr.
-Strategic AEs on Enterprise books** — R-101 and R-102 at 0.79 — and a **Sr. AE**
-(R-100, Mid-Market) sitting right on the line at 0.99, each with a gap size and
-levers. `assess_territory("R-101")` shows *why*: the reverse-waterfall funnel
-(quota → 72 won deals → … → ~1,611 required SQLs), `required_pipeline` ≈ $28.7M MRR
-vs `available_pipeline` ≈ $22.6M MRR. It's a normal Enterprise book — but it's
-**loaded as a Sr. Strategic AE (×1.30) → an $8.6M quota** on the lowest-win-rate
-segment, and that's what pulls coverage to 0.79.
+`coverage_gaps` returns the three **SMB reps** at ~2.6× pipeline coverage, each with
+the exact pipeline gap (target × quota − available). `assess_territory("R-104")`
+shows why: a standardized SMB AE quota of $1.5M needs $4.5M of pipeline at 3×, but
+the book holds only ~$4.0M — a **$0.5M capacity gap**. It's not a carve mistake: the
+whole SMB segment holds $10.3M vs the $11.7M its quotas need. An assignment can't
+invent pipeline.
 
 ---
 
-### 2. "If I weight potential at 70% and geo at 10%, who wins and loses?"
+### 2. "If we require 5× pipeline coverage instead of 3×, who comes up short?"
 
 ```
-whatif_weights(potential_weight=0.70, geo_weight=0.10, whitespace_weight=0.20)
+whatif_coverage(5.0)
 ```
 
-Returns a diff vs. the default carve: the change in within-segment balance and
-off-home-region share, the change in # under-covered, and the reps who gained /
-lost the most potential (MRR). Weighting potential up tightens balance; weighting
-geo up compacts territories at the cost of balance — the diff quantifies the trade.
+Re-carves to the stiffer target and diffs. Reps covered drops from **9 → 1** — at 5×,
+even the surplus Enterprise and Mid-Market segments can't pack every book that
+deep — and the total capacity gap balloons. Returns the coverage floor, the gap, and
+the full below-target list. Powers "how much pipeline coverage can we actually
+demand before the model breaks".
 
 ---
 
-### 3. "Enterprise win rates are really 25%, not 30% — what breaks?"
+### 3. "If we lift SMB AE OTE to $400K, what happens to quota and coverage?"
 
 ```
-whatif_conversions({"segment": {"Enterprise": {"Negotiation->Won": 0.25}}})
+whatif_ote("SMB", "AE", 400000)
 ```
 
-Re-runs the waterfall with the override (rep > segment > global). Every Enterprise
-rep drops: the two Sr. Strategic AEs (R-101, R-102) from ~0.79 to ~0.66, and the
-Enterprise AE (R-105) from 1.02 to 0.85 — a *new* gap — while the *ramping*
-Enterprise rep (R-109) stays covered at ~1.41 because its lighter load protects it.
-Under-covered goes 3 → 4; push the rate lower still and even the ramping rep's
-cushion goes. The tool reports exactly which territories cross the line and each
-coverage delta.
+Every SMB AE's quota is re-priced to `5 × 400,000 = $2.0M` (same role → same number),
+the company target rises, and each affected rep's pipeline coverage drops further
+below 3× (a richer quota on the same thin book). Returns the before/after quota and
+coverage per affected rep. Powers "we want to pay SMB more — can the segment support
+the quota that implies?".
 
 ---
 
@@ -60,85 +58,77 @@ coverage delta.
 comp_scenario(attainment=0.90)
 ```
 
-Returns total comp, cost-of-sale, and the top/bottom earners at 90% attainment
-(all quarterly MRR). Call `comp_scenario()` with no argument for the standard
-0.85 / 1.0 / 1.10 scenario-compare table — cost-of-sale *falls* as attainment
-rises, because base salary is fixed while bookings grow.
+Total comp, cost-of-sale, and the top/bottom earners at 90%. Call `comp_scenario()`
+with no argument for the 0.85 / 1.0 / 1.10 table. Comp is OTE-anchored (base = a
+slice of OTE, on-target variable earned in full at 100%), so cost-of-sale can tick
+*up* above 100% as the accelerator kicks in — the table shows it honestly.
 
 ---
 
-### 5. "How much better is the optimized carve than an even split?"
+### 5. "How much better is the work-back carve than an even split?"
 
 ```
 get_scorecard()
 ```
 
-The baseline-vs-optimized eval: within-segment potential balance −57%, off-home
-geo share −43%, distinct-region spread −40%, plus a ready-to-paste markdown table.
-It also labels the whole-team potential CoV as a **structural floor** — under
-segment focus, Enterprise reps carry ~$25M books and SMB reps ~$3.7M, a gap no
-carve can close — so the agent can caveat the headline honestly.
+The capacity eval, both carves under the **same** standardized quotas: the work-back
+carve cuts the total capacity gap (~$1.96M → ~$1.37M) and raises the coverage floor
+(worst rep 2.23× → 2.63×) by spreading the SMB shortfall evenly instead of starving
+one rep to over-fill another. Includes a ready-to-paste markdown table and the
+per-segment pipeline-vs-required breakdown.
 
 ---
 
-### 6. "Is territory R-101 set up to fail, or just light on pipeline?"
+### 6. "Is R-104 set up to fail, or is the segment just short on pipeline?"
 
 ```
-assess_territory("R-101")
+assess_territory("R-104")
 ```
 
-Distinguishes two things the planner conflates: **fairness** (`quota_to_potential`
-and how it compares across peers — is the quota load reasonable for this rep?) and
-**coverage** (does the book hold enough pipeline?). R-101's quota load is high **by
-design** — it's a Sr. Strategic AE (×1.30) on a big Enterprise book → an $8.6M
-quota — which is appropriate, not a carve error. The real signal is **coverage:
-0.79** — that heavy senior quota outruns the territory's addressable pipeline. The
-`gap` block lists the levers (lower quota to ~$6.78M MRR, add ~$6.11M MRR of
-pipeline, or source ~343 more SQLs).
+Distinguishes two things: the **quota is standardized and fair** (every SMB AE
+carries the same $1.5M, derived from OTE — not a punishment), and the **coverage** is
+2.67× vs the 3× target. So it isn't that R-104's quota is unfair; it's that the SMB
+book can't hold 3× pipeline for these quotas. The payload carries the pipeline gap
+and both coverage lenses (pipeline multiple + the reverse-waterfall funnel).
 
 ---
 
-### 7. "Rank my territories by coverage and show me the reps and segments."
+### 7. "Rank my territories by coverage and show me the roles and OTE."
 
 ```
-list_reps()                        # discover valid ids / metadata
-list_territories(sort_by="coverage_ratio", ascending=True, limit=15)
+list_reps()                        # discover ids, roles, OTE, standardized quota
+list_territories(sort_by="pipeline_coverage", ascending=True, limit=15)
 ```
 
-A compact table, worst-covered first. `list_reps` / `list_segments` are the
-discovery tools — valid rep ids, and each segment's default conversion rates + avg
-deal size (the global-tier defaults the override hierarchy falls back to).
+A compact table, worst-covered first. `list_reps` shows each rep's role
+(segment × title), OTE, and standardized quota; `list_segments` gives each segment's
+default conversion rates + avg deal size.
 
 ---
 
-### 8. "So if coverage is ≥ 1, the rep will hit quota, right?"
+### 8. "So if a rep is covered to 3×, they'll hit quota, right?"
 
 ```
-assess_territory("R-108")          # a covered SMB territory
+assess_territory("R-101")          # a covered Enterprise territory
 ```
 
-**No — and the tool says so.** Every coverage payload carries
-`"coverage_note": "coverage_ratio reflects pipeline adequacy / risk, not a
-guarantee of attainment."` Coverage means the territory holds *enough addressable
-pipeline on paper* to support the quota (a stock-vs-required check). It says
-nothing about execution, timing, or win-rate variance. A covered rep can still
-miss; an under-covered rep is carrying structural risk before the quarter even
-starts. The engine quantifies risk; it never promises attainment.
+**No — and the tool says so.** Coverage means the book holds *enough addressable
+pipeline on paper* (3× quota) — a capacity check, not a forecast. It says nothing
+about execution, timing, or win-rate variance. The reverse-waterfall funnel is a
+second, stricter lens (does the pipeline survive the stage win-rates?), and even
+that is adequacy, not a promise. A covered rep can still miss; a short rep can still
+deliver. The engine quantifies risk; it never promises attainment.
 
 ---
 
-### 9. "If we load our Sr. Strategic AEs 40% heavier, who runs short on pipeline?"
+### 9. "If enterprise win-rates drop to 15%, whose funnel breaks?"
 
 ```
-whatif_levels({"Sr. Strategic AE": 1.4})
+whatif_conversions({"segment": {"Enterprise": {"Negotiation->Won": 0.15}}})
 ```
 
-Quota is proportional to potential × the rep's **seniority-level multiplier**, then
-re-normalized to the same company target — so loading one level up shifts quota onto
-it and off everyone else. Here the two Sr. Strategic AEs on Enterprise (R-101, R-102)
-deepen from 0.79→0.75 and 0.79→0.76 as their quota climbs ~$8.6M → ~$9.0M, while the
-rest of the team eases just enough that the Sr. AE (R-100) tips back over 1.0 — so
-total under-covered actually drops 3 → 2. The tool returns each rep's quota +
-coverage delta and any flips. `list_reps` shows who sits at each level and the
-default multipliers, and the dashboard's "Quota by seniority level" panel is the
-same lever with sliders.
+Re-runs the reverse waterfall with the override (rep > segment > global). Quotas and
+the carve don't move — this is the funnel lens — but every Enterprise rep's
+funnel-coverage drops, and the tool reports which territories cross below 1.0 and
+each coverage delta. Powers "our Enterprise close rate is slipping — where does the
+pipeline stop being enough".

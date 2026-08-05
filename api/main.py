@@ -37,13 +37,12 @@ ACC_BY_ID = {a.account_id: a for a in ACCOUNTS}
 class PlanRequest(BaseModel):
     """Every knob the dashboard can change; all optional (fall back to config)."""
 
-    weights: dict | None = None
-    potential_mix: dict | None = None
-    company_target: float | None = None
+    ote_overrides: dict = Field(default_factory=dict)  # {segment: {level: ote}}
+    quota_to_ote: float | None = None
+    coverage_target: float | None = None
     respect_segment_focus: bool | None = None
-    max_accounts_per_rep: int | None = None
-    overrides: dict = Field(default_factory=dict)
-    level_multipliers: dict | None = None
+    prefer_home_region: bool | None = None
+    overrides: dict = Field(default_factory=dict)  # conversion overrides
     comp: dict | None = None
     attainment: float = 1.0
     attainment_scenarios: list | None = None
@@ -60,6 +59,14 @@ class ExplainRequest(BaseModel):
 
 def _plan(req: PlanRequest):
     return run_plan(ACCOUNTS, REPS, CONVERSIONS, req.to_settings())
+
+
+def _sample_ote_quota(plan):
+    """A representative (OTE, quota) for the 'average rep' payout curve."""
+    n = max(len(plan.territories), 1)
+    ote = sum(t.ote or 0 for t in plan.territories) / n
+    q = sum(t.quota or 0 for t in plan.territories) / n
+    return ote, q
 
 
 # ----------------------------------------------------------------------
@@ -84,7 +91,7 @@ def api_index():
         "endpoints": [
             "/data/summary",
             "/conversions",
-            "/levels",
+            "/roles",
             "/comp/defaults",
             "/balance",
             "/quota",
@@ -140,21 +147,41 @@ def comp_defaults():
     }
 
 
-@app.get("/levels")
-def ae_levels():
-    """AE seniority levels + their default quota multipliers + how many reps sit at
-    each level. The dashboard pre-fills its editable quota-by-level panel from this.
+@app.get("/roles")
+def role_defaults():
+    """Default OTE + standardized quota per role (segment x level), plus the quota
+    multiple and coverage target. The dashboard pre-fills its editable OTE-by-role
+    panel from this; every rep in a role carries the same quota = quota_to_ote x OTE.
     """
     from collections import Counter
 
-    counts = Counter(r.level for r in REPS)
+    counts = Counter((r.segment_focus, r.level) for r in REPS)
+    segments = sorted({r.segment_focus for r in REPS}, key=lambda s: -config.SEGMENT_OTE.get(s, 0))
+    roles = []
+    for seg in segments:
+        for lvl in config.AE_LEVELS:
+            n = counts.get((seg, lvl), 0)
+            if n == 0:
+                continue
+            ote = quota.role_ote(seg, lvl)
+            roles.append(
+                {
+                    "segment": seg,
+                    "level": lvl,
+                    "reps": n,
+                    "ote": round(ote),
+                    "quota": round(config.QUOTA_TO_OTE * ote),
+                }
+            )
     return {
+        "units": config.UNITS,
+        "segments": segments,
         "levels": config.AE_LEVELS,
-        "multipliers": dict(config.LEVEL_QUOTA_MULTIPLIER),
-        "counts": {lvl: counts.get(lvl, 0) for lvl in config.AE_LEVELS},
-        "note": "Quota per rep is proportional to their book's potential, scaled by "
-        "their level multiplier, then re-normalized to the company target. 1.0 = a "
-        "standard AE; the whole team still sums to the same target.",
+        "quota_to_ote": config.QUOTA_TO_OTE,
+        "coverage_target": config.PIPELINE_COVERAGE_TARGET,
+        "roles": roles,
+        "note": "Quota = quota_to_ote x OTE, standardized per role. Edit OTE per role; "
+        "the company target is the sum. The carve packs each book to coverage_target x quota.",
     }
 
 
@@ -187,47 +214,50 @@ def data_summary():
 
 @app.post("/balance")
 def balance_endpoint(req: PlanRequest):
-    """Stage 1 — territories + balance scores for the given weights."""
+    """Stage 1 — the work-back carve: books packed to the coverage target + capacity."""
     plan = _plan(req)
     sc = plan.scorecard
     return {
+        "coverage_target": sc["coverage_target"],
+        "reps_covered": sc["reps_covered"],
+        "capacity_gap": sc["capacity_gap"],
+        "off_home_share": sc["off_home_share"],
+        "per_segment_capacity": sc["per_segment_capacity"],
         "territories": [
             {
                 "rep_id": t.rep_id,
                 "rep_name": REP_BY_ID[t.rep_id].name,
                 "segment_focus": REP_BY_ID[t.rep_id].segment_focus,
+                "level": REP_BY_ID[t.rep_id].level,
                 "account_count": t.account_count,
-                "potential": round(t.potential),
-                "whitespace": round(t.whitespace),
+                "available_pipeline": round(t.available_potential or 0),
+                "quota": round(t.quota or 0),
+                "pipeline_coverage": t.pipeline_coverage_multiple,
                 "geo_spread": t.geo_spread,
             }
             for t in plan.territories
         ],
-        "balance_score": plan.balance_score,
-        "baseline_balance_score": plan.baseline_balance_score,
-        "off_home_share": sc["off_home_share"],
-        "within_segment_potential_cov": sc["per_segment_potential_cov"],
     }
 
 
 @app.post("/quota")
 def quota_endpoint(req: PlanRequest):
-    """Stage 2 — quotas + fairness for the given company target."""
+    """Stage 2 — standardized quota by role (same role -> same quota), from OTE."""
     plan = _plan(req)
     return {
         "company_target": round(plan.company_target),
+        "quota_to_ote": plan.settings["quota_to_ote"],
         "territories": [
             {
                 "rep_id": t.rep_id,
                 "rep_name": REP_BY_ID[t.rep_id].name,
-                "potential": round(t.potential),
-                "quota": round(t.quota),
+                "role": f"{REP_BY_ID[t.rep_id].segment_focus} · {REP_BY_ID[t.rep_id].level}",
+                "ote": round(t.ote or 0),
+                "quota": round(t.quota or 0),
                 "quota_to_potential": t.quota_to_potential,
-                "fairness": t.fairness,
             }
             for t in plan.territories
         ],
-        "fairness_summary": quota.fairness_summary(plan.territories),
     }
 
 
@@ -255,7 +285,7 @@ def comp_endpoint(req: PlanRequest):
     scenarios = comp.scenario_compare(
         plan.territories, req.attainment_scenarios or config.ATTAINMENT_SCENARIOS, req.comp
     )
-    sample_quota = plan.company_target / max(len(plan.territories), 1)
+    sample_ote, sample_quota = _sample_ote_quota(plan)
     return {
         "at_attainment": req.attainment,
         "total_comp": round(sim["total_comp"]),
@@ -265,13 +295,14 @@ def comp_endpoint(req: PlanRequest):
             {
                 "rep_id": r["rep_id"],
                 "rep_name": REP_BY_ID[r["rep_id"]].name,
+                "ote": round(r["ote"]),
                 "quota": round(r["quota"]),
                 "total_comp": round(r["total_comp"]),
             }
             for r in sim["per_rep"]
         ],
         "scenarios": scenarios,
-        "payout_curve": comp.payout_curve(sample_quota, req.comp),
+        "payout_curve": comp.payout_curve(sample_ote, sample_quota, req.comp),
     }
 
 
@@ -279,15 +310,15 @@ def comp_endpoint(req: PlanRequest):
 def plan_endpoint(req: PlanRequest):
     """Run the whole chain from one settings payload (the dashboard's hot path)."""
     plan = _plan(req)
-    sample_quota = plan.company_target / max(len(plan.territories), 1)
+    sample_ote, sample_quota = _sample_ote_quota(plan)
     return {
         "summary": views.plan_summary(plan),
         "scorecard": plan.scorecard,
         "scorecard_markdown": evaluate.scorecard_markdown(plan.scorecard),
-        "territories": views.list_rows(plan, REPS, sort_by="coverage_ratio", limit=len(REPS)),
+        "territories": views.list_rows(plan, REPS, sort_by="pipeline_coverage", limit=len(REPS)),
         "comp": comp.scenario_compare(plan.territories, req.attainment_scenarios, req.comp),
         "comp_params": comp.resolved_params(req.comp),
-        "payout_curve": comp.payout_curve(sample_quota, req.comp),
+        "payout_curve": comp.payout_curve(sample_ote, sample_quota, req.comp),
     }
 
 

@@ -1,21 +1,21 @@
 """
-core/comp.py — Stage 4: comp simulation.
+core/comp.py — Stage 4: comp simulation, anchored on OTE.
 
-Variable pay is commission on bookings on a three-band curve in attainment: a
-reduced `commission_rate * decelerator_multiplier` below `decelerator_threshold`,
-the standard `commission_rate` up to `accelerator_threshold`, then
-`commission_rate * accelerator_multiplier` above it, optionally capped. Base
-salary is derived from the base/variable OTE split so cost-of-sale reflects
-fully-loaded comp, not just commission::
+Pay is anchored on the SAME on-target earnings (OTE) that sets quota (Stage 2), so
+the two are always consistent:
 
-    target_variable = commission_rate * quota          # variable earned at 100%
-    base_salary     = target_variable * split/(1 - split)
-    total_comp      = base_salary + variable_payout(attainment)
-    cost_of_sale    = sum(total_comp) / sum(bookings)
+    base_salary     = split * OTE                                  (fixed)
+    target_variable = (1 - split) * OTE                            (earned in full at 100%)
+    variable(att)   = target_variable * payout_factor(att)         (3-band curve, f(1.0)=1)
+    total_comp      = base_salary + variable(att)
+    cost_of_sale    = sum(total_comp) / sum(bookings)              (bookings = quota * att)
 
-Quota is a quarterly new-MRR target, so payouts, bookings, and cost-of-sale are
-all per-quarter; cost_of_sale is a ratio and so is denomination-invariant. Every
-parameter is overridable via the API/UI; nothing here is hardcoded.
+`payout_factor` is a piecewise-linear multiplier on target variable, normalized so
+it equals 1.0 at the accelerator threshold (on-target). Below the decelerator
+threshold the slope is reduced (under-attainment penalty); above the accelerator
+threshold it is raised (kicker); an optional cap freezes it. Every parameter is
+overridable via the API/UI. Quota is quarterly, so payouts/bookings/cost-of-sale
+are per-quarter; cost_of_sale is a ratio and so denomination-invariant.
 """
 
 from __future__ import annotations
@@ -36,15 +36,10 @@ def resolved_params(overrides: dict | None = None) -> dict:
     return _params(overrides)
 
 
-def variable_payout(quota: float, attainment: float, comp: dict) -> float:
-    """Commission earned at a given attainment on the three-band curve.
-
-    A decelerated (reduced) rate below `decelerator_threshold`, the standard rate
-    up to `accelerator_threshold`, and the accelerated rate above it — optionally
-    frozen at `cap_attainment`. With no decelerator (threshold 0 or multiplier 1)
-    this reduces to the plain accelerator model.
-    """
-    rate = comp["commission_rate"]
+def payout_factor(attainment: float, comp: dict) -> float:
+    """Multiplier on target variable at a given attainment; normalized to 1.0 at the
+    accelerator threshold (on-target). Reduced below the decelerator threshold,
+    raised above the accelerator threshold, optionally frozen at the cap."""
     a_thr = comp["accelerator_threshold"]
     a_mult = comp["accelerator_multiplier"]
     d_thr = comp.get("decelerator_threshold") or 0.0
@@ -54,34 +49,38 @@ def variable_payout(quota: float, attainment: float, comp: dict) -> float:
     cap = comp.get("cap_attainment")
     att = min(attainment, cap) if cap is not None else attainment
     att = max(0.0, att)
-    d_thr = max(0.0, min(d_thr, a_thr))  # keep 0 <= decel <= accel
+    d_thr = max(0.0, min(d_thr, a_thr))
 
-    decel_att = min(att, d_thr)  # 0 .. decel_threshold   (reduced rate)
+    # Standard slope s so that payout_factor(a_thr) == 1.0.
+    denom = d_mult * d_thr + (a_thr - d_thr)
+    s = (1.0 / denom) if denom > 0 else 0.0
+
+    decel_att = min(att, d_thr)  # 0 .. decel_threshold   (reduced slope)
     std_att = max(0.0, min(att, a_thr) - d_thr)  # decel .. accel_threshold (standard)
     accel_att = max(0.0, att - a_thr)  # accel_threshold ..     (accelerated)
-    return quota * rate * (decel_att * d_mult + std_att + accel_att * a_mult)
+    return s * (decel_att * d_mult + std_att + accel_att * a_mult)
 
 
-def base_salary(quota: float, comp: dict) -> float:
-    """Fixed salary implied by the OTE split (0 if split is 0 = pure commission)."""
-    split = comp["base_variable_split"]
-    if split <= 0:
-        return 0.0
-    if split >= 1:
-        raise ValueError("base_variable_split must be < 1.0")
-    target_variable = comp["commission_rate"] * quota
-    return target_variable * split / (1 - split)
+def base_salary(ote: float, comp: dict) -> float:
+    """Fixed base pay: a fraction of OTE."""
+    return comp["base_variable_split"] * ote
 
 
-def rep_payout(quota: float, attainment: float, comp: dict) -> dict:
+def variable_payout(ote: float, attainment: float, comp: dict) -> float:
+    """Variable comp earned at a given attainment (target variable * payout curve)."""
+    target_variable = (1.0 - comp["base_variable_split"]) * ote
+    return target_variable * payout_factor(attainment, comp)
+
+
+def rep_payout(ote: float, quota: float, attainment: float, comp: dict) -> dict:
     """Full payout breakdown for one rep at one attainment."""
-    var = variable_payout(quota, attainment, comp)
-    base = base_salary(quota, comp)
-    bookings = quota * attainment
+    base = base_salary(ote, comp)
+    var = variable_payout(ote, attainment, comp)
     return {
+        "ote": ote,
         "quota": quota,
         "attainment": attainment,
-        "bookings": bookings,
+        "bookings": quota * attainment,
         "base_salary": base,
         "variable_payout": var,
         "total_comp": base + var,
@@ -109,7 +108,7 @@ def simulate(
         if t.quota is None:
             continue
         att = _attainment_for(t.rep_id, attainment)
-        pay = rep_payout(t.quota, att, comp)
+        pay = rep_payout(t.ote or 0.0, t.quota, att, comp)
         pay["rep_id"] = t.rep_id
         rows.append(pay)
         total_comp += pay["total_comp"]
@@ -148,17 +147,19 @@ def scenario_compare(
 
 
 def payout_curve(
+    ote: float,
     quota: float,
     comp_overrides: dict | None = None,
     lo: float = 0.0,
     hi: float = 1.5,
     step: float = 0.1,
 ) -> list[dict]:
-    """Payout as a function of attainment for a single plan (for the UI curve)."""
+    """Total comp as a function of attainment for one plan (for the UI curve)."""
     comp = _params(comp_overrides)
     curve = []
     n = int(round((hi - lo) / step))
     for i in range(n + 1):
         att = round(lo + i * step, 4)
-        curve.append({"attainment": att, "total_comp": rep_payout(quota, att, comp)["total_comp"]})
+        total = rep_payout(ote, quota, att, comp)["total_comp"]
+        curve.append({"attainment": att, "total_comp": total})
     return curve

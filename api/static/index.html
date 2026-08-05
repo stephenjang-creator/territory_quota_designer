@@ -17,15 +17,14 @@
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   header{padding:22px 26px 8px}
   h1{margin:0;font-size:20px;letter-spacing:.2px}
-  .sub{color:var(--muted);margin-top:4px;max-width:880px}
+  .sub{color:var(--muted);margin-top:4px;max-width:900px}
   .wrap{padding:14px 26px 40px;max-width:1280px;margin:0 auto}
   .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
     border-radius:14px;box-shadow:var(--shadow)}
   .pad{padding:16px 18px}
-  .grid{display:grid;grid-template-columns:1.35fr .95fr;gap:16px;margin-top:16px}
+  .grid{display:grid;grid-template-columns:1.4fr .9fr;gap:16px;margin-top:16px}
   @media(max-width:980px){.grid{grid-template-columns:1fr}}
   h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 12px}
-  /* info hover */
   .info{display:inline-flex;width:15px;height:15px;border-radius:50%;border:1px solid var(--muted);color:var(--muted);
     font-size:10px;font-style:normal;font-weight:700;align-items:center;justify-content:center;cursor:help;
     position:relative;margin-left:6px;vertical-align:middle;text-transform:none}
@@ -38,20 +37,20 @@
   .info.b::after{bottom:auto;top:150%;transform:translateX(-50%) translateY(-5px)}
   .info.b:hover::after{transform:translateX(-50%) translateY(0)}
   /* controls */
-  .controls{display:grid;grid-template-columns:repeat(3,1fr) 190px 150px;gap:18px;align-items:end}
-  @media(max-width:980px){.controls{grid-template-columns:1fr 1fr}}
+  .controls{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;align-items:end}
+  @media(max-width:820px){.controls{grid-template-columns:1fr 1fr}}
   .ctl label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
   .ctl .val{color:var(--ink);font-weight:600}
-  input[type=range]{width:100%;accent-color:var(--accent)}
+  .ctl .derived{font-size:19px;font-weight:700;color:var(--ink)}
   input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
     border-radius:9px;padding:8px 10px;font:inherit}
+  .toggle{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);
+    border-radius:9px;padding:8px 10px;cursor:pointer;user-select:none}
+  .toggle input{accent-color:var(--accent);width:16px;height:16px}
   .hint{color:var(--muted);font-size:12px;margin-top:10px}
-  .warn{margin-top:12px;padding:10px 13px;border-radius:10px;background:rgba(255,180,84,.10);
-    border:1px solid var(--warn);color:var(--ink);font-size:12.5px;line-height:1.55}
-  .warn b{color:var(--warn)}
   .lead{margin:22px 2px 2px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink)}
   .lead .muted{font-weight:400;text-transform:none;letter-spacing:0}
-  /* conversion overrides */
+  /* panels */
   details.conv{margin:0}
   details.conv>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   details.conv>summary::-webkit-details-marker{display:none}
@@ -69,10 +68,11 @@
   .convtbl th:first-child,.convtbl td:first-child{text-align:left}
   .convtbl td.seg{color:var(--ink);font-weight:600}
   .convtbl .u{color:var(--muted);font-size:10px;font-weight:400;margin-left:2px}
-  .convtbl input{width:78px;text-align:right;padding:6px 8px}
+  .convtbl input{width:88px;text-align:right;padding:6px 8px}
   .convtbl input.ovr{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:#fff}
+  .qcell{color:var(--accent2);font-weight:600}
   /* comp plan panel */
-  .compgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
+  .compgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:14px}
   @media(max-width:700px){.compgrid{grid-template-columns:1fr}}
   .compgrid .u,.band .u{color:var(--muted);font-size:10.5px;font-weight:400}
   .compbands{display:flex;flex-direction:column;gap:9px;margin-top:16px}
@@ -98,6 +98,16 @@
   .metric .d{font-size:12px;margin-top:4px}
   .up{color:var(--good)} .down{color:var(--bad)} .flat{color:var(--muted)}
   .red{color:var(--bad)} .green{color:var(--good)}
+  /* capacity strip */
+  .caps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+  @media(max-width:700px){.caps{grid-template-columns:1fr}}
+  .capseg{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+  .capseg .h{display:flex;justify-content:space-between;align-items:center;font-weight:600}
+  .capseg .bar{height:8px;border-radius:5px;background:#2a3450;overflow:hidden;margin:8px 0 6px}
+  .capseg .bar i{display:block;height:100%}
+  .capseg .m{font-size:11.5px;color:var(--muted)}
+  .flag{font-size:11px;padding:2px 8px;border-radius:999px}
+  .flag.ok{background:#173a2c;color:var(--good)} .flag.short{background:#3a1d1d;color:var(--bad)}
   /* table */
   table{width:100%;border-collapse:collapse}
   th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
@@ -119,13 +129,12 @@
   .funnel .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
     display:flex;align-items:center;justify-content:flex-end;padding-right:9px;color:#08122a;font-weight:700;font-size:12px}
   .callout{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
-  .callout .box{flex:1;min-width:120px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+  .callout .box{flex:1;min-width:110px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
   .callout .box .k{font-size:11px;color:var(--muted);display:flex;align-items:center} .callout .box .v{font-size:17px;font-weight:700;margin-top:2px}
   .rates{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
   .rates .chip{background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:11.5px;color:var(--muted)}
   .rates .chip b{color:var(--ink)}
   .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px;display:flex;align-items:center}
-  .levers{margin:6px 0 0;padding-left:18px;color:var(--warn)} .levers li{margin:2px 0}
   .muted{color:var(--muted)} .note{color:var(--muted);font-size:12px;margin-top:10px}
   .spin{color:var(--muted);font-size:12px}
   footer{color:var(--muted);font-size:12px;padding:0 26px 30px;max-width:1280px;margin:0 auto}
@@ -134,10 +143,10 @@
 <body>
 <header>
   <h1>Territory &amp; Quota Designer</h1>
-  <div class="sub">Split your accounts into fair, balanced territories, set each rep's quarterly number, and check
-  whether every rep has enough pipeline to actually hit it. Drag the sliders to try different trade-offs — the plan
-  updates instantly. Dollar figures are monthly recurring revenue (MRR) shown in thousands ($K); quotas are per
-  quarter. Sample data.
+  <div class="sub">Quota-first capacity planning. Each rep's quota is <b>standardized by role</b> (same title + segment →
+  same number) and set from pay — <b>quota = a multiple of OTE</b>. Territories are then carved <b>back</b> from those
+  quotas: each book is packed with enough pipeline to give the rep a fair shot at their number. Reps a segment can't
+  cover show up as a capacity gap. Dollar figures are MRR, shown in thousands ($K). Sample data.
   &middot; <a href="/docs">API</a></div>
 </header>
 
@@ -145,33 +154,52 @@
   <!-- CONTROLS -->
   <div class="card pad">
     <div class="controls">
-      <div class="ctl"><label>Fair opportunity split
-        <span class="info b" data-tip="How hard the planner works to give every rep an equally-sized book of revenue opportunity, so quotas land fairly and no one is set up to fail or left to coast.">i</span>
-        <span class="val" id="wp">60%</span></label>
-        <input type="range" id="sp" min="0" max="100" value="60"></div>
-      <div class="ctl"><label>Territory compactness
-        <span class="info b" data-tip="How much the planner keeps each rep's accounts near their home region — less travel, more local focus. Turn it up and books cluster geographically, but may become a little less evenly sized.">i</span>
-        <span class="val" id="wg">25%</span></label>
-        <input type="range" id="sg" min="0" max="100" value="25"></div>
-      <div class="ctl"><label>Fair growth split
-        <span class="info b" data-tip="How evenly the planner spreads untapped expansion opportunity (whitespace) across reps, so future growth isn't concentrated in a few territories.">i</span>
-        <span class="val" id="ww">15%</span></label>
-        <input type="range" id="sw" min="0" max="100" value="15"></div>
-      <div class="ctl"><label>Quarterly target ($ MRR)
-        <span class="info b" data-tip="Total new monthly-recurring revenue the whole team should book this quarter, entered as a full dollar amount — e.g. 45000000 for $45M. Each rep's quota is their fair share of it.">i</span></label>
-        <input type="number" id="tgt" step="1000000" min="0" placeholder="e.g. 45000000"></div>
+      <div class="ctl"><label>Quota = N&times; OTE
+        <span class="info b" data-tip="Each rep's quota is a fixed multiple of their on-target earnings (OTE). Industry norm is 4–6x. Raise it and every quota (and the company target) scales up.">i</span></label>
+        <input type="number" id="qm" min="1" max="12" step="0.5"></div>
+      <div class="ctl"><label>Coverage target (&times; pipeline)
+        <span class="info b" data-tip="How much addressable pipeline each rep's book should hold, as a multiple of their quota. The rule of thumb is 3x. The carve packs each book to this; reps a segment can't cover to it are flagged.">i</span></label>
+        <input type="number" id="ct" min="1" max="8" step="0.5"></div>
+      <div class="ctl"><label>Keep books local
+        <span class="info b" data-tip="Tiebreaker only: when packing a book to its coverage target, prefer accounts in the rep's home region. Coverage always comes first; this just makes books more compact.">i</span></label>
+        <label class="toggle"><input type="checkbox" id="geo" checked> home-region first</label></div>
+      <div class="ctl"><label>Company target
+        <span class="info b" data-tip="Derived, not set: the sum of every rep's standardized quota. Quota rules here — you don't hand down a top-line number and divide it up.">i</span></label>
+        <div class="derived" id="derivedTarget">—</div></div>
       <div class="ctl"><label>Attainment
         <span class="info b" data-tip="The percent of quota reps achieve. Used only to model comp cost and cost-of-sale — it doesn't change the territories.">i</span></label>
         <select id="att"><option value="0.85">85%</option><option value="1.0" selected>100%</option>
           <option value="1.1">110%</option></select></div>
     </div>
-    <div class="hint">The three splits always add up to 100%. There's a real trade-off: chase perfectly even books and
-      reps travel more; keep territories tight and books get a little less even. This tool makes that choice explicit.</div>
-    <div class="warn" id="tgtWarn" style="display:none"></div>
+    <div class="hint">Quota is fixed by role and derived from pay; the carve works backward to give each rep a book that can
+      support it. Set OTE per role below. Everything recomputes live.</div>
   </div>
 
-  <div class="lead">Assumptions behind the plan &middot; <span class="muted">expand any section to tune it — conversion
-    rates, quota by seniority, and how reps get paid. Everything recomputes live.</span></div>
+  <div class="lead">Assumptions behind the plan &middot; <span class="muted">expand any section to tune it — pay by role,
+    conversion rates, and how reps get paid. Everything recomputes live.</span></div>
+
+  <!-- OTE / QUOTA BY ROLE -->
+  <div class="card pad" style="margin-top:16px">
+    <details class="conv" id="rolePanel" open>
+      <summary>
+        <span class="chev">&#9654;</span>
+        <h2 style="margin:0;display:inline">Pay &amp; quota by role
+          <span class="info b" data-tip="A role is a segment + seniority title. Set on-target earnings (OTE) for each role; quota = the multiple above x OTE, and every rep in that role carries the identical number. The company target is the sum.">i</span></h2>
+        <span class="ovbadge" id="roleBadge">using defaults</span>
+        <button class="btn" id="roleReset" type="button" disabled>Reset to defaults</button>
+      </summary>
+      <div class="hint" style="margin-top:10px">Quota is standardized by role and derived from pay: <b>quota = multiple &times; OTE</b>.
+        Edit OTE (annual, $K) per role; the quota column and the company target update live. This is where quota "rules".</div>
+      <div style="overflow-x:auto">
+        <table class="convtbl" id="roletbl"><thead><tr>
+          <th>Role <span class="u">segment &middot; title</span></th>
+          <th>Reps</th>
+          <th>OTE <span class="u">$K / yr</span></th>
+          <th>Quarterly quota <span class="u">= N&times; OTE</span></th>
+        </tr></thead><tbody id="rolebody"><tr><td colspan="4" class="spin">Loading…</td></tr></tbody></table>
+      </div>
+    </details>
+  </div>
 
   <!-- CONVERSION OVERRIDES -->
   <div class="card pad" style="margin-top:16px">
@@ -179,13 +207,13 @@
       <summary>
         <span class="chev">&#9654;</span>
         <h2 style="margin:0;display:inline">Conversion assumptions
-          <span class="info b" data-tip="The stage-to-stage win rates and average deal size behind every pipeline-coverage check. Change them to stress-test the plan — e.g. 'if Enterprise close rates slip to 25%, who runs short on pipeline?' Edits apply to every rep in that segment.">i</span></h2>
+          <span class="info b" data-tip="The stage-to-stage win rates and average deal size behind the funnel math on the right. They shape the reverse-waterfall detail per rep; the pipeline-coverage carve packs on raw pipeline. Edits apply to every rep in that segment.">i</span></h2>
         <span class="ovbadge" id="ovBadge">using defaults</span>
         <button class="btn" id="ovReset" type="button" disabled>Reset to defaults</button>
       </summary>
-      <div class="hint" style="margin-top:10px">How a lead moves down the funnel and the typical deal it becomes. These drive
-        the "what it takes to hit quota" math on the right — territories, quotas, and fairness don't change. Win rates are the
-        percent of deals that advance one stage; blank or 0 falls back to the default.</div>
+      <div class="hint" style="margin-top:10px">How a lead moves down the funnel and the typical deal it becomes — drives the
+        "what it takes to hit quota" detail on the right. Win rates are the percent of deals that advance one stage; blank or 0
+        falls back to the default.</div>
       <div style="overflow-x:auto">
         <table class="convtbl" id="convtbl"><thead><tr>
           <th>Segment</th>
@@ -199,63 +227,36 @@
     </details>
   </div>
 
-  <!-- QUOTA BY SENIORITY LEVEL -->
-  <div class="card pad" style="margin-top:16px">
-    <details class="conv" id="lvlPanel">
-      <summary>
-        <span class="chev">&#9654;</span>
-        <h2 style="margin:0;display:inline">Quota by seniority level
-          <span class="info b" data-tip="Reps carry different quota loads by seniority. Set how much each level carries relative to a standard AE (100%): ramping reps lighter, senior reps heavier. The whole team still adds up to the same company target — dialing one level up shares a little more onto them and a little less onto everyone else.">i</span></h2>
-        <span class="ovbadge" id="lvlBadge">using defaults</span>
-        <button class="btn" id="lvlReset" type="button" disabled>Reset to defaults</button>
-      </summary>
-      <div class="hint" style="margin-top:10px">Quota load is set relative to a standard AE at 100%. It scales each rep's quota
-        by seniority, then re-balances so the team total is unchanged — this shifts <em>who</em> carries the number, not the
-        total. Territories and coverage math update live.</div>
-      <div style="overflow-x:auto">
-        <table class="convtbl" id="lvltbl"><thead><tr>
-          <th>Seniority level</th>
-          <th>Reps at this level</th>
-          <th>Quota load <span class="u">% of a standard AE</span></th>
-        </tr></thead><tbody id="lvlbody"><tr><td colspan="3" class="spin">Loading…</td></tr></tbody></table>
-      </div>
-    </details>
-  </div>
-
   <!-- COMPENSATION PLAN -->
   <div class="card pad" style="margin-top:16px">
     <details class="conv" id="compPanel">
       <summary>
         <span class="chev">&#9654;</span>
         <h2 style="margin:0;display:inline">Compensation plan
-          <span class="info b" data-tip="How reps get paid. Set the base/variable pay mix and the commission rate, then shape the payout curve: a decelerator that pays a reduced rate when reps fall short, and an accelerator that pays a premium once they beat target. This drives the comp cost and cost-of-sale on the right.">i</span></h2>
+          <span class="info b" data-tip="Pay is anchored on the same OTE that sets quota: base is a slice of OTE, the rest is variable earned at 100% attainment and shaped by a payout curve — a decelerator below a floor and an accelerator above target.">i</span></h2>
         <span class="ovbadge" id="compBadge">using defaults</span>
         <button class="btn" id="compReset" type="button" disabled>Reset to defaults</button>
       </summary>
-      <div class="hint" style="margin-top:10px">Set the pay mix and commission rate, then the two kickers. A <b>decelerator</b> pays a
-        reduced rate below a floor (protects the budget when reps miss); an <b>accelerator</b> pays a premium above target
-        (rewards overperformance). Cost of sale on the right updates live.</div>
+      <div class="hint" style="margin-top:10px">Base is a slice of OTE; the rest is on-target variable, paid in full at 100%
+        and shaped by two kickers. A <b>decelerator</b> pays a reduced rate below a floor; an <b>accelerator</b> pays a premium
+        above target. Cost of sale on the right updates live.</div>
       <div class="compgrid">
         <div class="ctl"><label>Base / variable split
-          <span class="info b" data-tip="How much of on-target earnings (OTE) is fixed base salary vs. variable commission. 50% means base equals target commission. Higher base = steadier pay, higher fixed cost.">i</span>
+          <span class="info b" data-tip="How much of OTE is fixed base salary vs. variable. 50% = base equals on-target variable. Higher base = steadier pay, higher fixed cost.">i</span>
           <span class="u">% base of OTE</span></label>
           <input type="number" id="cp_split" min="0" max="90" step="5"></div>
-        <div class="ctl"><label>Commission rate
-          <span class="info b" data-tip="Cents of commission per dollar of bookings in the standard band (between the decelerator and accelerator).">i</span>
-          <span class="u">% of bookings</span></label>
-          <input type="number" id="cp_rate" min="0" step="0.5"></div>
         <div class="ctl"><label>Cap
-          <span class="info b" data-tip="Attainment at which commission stops growing (windfall protection). Leave blank for no cap.">i</span>
+          <span class="info b" data-tip="Attainment at which variable pay stops growing (windfall protection). Leave blank for no cap.">i</span>
           <span class="u">% attainment · blank = none</span></label>
           <input type="number" id="cp_cap" min="0" step="10" placeholder="none"></div>
       </div>
       <div class="compbands">
         <div class="band decel"><span class="tagname">Decelerator</span> below
           <input type="number" id="cp_dthr" min="0" max="100" step="5"><span class="u">% attainment</span>, pay
-          <input type="number" id="cp_dmult" min="0" max="100" step="5"><span class="u">% of the commission rate</span></div>
+          <input type="number" id="cp_dmult" min="0" max="100" step="5"><span class="u">% of the standard rate</span></div>
         <div class="band accel"><span class="tagname">Accelerator</span> above
           <input type="number" id="cp_athr" min="0" step="5"><span class="u">% attainment</span>, pay
-          <input type="number" id="cp_amult" min="100" step="10"><span class="u">% of the commission rate</span></div>
+          <input type="number" id="cp_amult" min="100" step="10"><span class="u">% of the standard rate</span></div>
       </div>
       <div class="curvewrap">
         <div class="curvecap" id="curveCap">Payout curve — total comp vs. attainment</div>
@@ -266,9 +267,10 @@
 
   <!-- SCORECARD -->
   <div class="card pad" style="margin-top:16px">
-    <h2>Simple even split &nbsp;&rarr;&nbsp; this plan
-      <span class="info" data-tip="The 'before' is the naive way to carve territories: hand every rep the same number of accounts, ignoring deal size, growth, or geography. The 'after' is this plan. The cards show how much the plan improved on that starting point.">i</span></h2>
+    <h2>Capacity &middot; work-back carve vs. a naive even split
+      <span class="info" data-tip="Given every rep's standardized quota, can the book be carved so each rep holds enough pipeline (the coverage target)? The cards compare the work-back carve against a naive equal-account split under the same quotas.">i</span></h2>
     <div class="cards" id="score"><div class="spin">Loading…</div></div>
+    <div class="caps" id="caps"></div>
   </div>
 
   <div class="grid">
@@ -279,36 +281,35 @@
         <table id="tbl">
           <thead><tr>
             <th data-k="rep_id">Rep</th>
-            <th data-k="segment_focus" title="The customer size the rep sells to: Enterprise, Mid-Market, or SMB.">Segment</th>
-            <th data-k="level" title="Seniority tier: ramping, AE, Sr. AE, or Sr. Strategic AE. Sets how much quota the rep carries — tune it in 'Quota by seniority level' above.">Level</th>
-            <th data-k="account_count" title="Number of accounts assigned to the rep.">Accounts</th>
-            <th data-k="potential" title="Total revenue opportunity in the book — open pipeline + untapped expansion + a slice of installed base, in MRR.">Opportunity</th>
-            <th data-k="quota" title="New MRR this rep must book this quarter — their share of the company target.">Quarterly quota</th>
-            <th data-k="quota_to_potential" title="Quota as a share of the rep's opportunity. Varies by seniority level by design — senior reps carry more per dollar of opportunity, ramping reps less. Big gaps between reps at the same level are worth a look.">Quota load</th>
-            <th data-k="coverage_ratio" title="Pipeline the rep has vs. pipeline needed to hit quota. 1.0x = just enough on paper; below 1.0x (red) = short on pipeline.">Pipeline coverage</th>
+            <th data-k="role" title="Segment + seniority title. Every rep in the same role carries the same quota.">Role</th>
+            <th data-k="ote" title="On-target earnings (annual). Quota is a fixed multiple of this. Edit OTE per role above.">OTE</th>
+            <th data-k="quota" title="Standardized quarterly quota for the role — quota = multiple x OTE. Same role, same number.">Quarterly quota</th>
+            <th data-k="account_count" title="Accounts the work-back carve assigned to this rep.">Accounts</th>
+            <th data-k="available_pipeline" title="Addressable pipeline in the book: whitespace + open pipeline, in MRR.">Pipeline</th>
+            <th data-k="pipeline_coverage" title="Addressable pipeline ÷ quota. The carve packs each book to the coverage target (3x); below it (red) = capacity-short.">Coverage</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
-      <div class="note">Sorted lowest-coverage first. Click a rep to see what it takes for them to hit quota.
-        <span class="red">Red</span> = short on pipeline (not enough to cover the quota on paper).</div>
+      <div class="note">Sorted lowest-coverage first. Click a rep to see the pipeline math + reverse-waterfall funnel.
+        <span class="red">Red</span> = book can't reach the coverage target on the pipeline available.</div>
     </div>
 
     <!-- RIGHT: FUNNEL + COMP -->
     <div style="display:flex;flex-direction:column;gap:16px">
       <div class="card pad">
-        <h2>What it takes to hit quota &middot; <span class="muted" id="funnelWho">select a rep</span></h2>
-        <div id="funnel" class="funnel"><div class="spin">Pick a rep from the table to see their deal math.</div></div>
+        <h2>Can this rep hit their number? &middot; <span class="muted" id="funnelWho">select a rep</span></h2>
+        <div id="funnel" class="funnel"><div class="spin">Pick a rep from the table to see their coverage + deal math.</div></div>
       </div>
       <div class="card pad">
         <h2>Comp &amp; cost of sale</h2>
         <div style="overflow-x:auto"><table id="comp"><thead><tr>
           <th style="text-align:left" title="Percent of quota the team achieves.">Attainment</th>
-          <th title="Total rep compensation for the quarter at this attainment (base + commission).">Total comp</th>
+          <th title="Total rep compensation for the quarter (base + variable).">Total comp</th>
           <th title="Revenue booked at this attainment.">Bookings</th>
-          <th title="Total comp divided by bookings — what you spend in comp to book each dollar of revenue.">Cost of sale</th>
+          <th title="Total comp divided by bookings — what you spend in comp per dollar booked.">Cost of sale</th>
         </tr></thead><tbody id="cbody"></tbody></table></div>
-        <div class="note">Cost of sale falls as attainment rises — base pay is fixed while bookings grow.</div>
+        <div class="note">Base is fixed (a slice of OTE); the accelerator can lift cost-of-sale above 100% attainment.</div>
       </div>
     </div>
   </div>
@@ -319,36 +320,80 @@
 
 <script>
 const $ = s => document.querySelector(s);
-const state = {sort:"coverage_ratio", asc:true, sel:null, target:null};
+const state = {sort:"pipeline_coverage", asc:true, sel:null, covTarget:3};
 let timer=null;
 
 function fmtK(x){ if(x==null) return "—";
-  if(x!==0 && Math.abs(x)<500) return x>0?"<$1K":">-$1K";   // don't render a real value as $0K
+  if(x!==0 && Math.abs(x)<500) return x>0?"<$1K":">-$1K";
   return "$"+Math.round(x/1000).toLocaleString()+"K"; }
-function covTxt(c){ return c>=100 ? Math.round(c).toLocaleString()+"×" : c.toFixed(2)+"×"; }  // clean huge coverage
-function qloadTxt(f){ if(f==null) return "—"; const p=f*100;
-  return (p>0 && p<0.05) ? "<0.1%" : p.toFixed(1)+"%"; }
-function avg(o){ const v=Object.values(o||{}); return v.length? v.reduce((a,b)=>a+b,0)/v.length : 0; }
-function imp(b,o){ return b ? (b-o)/b*100 : 0; }         // % improvement when lower is better
+function covTxt(c){ if(c==null) return "—"; return c>=100 ? Math.round(c).toLocaleString()+"×" : c.toFixed(2)+"×"; }
 function esc(t){ return t.replace(/"/g,'&quot;'); }
 function info(t){ return `<span class="info" data-tip="${esc(t)}">i</span>`; }
+async function post(path, body){
+  const r=await fetch(path,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+  return r.json();
+}
+function metric(title,tip,value,valCls,subHtml){
+  return `<div class="metric"><div class="k">${title}${info(tip)}</div>
+    <div class="v ${valCls||''}">${value}</div><div class="d">${subHtml}</div></div>`;
+}
 
 function settings(){
-  const p=+$("#sp").value, g=+$("#sg").value, w=+$("#sw").value, s=(p+g+w)||1;
-  $("#wp").textContent=Math.round(p/s*100)+"%"; $("#wg").textContent=Math.round(g/s*100)+"%"; $("#ww").textContent=Math.round(w/s*100)+"%";
-  const body={weights:{potential:p,geo:g,whitespace:w}, attainment:+$("#att").value};
-  const t=parseFloat($("#tgt").value); if(!isNaN(t)&&t>0) body.company_target=t;   // full $ MRR
+  const body={attainment:+$("#att").value, prefer_home_region:$("#geo").checked};
+  const qm=parseFloat($("#qm").value); if(!isNaN(qm)&&qm>0) body.quota_to_ote=qm;
+  const ct=parseFloat($("#ct").value); if(!isNaN(ct)&&ct>0) body.coverage_target=ct;
   const o=convOverrides(); if(Object.keys(o).length) body.overrides=o;
-  const ml=levelOverrides(); if(ml) body.level_multipliers=ml;
+  const r=roleOverrides(); if(Object.keys(r).length) body.ote_overrides=r;
   const c=compOverrides(); if(c) body.comp=c;
   return body;
 }
 
+// ---- Pay & quota by role (OTE overrides) ------------------------------------
+let ROLES=null;   // {segments, levels, quota_to_ote, coverage_target, roles:[{segment,level,reps,ote,quota}]}
+async function loadRoles(){
+  ROLES = await (await fetch("/roles")).json();
+  if($("#qm").value==="") $("#qm").value=ROLES.quota_to_ote;
+  if($("#ct").value==="") $("#ct").value=ROLES.coverage_target;
+  $("#rolebody").innerHTML = ROLES.roles.map(r=>{
+    const ote=Math.round(r.ote/1000), isRamp=r.level==='ramping';
+    return `<tr>
+      <td class="seg">${r.segment} <span class="muted">·</span> <span class="tag ${isRamp?'ramp':''}">${r.level}</span></td>
+      <td>${r.reps}</td>
+      <td><input type="number" data-seg="${r.segment}" data-level="${r.level}" data-def="${ote}"
+        min="1" step="10" value="${ote}" aria-label="${r.segment} ${r.level} OTE"></td>
+      <td class="qcell" data-q="${r.segment}|${r.level}">${fmtK(r.quota)}</td></tr>`;
+  }).join("");
+}
+// Read OTE inputs, mark changed, update the live quota column, return {segment:{level:ote}}.
+function roleOverrides(){
+  if(!ROLES) return {};
+  const qm=parseFloat($("#qm").value)||ROLES.quota_to_ote, ov={}; let n=0;
+  $("#rolebody").querySelectorAll("input").forEach(inp=>{
+    const cur=inp.value.trim(), num=parseFloat(cur);
+    const changed = cur!=="" && !isNaN(num) && num>0 && String(num)!==inp.dataset.def;
+    inp.classList.toggle("ovr", changed);
+    const oteK = (!isNaN(num)&&num>0) ? num : parseFloat(inp.dataset.def);
+    const q=$(`.qcell[data-q="${inp.dataset.seg}|${inp.dataset.level}"]`);
+    if(q) q.textContent=fmtK(qm*oteK*1000);
+    if(changed){ (ov[inp.dataset.seg] || (ov[inp.dataset.seg]={}))[inp.dataset.level]=num*1000; n++; }
+  });
+  const badge=$("#roleBadge");
+  badge.textContent = n ? (n+" OTE override"+(n>1?"s":"")+" — applied to every rep in that role") : "using defaults";
+  badge.classList.toggle("on", n>0);
+  $("#roleReset").disabled = n===0;
+  return ov;
+}
+function resetRoles(ev){
+  ev.stopPropagation();
+  $("#rolebody").querySelectorAll("input").forEach(inp=>{ inp.value=inp.dataset.def; inp.classList.remove("ovr"); });
+  refresh(true);
+}
+
 // ---- Conversion-assumption overrides (per segment) --------------------------
-let CONV=null;                                  // {segments, transitions, avg_deal_key, defaults}
+let CONV=null;
 async function loadConversions(){
   CONV = await (await fetch("/conversions")).json();
-  const rows = CONV.segments.map(seg=>{
+  $("#convbody").innerHTML = CONV.segments.map(seg=>{
     const d=CONV.defaults[seg];
     const rateCells = CONV.transitions.map(k=>{
       const v=Math.round(d[k]*100);
@@ -360,9 +405,7 @@ async function loadConversions(){
       <td><input type="number" data-seg="${seg}" data-key="${dk}" data-def="${dv}"
         min="1" step="5" value="${dv}" aria-label="${seg} avg deal"></td></tr>`;
   }).join("");
-  $("#convbody").innerHTML=rows;
 }
-// Read the inputs, mark the changed ones, and build an {segment:{...}} payload.
 function convOverrides(){
   if(!CONV) return {};
   const seg={}; let n=0;
@@ -373,7 +416,7 @@ function convOverrides(){
     if(changed){ (seg[inp.dataset.seg] || (seg[inp.dataset.seg]={}))[inp.dataset.key] = isDeal?num*1000:num/100; n++; }
   });
   const badge=$("#ovBadge");
-  badge.textContent = n ? (n+" override"+(n>1?"s":"")+" active — applied to every rep in that segment") : "using defaults";
+  badge.textContent = n ? (n+" override"+(n>1?"s":"")+" active") : "using defaults";
   badge.classList.toggle("on", n>0);
   $("#ovReset").disabled = n===0;
   return n ? {segment:seg} : {};
@@ -384,66 +427,29 @@ function resetConv(ev){
   refresh(true);
 }
 
-// ---- Quota-by-seniority-level overrides -------------------------------------
-let LVL=null;                                   // {levels, multipliers, counts}
-async function loadLevels(){
-  LVL = await (await fetch("/levels")).json();
-  $("#lvlbody").innerHTML = LVL.levels.map(lvl=>{
-    const v=Math.round((LVL.multipliers[lvl] ?? 1)*100), n=LVL.counts[lvl]||0;
-    const isRamp = lvl==='ramping';
-    return `<tr><td class="seg"><span class="tag ${isRamp?'ramp':''}">${lvl}</span></td>
-      <td>${n} rep${n===1?'':'s'}</td>
-      <td><input type="number" data-lvl="${lvl}" data-def="${v}" min="0" step="5" value="${v}" aria-label="${lvl} quota load"></td></tr>`;
-  }).join("");
-}
-// Read the inputs, mark the changed ones, and build a {level: multiplier} payload.
-function levelOverrides(){
-  if(!LVL) return null;
-  const ml={}; let n=0;
-  $("#lvlbody").querySelectorAll("input").forEach(inp=>{
-    const cur=inp.value.trim(), num=parseFloat(cur);
-    const changed = cur!=="" && !isNaN(num) && num>0 && String(num)!==inp.dataset.def;
-    inp.classList.toggle("ovr", changed);
-    if(changed){ ml[inp.dataset.lvl]=num/100; n++; }
-  });
-  const badge=$("#lvlBadge");
-  badge.textContent = n ? (n+" level"+(n>1?"s":"")+" retuned") : "using defaults";
-  badge.classList.toggle("on", n>0);
-  $("#lvlReset").disabled = n===0;
-  return n ? ml : null;
-}
-function resetLevels(ev){
-  ev.stopPropagation();
-  $("#lvlbody").querySelectorAll("input").forEach(inp=>{ inp.value=inp.dataset.def; inp.classList.remove("ovr"); });
-  refresh(true);
-}
-
-// ---- Compensation plan (payout rates + accelerator / decelerator) -----------
-let COMPD=null;                                 // default comp params from /comp/defaults
-const CP_IDS=["cp_split","cp_rate","cp_dthr","cp_dmult","cp_athr","cp_amult","cp_cap"];
+// ---- Compensation plan (OTE-anchored payout curve) --------------------------
+let COMPD=null;
+const CP_IDS=["cp_split","cp_dthr","cp_dmult","cp_athr","cp_amult","cp_cap"];
 async function loadComp(){
   COMPD = (await (await fetch("/comp/defaults")).json()).defaults;
   const set=(id,v)=>{ const el=$("#"+id); el.value=v; el.dataset.def=String(v); };
   set("cp_split", Math.round(COMPD.base_variable_split*100));
-  set("cp_rate", +(COMPD.commission_rate*100).toFixed(1));
   set("cp_dthr", Math.round((COMPD.decelerator_threshold||0)*100));
   set("cp_dmult", Math.round((COMPD.decelerator_multiplier ?? 1)*100));
   set("cp_athr", Math.round(COMPD.accelerator_threshold*100));
   set("cp_amult", Math.round(COMPD.accelerator_multiplier*100));
   set("cp_cap", COMPD.cap_attainment==null ? "" : Math.round(COMPD.cap_attainment*100));
 }
-// Build the full comp param object from the inputs (always sent once loaded).
 function compOverrides(){
   if(!COMPD) return null;
   let changed=0;
   CP_IDS.forEach(id=>{ const el=$("#"+id), diff=el.value.trim()!==(el.dataset.def||"");
     el.classList.toggle("ovr", diff); if(diff) changed++; });
   const num=(id,def)=>{ const v=parseFloat($("#"+id).value); return Number.isFinite(v)?v:def; };
-  let split=Math.min(Math.max(num("cp_split",50),0),90);      // base<OTE -> split<1
+  let split=Math.min(Math.max(num("cp_split",50),0),90);
   const capRaw=$("#cp_cap").value.trim(), cap=parseFloat(capRaw);
   const c={
     base_variable_split: split/100,
-    commission_rate: Math.max(0,num("cp_rate",10))/100,
     decelerator_threshold: Math.max(0,num("cp_dthr",70))/100,
     decelerator_multiplier: Math.max(0,num("cp_dmult",50))/100,
     accelerator_threshold: Math.max(0,num("cp_athr",100))/100,
@@ -461,15 +467,13 @@ function resetComp(ev){
   CP_IDS.forEach(id=>{ const el=$("#"+id); el.value=el.dataset.def||""; el.classList.remove("ovr"); });
   refresh(true);
 }
-// Inline-SVG payout curve (total comp vs attainment) with decel / accel guides.
 function renderPayoutCurve(curve, cp){
   const el=$("#payoutCurve"); if(!el) return;
   if(!curve || !curve.length){ el.innerHTML=""; return; }
   const W=100,H=40,pad=1.5;
   const xs=curve.map(p=>p.attainment), ys=curve.map(p=>p.total_comp);
   const xmin=Math.min(...xs), xmax=Math.max(...xs), ymax=Math.max(...ys)||1;
-  const X=a=>((a-xmin)/((xmax-xmin)||1))*W;
-  const Y=v=>H-pad-(v/ymax)*(H-2*pad);
+  const X=a=>((a-xmin)/((xmax-xmin)||1))*W, Y=v=>H-pad-(v/ymax)*(H-2*pad);
   const pts=curve.map(p=>`${X(p.attainment).toFixed(2)},${Y(p.total_comp).toFixed(2)}`).join(" ");
   const guide=(att,cls)=>{ if(att==null||att<xmin||att>xmax) return "";
     const x=X(att).toFixed(2); return `<line class="g ${cls}" x1="${x}" y1="${pad}" x2="${x}" y2="${H-pad}" vector-effect="non-scaling-stroke"/>`; };
@@ -482,41 +486,46 @@ function renderPayoutCurve(curve, cp){
     <span class="dot a"></span>accel above ${Math.round(cp.accelerator_threshold*100)}%
     <span class="muted">· peak ${fmtK(pk.total_comp)} at ${Math.round(pk.attainment*100)}%</span>`;
 }
-async function post(path, body){
-  const r=await fetch(path,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
-  return r.json();
-}
-function metric(title,tip,value,valCls,subHtml){
-  return `<div class="metric"><div class="k">${title}${info(tip)}</div>
-    <div class="v ${valCls||''}">${value}</div><div class="d">${subHtml}</div></div>`;
-}
 
-function scoreCards(sc, summary){
-  const fair=imp(avg(sc.per_segment_potential_cov.baseline), avg(sc.per_segment_potential_cov.optimized));
-  const grow=imp(sc.whitespace_cov.baseline, sc.whitespace_cov.optimized);
-  const off=sc.off_home_share, tight=imp(off.baseline, off.optimized);
-  const under=sc.coverage_flips.under_covered_optimized, n=summary.n_territories;
-  const evenTxt=v=>(v>=0?"+"+v.toFixed(0)+"% more even":v.toFixed(0)+"% less even");
+// ---- Scorecard + capacity ---------------------------------------------------
+function scoreCards(sum){
+  const tgt=sum.coverage_target, cov=sum.reps_covered, flr=sum.coverage_floor, gap=sum.capacity_gap;
+  const shortN=cov.of-cov.optimized;
+  const floorUp = flr.optimized>=flr.baseline;
   $("#score").innerHTML=[
-    metric("Quota fairness",
-      "How evenly matched reps' books are within the same segment (Enterprise, Mid-Market, SMB). More even = no rep stuck with a far smaller or bigger book than peers. We compare within a segment because an Enterprise book is naturally much larger than an SMB one.",
-      evenTxt(fair), fair>=0?"green":"red", `<span class="flat">reps' books vs a simple even split</span>`),
-    metric("Territory focus",
-      "Share of a rep's accounts outside their home region — a stand-in for travel and how local the book is. Lower is tighter. Some regions have no local rep for a segment, so a share is always covered from afar.",
-      Math.round(off.optimized*100)+"% out-of-region", "",
-      `<span class="${tight>=0?'up':'down'}">${tight>=0?'↓ '+tight.toFixed(0)+'% tighter':'↑ '+Math.abs(tight).toFixed(0)+'% looser'}</span> <span class="flat">vs even split (${Math.round(off.baseline*100)}%)</span>`),
-    metric("Growth balance",
-      "How evenly untapped expansion opportunity (whitespace) is spread across reps, so upside isn't concentrated in a few territories.",
-      evenTxt(grow), grow>=0?"green":"red", `<span class="flat">growth upside vs a simple even split</span>`),
-    metric("Coverage risk",
-      "Reps whose available pipeline is less than what's needed to hit quota on paper. A risk flag, not a prediction — these reps start the quarter behind unless you lower the quota or add pipeline.",
-      under+" of "+n+" reps", under>0?"red":"green", `<span class="flat">short on pipeline · target ${fmtK(summary.company_target)}</span>`),
+    metric("Quota — standardized",
+      "Every rep in the same role (segment + title) carries the identical quota, derived from pay (quota = multiple x OTE). The company target is the sum, not a top-down number.",
+      fmtK(sum.company_target), "green",
+      `<span class="flat">team target · same quota per role ✓</span>`),
+    metric("Covered to "+tgt+"×",
+      "Reps whose book the carve packed to the pipeline-coverage target. Short reps sit in a segment that doesn't hold enough pipeline for its standardized quotas — an assignment can't invent pipeline.",
+      cov.optimized+" of "+cov.of, shortN>0?"red":"green",
+      shortN>0?`<span class="red">${shortN} capacity-short</span> <span class="flat">· naive split ${cov.baseline}</span>`
+              :`<span class="green">every rep covered</span>`),
+    metric("Coverage floor",
+      "The worst-covered rep's pipeline multiple. The work-back carve spreads a segment's shortfall evenly instead of starving one rep to over-fill another — so it raises the floor vs a naive split.",
+      covTxt(flr.optimized)+" worst rep", floorUp?"green":"red",
+      `<span class="${floorUp?'up':'down'}">${floorUp?'↑':'↓'} vs ${covTxt(flr.baseline)}</span> <span class="flat">even split</span>`),
+    metric("Capacity gap",
+      "Total pipeline short of the coverage target across all reps, in MRR. The work-back carve minimizes it; where it can't reach zero, the segment simply lacks pipeline.",
+      gap.optimized>0?fmtK(gap.optimized):"none", gap.optimized>0?"red":"green",
+      gap.optimized>0?`<span class="flat">vs ${fmtK(gap.baseline)} even split · cost of sale ${(sum.cost_of_sale*100).toFixed(1)}%</span>`
+                     :`<span class="flat">cost of sale ${(sum.cost_of_sale*100).toFixed(1)}%</span>`),
   ].join("");
+  // per-segment capacity strip
+  const seg=sum.per_segment_capacity||{};
+  $("#caps").innerHTML=Object.keys(seg).map(s=>{
+    const d=seg[s], fill=Math.min(d.available_pipeline/(d.required_pipeline||1),1)*100, ok=d.coverable;
+    return `<div class="capseg"><div class="h">${s}
+      <span class="flag ${ok?'ok':'short'}">${ok?'covers '+tgt+'×':'short'}</span></div>
+      <div class="bar"><i style="width:${fill.toFixed(0)}%;background:${ok?'var(--good)':'var(--bad)'}"></i></div>
+      <div class="m">${fmtK(d.available_pipeline)} pipeline vs ${fmtK(d.required_pipeline)} needed &middot; ${d.reps} rep${d.reps===1?'':'s'}</div></div>`;
+  }).join("");
 }
 
-function covCell(c){
+function covCell(c, tgt){
   if(c==null) return `<td class="muted">—</td>`;
-  const under=c<1, col=under?"var(--bad)":"var(--good)", fill=Math.min(c,1.5)/1.5*100;
+  const under=c<tgt, col=under?"var(--bad)":"var(--good)", fill=Math.min(c/tgt,1)*100;
   return `<td><span class="pill"><span class="${under?'red':'green'}">${covTxt(c)}</span>
     <span class="covbar"><i style="width:${fill}%;background:${col}"></i></span></span></td>`;
 }
@@ -527,10 +536,9 @@ function renderTable(rows){
   $("#tbody").innerHTML=rows.map(r=>`
     <tr data-id="${r.rep_id}" class="${r.rep_id===state.sel?'sel':''}">
       <td><b>${r.rep_id}</b> <span class="muted">${r.rep_name}</span></td>
-      <td><span class="tag">${r.segment_focus}</span></td>
-      <td><span class="tag ${r.level==='ramping'?'ramp':''}">${r.level||'—'}</span></td>
-      <td>${r.account_count}</td><td>${fmtK(r.potential)}</td><td>${fmtK(r.quota)}</td>
-      <td>${qloadTxt(r.quota_to_potential)}</td>${covCell(r.coverage_ratio)}</tr>`).join("");
+      <td><span class="tag ${r.level==='ramping'?'ramp':''}">${r.role||r.segment_focus}</span></td>
+      <td>${fmtK(r.ote)}</td><td>${fmtK(r.quota)}</td>
+      <td>${r.account_count}</td><td>${fmtK(r.available_pipeline)}</td>${covCell(r.pipeline_coverage, state.covTarget)}</tr>`).join("");
   $("#tbody").querySelectorAll("tr").forEach(tr=>tr.onclick=()=>selectRep(tr.dataset.id));
 }
 function renderComp(rows, att){
@@ -545,78 +553,70 @@ async function selectRep(id){
   state.sel=id;
   $("#tbody").querySelectorAll("tr").forEach(tr=>tr.classList.toggle("sel",tr.dataset.id===id));
   $("#funnelWho").textContent=id;
-  $("#funnel").innerHTML=`<div class="spin">Working out the deal math…</div>`;
+  $("#funnel").innerHTML=`<div class="spin">Working out the coverage + deal math…</div>`;
   const d=await post("/territory/"+id, settings());
-  const w=d.waterfall, f=w.funnel, max=f.required_sqls||1, under=w.under_covered;
-  const stages=[["Qualified leads to source",f.required_sqls],["In qualification",f.qualification],
-    ["In proposal",f.proposal],["In negotiation",f.negotiation],["Deals to close",f.won_deals]];
-  let html=`<div class="note" style="margin:0 0 8px">Working backwards from the quota: the deals to close, and the
-    leads and pipeline needed to get there this quarter.</div>
-    <div>${stages.map(([n,v])=>`
-    <div class="stage"><div class="name">${n}</div>
-      <div class="track"><div class="fill" style="width:${Math.max(6,v/max*100)}%">${v.toFixed(0)}</div></div></div>`).join("")}</div>
-    <div class="callout">
-      <div class="box"><div class="k">Pipeline needed${info("The pipeline (at the negotiation stage) needed to produce the quarter's deals.")}</div><div class="v">${fmtK(w.required_pipeline)}</div></div>
-      <div class="box"><div class="k">Pipeline on hand${info("The addressable pipeline this rep's accounts actually hold today.")}</div><div class="v">${fmtK(w.available_pipeline)}</div></div>
-      <div class="box"><div class="k">Coverage${info("Pipeline on hand ÷ pipeline needed. 1.0x = just enough on paper; below 1.0x = short.")}</div><div class="v ${under?'red':'green'}">${covTxt(w.coverage_ratio)}${under?' ⚠':' ✓'}</div></div>
-    </div>
-    <div class="lbl">Conversion assumptions${info("Stage-to-stage win rates and average deal size used for this rep. Source: default = company default; segment/rep = an override you'd set for this segment or rep.")}</div>
-    <div class="rates">${Object.entries(d.rates_used).map(([k,r])=>{
-      const lvl=r.level==='global'?'default':r.level, name=k==='avg_deal_size'?'avg deal':k.replace('->','→');
-      const val=k==='avg_deal_size'?fmtK(r.value):(r.value*100).toFixed(0)+'%';
-      return `<span class="chip">${name} <b>${val}</b> <span class="muted">(${lvl})</span></span>`; }).join("")}</div>`;
-  if(under && d.gap){ html+=`<div class="lbl">To close the gap</div><ul class="levers">${d.gap.levers.map(l=>`<li>${l}</li>`).join("")}</ul>`; }
-  html+=`<div class="note">A coverage check is a pipeline reality check, not a forecast — a covered rep can still miss,
-    and a short rep can still deliver. It flags where to look first.</div>`;
+  const tgt=state.covTarget, pc=d.pipeline_coverage, under=pc!=null && pc<tgt;
+  const gap=Math.max(0,(tgt*(d.quota||0))-(d.available_pipeline||0));
+  let html=`<div class="callout">
+      <div class="box"><div class="k">Quota${info("Standardized for the role (segment + title): quota = multiple × OTE.")}</div><div class="v">${fmtK(d.quota)}</div></div>
+      <div class="box"><div class="k">Pipeline on hand${info("Addressable pipeline this book holds: whitespace + open pipeline.")}</div><div class="v">${fmtK(d.available_pipeline)}</div></div>
+      <div class="box"><div class="k">Coverage${info("Pipeline ÷ quota. The carve packs each book to the "+tgt+"× target; below it = capacity-short.")}</div><div class="v ${under?'red':'green'}">${covTxt(pc)}${under?' ⚠':' ✓'} <span class="muted" style="font-size:12px">/ ${tgt}×</span></div></div>
+    </div>`;
+  if(under){
+    html+=`<div class="note" style="color:var(--warn)">Short of the ${tgt}× target by <b>${fmtK(gap)}</b> of pipeline. Usually the
+      whole segment is capacity-constrained — options: reassign pipeline in, lower this role's quota (OTE or the multiple), or source more.</div>`;
+  }
+  const w=d.waterfall;
+  if(w && w.funnel){
+    const f=w.funnel, max=f.required_sqls||1;
+    const stages=[["Qualified leads to source",f.required_sqls],["In qualification",f.qualification],
+      ["In proposal",f.proposal],["In negotiation",f.negotiation],["Deals to close",f.won_deals]];
+    html+=`<div class="lbl">Reverse waterfall — the deal math behind the quota</div>
+      <div>${stages.map(([n,v])=>`
+      <div class="stage"><div class="name">${n}</div>
+        <div class="track"><div class="fill" style="width:${Math.max(6,v/max*100)}%">${v.toFixed(0)}</div></div></div>`).join("")}</div>`;
+  }
+  if(d.rates_used){
+    html+=`<div class="lbl">Conversion assumptions${info("Stage win rates + avg deal size used for this rep. default = company default; segment = an override you set.")}</div>
+      <div class="rates">${Object.entries(d.rates_used).map(([k,r])=>{
+        const lvl=r.level==='global'?'default':r.level, name=k==='avg_deal_size'?'avg deal':k.replace('->','→');
+        const val=k==='avg_deal_size'?fmtK(r.value):(r.value*100).toFixed(0)+'%';
+        return `<span class="chip">${name} <b>${val}</b> <span class="muted">(${lvl})</span></span>`; }).join("")}</div>`;
+  }
+  html+=`<div class="note">Two coverage lenses: <b>pipeline coverage</b> (× quota, the carve's target) up top, and the
+    <b>reverse-waterfall</b> funnel below. Neither guarantees attainment — they flag whether the pipeline is there.</div>`;
   $("#funnel").innerHTML=html;
 }
 
 async function refresh(keepSel){
   const plan=await post("/plan", settings());
-  if(state.target===null){ state.target=plan.summary.company_target; $("#tgt").value=Math.round(state.target); }
-  targetSanity(plan.summary);
-  scoreCards(plan.scorecard, plan.summary);
+  const sum=plan.summary;
+  state.covTarget=sum.coverage_target;
+  $("#derivedTarget").textContent=fmtK(sum.company_target);
+  scoreCards(sum);
   renderTable(plan.territories);
   renderComp(plan.comp, +$("#att").value);
   renderPayoutCurve(plan.payout_curve, plan.comp_params||{});
   selectRep((keepSel && state.sel) ? state.sel : plan.territories[0].rep_id);
 }
-// Flag a company target that's implausibly small (or large) for the book, so the
-// resulting near-zero quotas / off-the-chart coverage read as an input, not a bug.
-function targetSanity(sum){
-  const el=$("#tgtWarn"), tp=sum.total_potential, ct=sum.company_target, typical=tp*0.27;
-  let msg="";
-  if(tp && ct>0 && ct < tp*0.03)
-    msg=`<b>${fmtK(ct)}</b> is the <b>whole team's</b> quarterly target — far below what this book can support. It
-      holds ${fmtK(tp)} in opportunity, so a realistic target is a meaningful slice of that (the default is
-      ~${fmtK(typical)}). At ${fmtK(ct)} every rep's quota rounds to near zero and coverage runs into the
-      thousands-of-×. Enter the <b>full dollar amount</b> — e.g. <b>45000000</b> for $45M, or <b>15000000</b> for $15M.`;
-  else if(tp && ct > tp*1.5)
-    msg=`<b>${fmtK(ct)}</b> is larger than the book's entire ${fmtK(tp)} of opportunity — most reps will be
-      under-covered by design. The default is ~${fmtK(typical)}.`;
-  el.style.display = msg ? "" : "none";
-  el.innerHTML = msg ? "⚠ "+msg : "";
-}
 function debounced(){ clearTimeout(timer); timer=setTimeout(()=>refresh(true), 220); }
 
-["sp","sg","sw","tgt"].forEach(id=>$("#"+id).addEventListener("input",debounced));
+["qm","ct"].forEach(id=>$("#"+id).addEventListener("input",debounced));
+$("#geo").addEventListener("change",()=>refresh(true));
 $("#att").addEventListener("change",()=>refresh(true));
-$("#convbody").addEventListener("input",debounced);           // per-segment rate/deal overrides
+$("#rolebody").addEventListener("input",debounced);
+$("#roleReset").addEventListener("click",resetRoles);
+$("#convbody").addEventListener("input",debounced);
 $("#ovReset").addEventListener("click",resetConv);
-$("#lvlbody").addEventListener("input",debounced);            // per-level quota multipliers
-$("#lvlReset").addEventListener("click",resetLevels);
-CP_IDS.forEach(id=>$("#"+id).addEventListener("input",debounced));  // comp payout params
+CP_IDS.forEach(id=>$("#"+id).addEventListener("input",debounced));
 $("#compReset").addEventListener("click",resetComp);
 document.querySelectorAll("th[data-k]").forEach(th=>th.onclick=()=>{
   const k=th.dataset.k; state.asc = state.sort===k ? !state.asc : true; state.sort=k; refresh(true);
 });
 (async function init(){
-  try{ await loadConversions(); }
-  catch(e){ $("#convbody").innerHTML=`<tr><td colspan="6" class="muted">Couldn't load conversion defaults.</td></tr>`; }
-  try{ await loadLevels(); }
-  catch(e){ $("#lvlbody").innerHTML=`<tr><td colspan="3" class="muted">Couldn't load level defaults.</td></tr>`; }
-  try{ await loadComp(); }
-  catch(e){ /* comp panel keeps its blank inputs; plan still runs on config defaults */ }
+  try{ await loadRoles(); }catch(e){ $("#rolebody").innerHTML=`<tr><td colspan="4" class="muted">Couldn't load role defaults.</td></tr>`; }
+  try{ await loadConversions(); }catch(e){ $("#convbody").innerHTML=`<tr><td colspan="6" class="muted">Couldn't load conversion defaults.</td></tr>`; }
+  try{ await loadComp(); }catch(e){}
   refresh(false);
 })();
 </script>
