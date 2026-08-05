@@ -92,6 +92,8 @@
   table{width:100%;border-collapse:collapse}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;
     border-bottom:1px solid var(--line);padding:8px 10px}
+  th.sortable{cursor:pointer;user-select:none} th.sortable:hover{color:var(--ink)}
+  .sarw{font-family:var(--mono);font-size:9px}
   td{padding:8px 10px;border-bottom:1px solid var(--hair);font-size:13.5px}
   th.r,td.r{text-align:right} th.c,td.c{text-align:center}
   td .cellmono{font-family:var(--mono);font-size:13px}
@@ -224,8 +226,11 @@
       <summary><span class="nm">Pay &amp; quota by role</span><span class="sub">same role → same quota, derived from OTE</span>
         <span class="badge mono" id="roleBadge">using defaults</span></summary>
       <div class="pad" style="padding-top:4px">
-        <div class="tbl-in"><table><thead><tr>
-          <th>Role</th><th class="r">Reps</th><th class="r">OTE $K/yr</th><th class="r">Quarterly quota</th>
+        <div class="tbl-in"><table><thead><tr id="roleThead">
+          <th class="sortable" data-sort="label">Role<span class="sarw"></span></th>
+          <th class="sortable r" data-sort="reps">Reps<span class="sarw"></span></th>
+          <th class="sortable r" data-sort="oteK">OTE $K/yr<span class="sarw"></span></th>
+          <th class="sortable r" data-sort="quota">Quarterly quota<span class="sarw"></span></th>
         </tr></thead><tbody id="roleBody"><tr><td colspan="4" class="spin">Loading…</td></tr></tbody></table></div>
         <div class="foot">Annual quota = multiple × OTE; the quarterly quota shown is that ÷ 4. Edit an OTE and every rep in that role moves.</div>
       </div>
@@ -290,8 +295,12 @@
       <div class="card pad">
         <div class="sechead" style="margin-bottom:0"><span class="nm">Reps &amp; territories</span>
           <span class="note mono" id="repMeta">— reps · lowest coverage first</span></div>
-        <div class="tbl-in" style="margin-top:14px"><table><thead><tr>
-          <th>Rep</th><th>Role</th><th class="r">Quota</th><th class="r">Pipeline</th><th class="r">Coverage</th>
+        <div class="tbl-in" style="margin-top:14px"><table><thead><tr id="repThead">
+          <th class="sortable" data-sort="rep_name">Rep<span class="sarw"></span></th>
+          <th class="sortable" data-sort="role">Role<span class="sarw"></span></th>
+          <th class="sortable r" data-sort="quota">Quota<span class="sarw"></span></th>
+          <th class="sortable r" data-sort="available_pipeline">Pipeline<span class="sarw"></span></th>
+          <th class="sortable r" data-sort="pipeline_coverage">Coverage<span class="sarw"></span></th>
         </tr></thead><tbody id="repBody"></tbody></table></div>
         <div class="foot">The work-back carve spreads a segment's shortfall evenly across its reps, so reps in the same segment sit at the same coverage. Click a rep for the deal math.</div>
       </div>
@@ -324,7 +333,8 @@ const TAGINK = {pipeline:"var(--bad)", hiring:"var(--blue)", comp:"var(--warn)",
 const SEV = {critical:"var(--bad)", warn:"var(--warn)", info:"var(--muted)", ok:"var(--good)"};
 
 // ---- client state (mirrors PlanRequest) ----
-const st = {mult:4, target:3, att:1, ote:{}, conv:{}, comp:null, hires:[], segOv:{}, retags:{}, sel:null};
+const st = {mult:4, target:3, att:1, ote:{}, conv:{}, comp:null, hires:[], segOv:{}, retags:{}, sel:null,
+  repSort:{key:"pipeline_coverage", asc:true}, roleSort:{key:null, asc:true}};
 let ROLES=null, CONV=null, COMPD=null, timer=null;
 
 function settings(){
@@ -524,22 +534,57 @@ function renderActions(recs){
 }
 let LAST_RECS=[];
 
+// ---- sortable tables ----
+let LAST_TERRITORIES = [];
+const NUMKEYS = new Set(["quota","available_pipeline","pipeline_coverage","reps","oteK"]);
+const REPLABEL = {rep_name:"name", role:"role", quota:"quota", available_pipeline:"pipeline", pipeline_coverage:"coverage"};
+function sortRows(rows, s){
+  if(!s.key) return rows.slice();
+  const num = NUMKEYS.has(s.key);
+  return rows.slice().sort((a,b)=>{
+    let x=a[s.key], y=b[s.key];
+    const xn=(x==null)||(num&&!isFinite(x)), yn=(y==null)||(num&&!isFinite(y));
+    if(xn||yn) return xn-yn;                               // nulls always last
+    const cmp = num ? (x-y) : (""+x).localeCompare(""+y);
+    return s.asc ? cmp : -cmp;
+  });
+}
+function markSort(headSel, s){
+  document.querySelectorAll(headSel+" th.sortable").forEach(th=>{
+    const on = th.dataset.sort===s.key, arw=th.querySelector(".sarw");
+    if(arw) arw.textContent = on ? (s.asc?" ▲":" ▼") : "";
+    th.style.color = on ? "var(--ink)" : "";
+  });
+}
+function attachSort(headSel, s, rerender){
+  document.querySelectorAll(headSel+" th.sortable").forEach(th=>th.addEventListener("click", ()=>{
+    const key=th.dataset.sort;
+    if(s.key===key) s.asc=!s.asc; else { s.key=key; s.asc=!NUMKEYS.has(key); }  // numbers first-click desc
+    rerender();
+  }));
+}
+function selectRepRow(id){
+  st.sel = id;
+  $("#repBody").querySelectorAll("tr").forEach(tr=>{ tr.style.background = tr.dataset.id===id ? "oklch(0.97 0.02 250)" : ""; });
+  selectRep();
+}
+
 function renderRoles(){
-  // rebuild role rows (OTE + live quarterly quota) from ROLES + current mult/segOv/ote
   const rows = ROLES.roles.map(r=>{
     const key = r.segment+"|"+r.level;
     const oteK = st.ote[key]!=null ? st.ote[key] : Math.round(r.ote/1000);
     const m = (st.segOv[r.segment]&&st.segOv[r.segment].quota_to_ote) || st.mult;
-    const q = m*oteK*1000/(ROLES.periods_per_year||4);
-    const ov = st.ote[key]!=null;
-    return `<tr><td style="font-weight:500">${r.segment} · ${r.level}</td>
-      <td class="r cellmono" style="color:var(--sub)">${r.reps}</td>
-      <td class="r"><input type="number" class="mono ${ov?'ovr':''}" style="width:92px;text-align:right" data-key="${key}" data-def="${Math.round(r.ote/1000)}" min="1" step="10" value="${oteK}"></td>
-      <td class="r cellmono" style="font-weight:500">${money(q)}</td></tr>`;
-  }).join("");
-  $("#roleBody").innerHTML = rows;
+    return {key, label:r.segment+" · "+r.level, reps:r.reps, oteK,
+      quota:m*oteK*1000/(ROLES.periods_per_year||4), def:Math.round(r.ote/1000), ov:st.ote[key]!=null};
+  });
+  $("#roleBody").innerHTML = sortRows(rows, st.roleSort).map(r=>`<tr>
+    <td style="font-weight:500">${r.label}</td>
+    <td class="r cellmono" style="color:var(--sub)">${r.reps}</td>
+    <td class="r"><input type="number" class="mono ${r.ov?'ovr':''}" style="width:92px;text-align:right" data-key="${r.key}" data-def="${r.def}" min="1" step="10" value="${r.oteK}"></td>
+    <td class="r cellmono" style="font-weight:500">${money(r.quota)}</td></tr>`).join("");
   $("#roleBody").querySelectorAll("input").forEach(inp=>inp.addEventListener("input", onOte));
   const n=Object.keys(st.ote).length, b=$("#roleBadge"); b.textContent=n? n+" OTE override"+(n>1?"s":""):"using defaults"; b.classList.toggle("on",n>0);
+  markSort("#roleThead", st.roleSort);
 }
 function onOte(e){
   const key=e.target.dataset.key, cur=e.target.value.trim(), num=parseFloat(cur), def=+e.target.dataset.def;
@@ -560,9 +605,10 @@ function renderComp(rows){
 }
 
 function renderReps(rows){
-  $("#repMeta").textContent = rows.length+" reps · lowest coverage first";
-  const sorted = rows.slice().sort((a,b)=>(a.pipeline_coverage??9)-(b.pipeline_coverage??9));
-  if(!st.sel && sorted.length) st.sel = sorted[0].rep_id;
+  LAST_TERRITORIES = rows;
+  const sorted = sortRows(rows, st.repSort);
+  if((!st.sel || !rows.some(r=>r.rep_id===st.sel)) && sorted.length) st.sel = sorted[0].rep_id;
+  $("#repMeta").textContent = `${rows.length} reps · ${REPLABEL[st.repSort.key]||"coverage"} ${st.repSort.asc?"↑":"↓"}`;
   $("#repBody").innerHTML = sorted.map(r=>{
     const planned = (""+r.rep_id).startsWith("NEW-");
     const under = r.pipeline_coverage!=null && r.pipeline_coverage < segTarget(r.segment_focus);
@@ -574,7 +620,8 @@ function renderReps(rows){
       <td class="r"><span class="covwrap"><span class="cellmono" style="font-weight:600;color:${col}">${mult2(r.pipeline_coverage)}</span>
         <span class="covbar"><i style="width:${fill}%;background:${col}"></i></span></span></td></tr>`;
   }).join("");
-  $("#repBody").querySelectorAll("tr").forEach(tr=>tr.addEventListener("click", ()=>{ st.sel=tr.dataset.id; selectRep(); }));
+  $("#repBody").querySelectorAll("tr").forEach(tr=>tr.addEventListener("click", ()=>selectRepRow(tr.dataset.id)));
+  markSort("#repThead", st.repSort);
 }
 
 async function selectRep(){
@@ -634,11 +681,10 @@ async function refresh(keepSel){
   renderActions(LAST_RECS);
   renderRoles(); renderSegOv();
   renderComp(plan.comp);
-  renderReps(plan.territories||[]);
+  if(!keepSel) st.sel = null;             // full refresh: let renderReps re-pick the default
+  renderReps(plan.territories||[]);        // owns st.sel validity + default
   renderHires();
   renderRetagNote();
-  const ids = new Set((plan.territories||[]).map(t=>t.rep_id));
-  if(!keepSel || !st.sel || !ids.has(st.sel)) st.sel = (plan.territories||[]).slice().sort((a,b)=>(a.pipeline_coverage??9)-(b.pipeline_coverage??9))[0]?.rep_id;
   if(st.sel) selectRep();
 }
 
@@ -646,6 +692,8 @@ async function refresh(keepSel){
   try{ await loadRoles(); }catch(e){ $("#roleBody").innerHTML=`<tr><td colspan="4" class="spin">Couldn't load role defaults.</td></tr>`; }
   try{ await loadConversions(); }catch(e){}
   try{ await loadComp(); }catch(e){}
+  attachSort("#repThead", st.repSort, ()=>renderReps(LAST_TERRITORIES));
+  attachSort("#roleThead", st.roleSort, renderRoles);
   refresh(false);
 })();
 </script>
