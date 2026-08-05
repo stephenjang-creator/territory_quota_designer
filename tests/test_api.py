@@ -12,6 +12,9 @@ def test_root_serves_dashboard_html():
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/html")
     assert b"<title>Territory" in r.content
+    # the redesigned dashboard: executive summary + recommended actions on top
+    assert b'id="actions"' in r.content and b"Recommended actions" in r.content
+    assert b'id="tiles"' in r.content and b'id="segbars"' in r.content
     assert client.head("/").status_code == 200
 
 
