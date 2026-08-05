@@ -17,59 +17,72 @@
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   header{padding:22px 26px 8px}
   h1{margin:0;font-size:20px;letter-spacing:.2px}
-  .sub{color:var(--muted);margin-top:3px;max-width:820px}
+  .sub{color:var(--muted);margin-top:4px;max-width:880px}
   .wrap{padding:14px 26px 40px;max-width:1280px;margin:0 auto}
   .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
     border-radius:14px;box-shadow:var(--shadow)}
   .pad{padding:16px 18px}
-  .row{display:flex;gap:16px;flex-wrap:wrap}
   .grid{display:grid;grid-template-columns:1.35fr .95fr;gap:16px;margin-top:16px}
   @media(max-width:980px){.grid{grid-template-columns:1fr}}
   h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 12px}
+  /* info hover */
+  .info{display:inline-flex;width:15px;height:15px;border-radius:50%;border:1px solid var(--muted);color:var(--muted);
+    font-size:10px;font-style:normal;font-weight:700;align-items:center;justify-content:center;cursor:help;
+    position:relative;margin-left:6px;vertical-align:middle;text-transform:none}
+  .info::after{content:attr(data-tip);position:absolute;left:50%;bottom:150%;transform:translateX(-50%) translateY(5px);
+    width:260px;max-width:64vw;background:#0b1222;border:1px solid var(--line);color:var(--ink);padding:10px 12px;
+    border-radius:10px;font:400 12px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;letter-spacing:0;
+    text-transform:none;text-align:left;box-shadow:var(--shadow);opacity:0;visibility:hidden;transition:opacity .12s,transform .12s;
+    z-index:40;pointer-events:none}
+  .info:hover::after{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+  .info.b::after{bottom:auto;top:150%;transform:translateX(-50%) translateY(-5px)}
+  .info.b:hover::after{transform:translateX(-50%) translateY(0)}
   /* controls */
-  .controls{display:grid;grid-template-columns:repeat(3,1fr) 180px 150px;gap:18px;align-items:end}
+  .controls{display:grid;grid-template-columns:repeat(3,1fr) 190px 150px;gap:18px;align-items:end}
   @media(max-width:980px){.controls{grid-template-columns:1fr 1fr}}
-  .ctl label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+  .ctl label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
   .ctl .val{color:var(--ink);font-weight:600}
   input[type=range]{width:100%;accent-color:var(--accent)}
   input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
     border-radius:9px;padding:8px 10px;font:inherit}
-  .hint{color:var(--muted);font-size:12px;margin-top:8px}
+  .hint{color:var(--muted);font-size:12px;margin-top:10px}
   /* scorecard */
   .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   @media(max-width:980px){.cards{grid-template-columns:1fr 1fr}}
   .metric{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
-  .metric .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-  .metric .v{font-size:22px;font-weight:700;margin-top:4px}
-  .metric .d{font-size:12px;margin-top:3px}
+  .metric .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center}
+  .metric .v{font-size:21px;font-weight:700;margin-top:5px}
+  .metric .d{font-size:12px;margin-top:4px}
   .up{color:var(--good)} .down{color:var(--bad)} .flat{color:var(--muted)}
+  .red{color:var(--bad)} .green{color:var(--good)}
   /* table */
   table{width:100%;border-collapse:collapse}
   th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
   th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
-  th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;cursor:pointer;user-select:none}
+  th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;cursor:pointer;user-select:none}
+  th[title]{text-decoration:underline dotted var(--line);text-underline-offset:3px}
   tbody tr{cursor:pointer}
-  tbody tr:hover{background:#1a2236} tbody tr:hover td{background:rgba(91,140,255,.06)}
+  tbody tr:hover td{background:rgba(91,140,255,.06)}
   tr.sel td{background:rgba(91,140,255,.12)}
   .pill{display:inline-flex;align-items:center;gap:7px;justify-content:flex-end}
   .covbar{width:52px;height:7px;border-radius:5px;background:#2a3450;overflow:hidden}
   .covbar i{display:block;height:100%}
   .tag{font-size:11px;padding:2px 7px;border-radius:999px;background:var(--chip);color:var(--muted)}
   .tag.ramp{background:#3a2e1c;color:var(--warn)}
-  .red{color:var(--bad)} .green{color:var(--good)}
   /* funnel */
   .funnel .stage{display:flex;align-items:center;gap:10px;margin:7px 0}
-  .funnel .name{width:118px;color:var(--muted);font-size:12px;text-align:right}
-  .funnel .track{flex:1;background:#212b42;border-radius:7px;overflow:hidden;height:26px;position:relative}
+  .funnel .name{width:132px;color:var(--muted);font-size:12px;text-align:right}
+  .funnel .track{flex:1;background:#212b42;border-radius:7px;overflow:hidden;height:26px}
   .funnel .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
     display:flex;align-items:center;justify-content:flex-end;padding-right:9px;color:#08122a;font-weight:700;font-size:12px}
   .callout{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
-  .callout .box{flex:1;min-width:130px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
-  .callout .box .k{font-size:11px;color:var(--muted)} .callout .box .v{font-size:17px;font-weight:700;margin-top:2px}
+  .callout .box{flex:1;min-width:120px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+  .callout .box .k{font-size:11px;color:var(--muted);display:flex;align-items:center} .callout .box .v{font-size:17px;font-weight:700;margin-top:2px}
   .rates{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
   .rates .chip{background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:11.5px;color:var(--muted)}
   .rates .chip b{color:var(--ink)}
-  .levers{margin:10px 0 0;padding-left:18px;color:var(--warn)} .levers li{margin:2px 0}
+  .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px;display:flex;align-items:center}
+  .levers{margin:6px 0 0;padding-left:18px;color:var(--warn)} .levers li{margin:2px 0}
   .muted{color:var(--muted)} .note{color:var(--muted);font-size:12px;margin-top:10px}
   .spin{color:var(--muted);font-size:12px}
   footer{color:var(--muted);font-size:12px;padding:0 26px 30px;max-width:1280px;margin:0 auto}
@@ -78,76 +91,91 @@
 <body>
 <header>
   <h1>Territory &amp; Quota Designer</h1>
-  <div class="sub">Carve a book into balanced territories, derive fair quotas, and prove each territory can support
-  its quota via a <b>reverse waterfall</b>. Move the weights and watch it re-carve. All $ are <b>MRR</b>;
-  quota is a <b>quarterly</b> new-MRR target. Data is synthetic. &middot; <a href="/docs">API docs</a></div>
+  <div class="sub">Split your accounts into fair, balanced territories, set each rep's quarterly number, and check
+  whether every rep has enough pipeline to actually hit it. Drag the sliders to try different trade-offs — the plan
+  updates instantly. Dollar figures are monthly recurring revenue (MRR); quotas are per quarter. Sample data.
+  &middot; <a href="/docs">API</a></div>
 </header>
 
 <div class="wrap">
   <!-- CONTROLS -->
   <div class="card pad">
     <div class="controls">
-      <div class="ctl"><label>Potential weight <span class="val" id="wp">60%</span></label>
+      <div class="ctl"><label>Fair opportunity split
+        <span class="info b" data-tip="How hard the planner works to give every rep an equally-sized book of revenue opportunity, so quotas land fairly and no one is set up to fail or left to coast.">i</span>
+        <span class="val" id="wp">60%</span></label>
         <input type="range" id="sp" min="0" max="100" value="60"></div>
-      <div class="ctl"><label>Geo weight <span class="val" id="wg">25%</span></label>
+      <div class="ctl"><label>Territory compactness
+        <span class="info b" data-tip="How much the planner keeps each rep's accounts near their home region — less travel, more local focus. Turn it up and books cluster geographically, but may become a little less evenly sized.">i</span>
+        <span class="val" id="wg">25%</span></label>
         <input type="range" id="sg" min="0" max="100" value="25"></div>
-      <div class="ctl"><label>Whitespace weight <span class="val" id="ww">15%</span></label>
+      <div class="ctl"><label>Fair growth split
+        <span class="info b" data-tip="How evenly the planner spreads untapped expansion opportunity (whitespace) across reps, so future growth isn't concentrated in a few territories.">i</span>
+        <span class="val" id="ww">15%</span></label>
         <input type="range" id="sw" min="0" max="100" value="15"></div>
-      <div class="ctl"><label>Quarterly target (MRR, $M)</label>
+      <div class="ctl"><label>Quarterly target ($M MRR)
+        <span class="info b" data-tip="Total new monthly-recurring revenue the whole team should book this quarter. Each rep's quota is their fair share of it.">i</span></label>
         <input type="number" id="tgt" step="1" min="1"></div>
-      <div class="ctl"><label>Attainment</label>
+      <div class="ctl"><label>Attainment
+        <span class="info b" data-tip="The percent of quota reps achieve. Used only to model comp cost and cost-of-sale — it doesn't change the territories.">i</span></label>
         <select id="att"><option value="0.85">85%</option><option value="1.0" selected>100%</option>
           <option value="1.1">110%</option></select></div>
     </div>
-    <div class="hint" id="hint">Weights normalize to 100%. The optimizer trades potential balance against geographic
-      compactness — turn geo up and territories compact toward home regions.</div>
+    <div class="hint">The three splits always add up to 100%. There's a real trade-off: chase perfectly even books and
+      reps travel more; keep territories tight and books get a little less even. This tool makes that choice explicit.</div>
   </div>
 
   <!-- SCORECARD -->
   <div class="card pad" style="margin-top:16px">
-    <h2>Baseline (naive equal-count) vs. Optimized</h2>
+    <h2>Simple even split &nbsp;&rarr;&nbsp; this plan
+      <span class="info" data-tip="The 'before' is the naive way to carve territories: hand every rep the same number of accounts, ignoring deal size, growth, or geography. The 'after' is this plan. The cards show how much the plan improved on that starting point.">i</span></h2>
     <div class="cards" id="score"><div class="spin">Loading…</div></div>
   </div>
 
   <div class="grid">
     <!-- TABLE -->
     <div class="card pad">
-      <h2>Territories &middot; <span class="muted" id="tcount"></span></h2>
+      <h2>Reps &amp; territories &middot; <span class="muted" id="tcount"></span></h2>
       <div style="overflow-x:auto">
         <table id="tbl">
           <thead><tr>
-            <th data-k="rep_id">Rep</th><th data-k="segment_focus">Focus</th>
-            <th data-k="account_count">#</th><th data-k="potential">Potential</th>
-            <th data-k="quota">Quota (qtr)</th><th data-k="quota_to_potential">Q/Pot</th>
-            <th data-k="coverage_ratio">Coverage</th>
+            <th data-k="rep_id">Rep</th>
+            <th data-k="segment_focus" title="The customer size the rep sells to: Enterprise, Mid-Market, or SMB.">Segment</th>
+            <th data-k="account_count" title="Number of accounts assigned to the rep.">Accounts</th>
+            <th data-k="potential" title="Total revenue opportunity in the book — open pipeline + untapped expansion + a slice of installed base, in MRR.">Opportunity</th>
+            <th data-k="quota" title="New MRR this rep must book this quarter — their share of the company target.">Quarterly quota</th>
+            <th data-k="quota_to_potential" title="Quota as a share of the rep's opportunity. Should be similar across reps; unusually high can mean set-up-to-fail, low can mean sandbagged.">Quota load</th>
+            <th data-k="coverage_ratio" title="Pipeline the rep has vs. pipeline needed to hit quota. 1.0x = just enough on paper; below 1.0x (red) = short on pipeline.">Pipeline coverage</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
-      <div class="note">Sorted worst-coverage first. Click a row to open its reverse waterfall. Red = under-covered
-        (not enough pipeline to support the quota on paper).</div>
+      <div class="note">Sorted lowest-coverage first. Click a rep to see what it takes for them to hit quota.
+        <span class="red">Red</span> = short on pipeline (not enough to cover the quota on paper).</div>
     </div>
 
     <!-- RIGHT: FUNNEL + COMP -->
     <div style="display:flex;flex-direction:column;gap:16px">
       <div class="card pad">
-        <h2>Reverse waterfall &middot; <span class="muted" id="funnelWho">select a rep</span></h2>
-        <div id="funnel" class="funnel"><div class="spin">Pick a territory from the table.</div></div>
+        <h2>What it takes to hit quota &middot; <span class="muted" id="funnelWho">select a rep</span></h2>
+        <div id="funnel" class="funnel"><div class="spin">Pick a rep from the table to see their deal math.</div></div>
       </div>
       <div class="card pad">
-        <h2>Comp &amp; cost-of-sale</h2>
+        <h2>Comp &amp; cost of sale</h2>
         <div style="overflow-x:auto"><table id="comp"><thead><tr>
-          <th style="text-align:left">Attainment</th><th>Total comp (qtr)</th><th>Bookings</th><th>Cost-of-sale</th>
+          <th style="text-align:left" title="Percent of quota the team achieves.">Attainment</th>
+          <th title="Total rep compensation for the quarter at this attainment (base + commission).">Total comp</th>
+          <th title="Revenue booked at this attainment.">Bookings</th>
+          <th title="Total comp divided by bookings — what you spend in comp to book each dollar of revenue.">Cost of sale</th>
         </tr></thead><tbody id="cbody"></tbody></table></div>
-        <div class="note">Cost-of-sale = total comp ÷ bookings. It falls as attainment rises — base salary is fixed
-          while bookings grow.</div>
+        <div class="note">Cost of sale falls as attainment rises — base pay is fixed while bookings grow.</div>
       </div>
     </div>
   </div>
 </div>
 
-<footer>Deterministic core owns every number; the optional LLM layer only explains. Synthetic data (seed 42).
-  &middot; <a href="/api">JSON index</a> &middot; <a href="/docs">OpenAPI docs</a></footer>
+<footer>Every number is calculated, not guessed; the plan is reproducible. Sample data only.
+  &middot; <a href="/api">JSON</a> &middot; <a href="/docs">API docs</a></footer>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -156,13 +184,13 @@ let timer=null;
 
 function fmtMRR(x){ if(x==null) return "—"; const a=Math.abs(x);
   if(a>=1e6) return "$"+(x/1e6).toFixed(1)+"M"; if(a>=1e3) return "$"+(x/1e3).toFixed(0)+"K"; return "$"+Math.round(x); }
-function pct(b,o){ if(!b) return {t:"—",c:"flat"}; const d=(o-b)/b*100;
-  return {t:(d>0?"+":"")+d.toFixed(1)+"%", c: Math.abs(d)<0.5?"flat":(d<0?"up":"down")}; }
 function avg(o){ const v=Object.values(o||{}); return v.length? v.reduce((a,b)=>a+b,0)/v.length : 0; }
+function imp(b,o){ return b ? (b-o)/b*100 : 0; }         // % improvement when lower is better
+function esc(t){ return t.replace(/"/g,'&quot;'); }
+function info(t){ return `<span class="info" data-tip="${esc(t)}">i</span>`; }
 
 function settings(){
-  const p=+$("#sp").value, g=+$("#sg").value, w=+$("#sw").value;
-  const s=(p+g+w)||1;
+  const p=+$("#sp").value, g=+$("#sg").value, w=+$("#sw").value, s=(p+g+w)||1;
   $("#wp").textContent=Math.round(p/s*100)+"%"; $("#wg").textContent=Math.round(g/s*100)+"%"; $("#ww").textContent=Math.round(w/s*100)+"%";
   const body={weights:{potential:p,geo:g,whitespace:w}, attainment:+$("#att").value};
   const t=parseFloat($("#tgt").value); if(!isNaN(t)&&t>0) body.company_target=t*1e6;
@@ -172,31 +200,43 @@ async function post(path, body){
   const r=await fetch(path,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
   return r.json();
 }
+function metric(title,tip,value,valCls,subHtml){
+  return `<div class="metric"><div class="k">${title}${info(tip)}</div>
+    <div class="v ${valCls||''}">${value}</div><div class="d">${subHtml}</div></div>`;
+}
 
 function scoreCards(sc, summary){
-  const seg={b:avg(sc.per_segment_potential_cov.baseline), o:avg(sc.per_segment_potential_cov.optimized)};
-  const off=sc.off_home_share, geo=sc.geo_spread, cov=sc.coverage_flips;
-  const cards=[
-    ["Within-segment balance", seg.o.toFixed(3), pct(seg.b,seg.o), "mean CoV · lower is fairer"],
-    ["Geo · off-home share", off.optimized.toFixed(2), pct(off.baseline,off.optimized), "share of accounts out-of-region"],
-    ["Geo · region spread", geo.optimized, pct(geo.baseline,geo.optimized), "Σ distinct regions"],
-    ["Under-covered", cov.under_covered_optimized+" / "+summary.n_territories, {t:"target "+fmtMRR(summary.company_target), c:"flat"}, "territories below 1.0 coverage"],
-  ];
-  $("#score").innerHTML=cards.map(([k,v,d,sub])=>`
-    <div class="metric"><div class="k">${k}</div><div class="v">${v}</div>
-      <div class="d ${d.c}">${d.t}</div><div class="k" style="margin-top:6px;text-transform:none;letter-spacing:0">${sub}</div></div>`).join("");
+  const fair=imp(avg(sc.per_segment_potential_cov.baseline), avg(sc.per_segment_potential_cov.optimized));
+  const grow=imp(sc.whitespace_cov.baseline, sc.whitespace_cov.optimized);
+  const off=sc.off_home_share, tight=imp(off.baseline, off.optimized);
+  const under=sc.coverage_flips.under_covered_optimized, n=summary.n_territories;
+  const evenTxt=v=>(v>=0?"+"+v.toFixed(0)+"% more even":v.toFixed(0)+"% less even");
+  $("#score").innerHTML=[
+    metric("Quota fairness",
+      "How evenly matched reps' books are within the same segment (Enterprise, Mid-Market, SMB). More even = no rep stuck with a far smaller or bigger book than peers. We compare within a segment because an Enterprise book is naturally much larger than an SMB one.",
+      evenTxt(fair), fair>=0?"green":"red", `<span class="flat">reps' books vs a simple even split</span>`),
+    metric("Territory focus",
+      "Share of a rep's accounts outside their home region — a stand-in for travel and how local the book is. Lower is tighter. Some regions have no local rep for a segment, so a share is always covered from afar.",
+      Math.round(off.optimized*100)+"% out-of-region", "",
+      `<span class="${tight>=0?'up':'down'}">${tight>=0?'↓ '+tight.toFixed(0)+'% tighter':'↑ '+Math.abs(tight).toFixed(0)+'% looser'}</span> <span class="flat">vs even split (${Math.round(off.baseline*100)}%)</span>`),
+    metric("Growth balance",
+      "How evenly untapped expansion opportunity (whitespace) is spread across reps, so upside isn't concentrated in a few territories.",
+      evenTxt(grow), grow>=0?"green":"red", `<span class="flat">growth upside vs a simple even split</span>`),
+    metric("Coverage risk",
+      "Reps whose available pipeline is less than what's needed to hit quota on paper. A risk flag, not a prediction — these reps start the quarter behind unless you lower the quota or add pipeline.",
+      under+" of "+n+" reps", under>0?"red":"green", `<span class="flat">short on pipeline · target ${fmtMRR(summary.company_target)}</span>`),
+  ].join("");
 }
 
 function covCell(c){
   if(c==null) return `<td class="muted">—</td>`;
   const under=c<1, col=under?"var(--bad)":"var(--good)", fill=Math.min(c,1.5)/1.5*100;
-  return `<td><span class="pill"><span class="${under?'red':'green'}">${c.toFixed(2)}</span>
+  return `<td><span class="pill"><span class="${under?'red':'green'}">${c.toFixed(2)}×</span>
     <span class="covbar"><i style="width:${fill}%;background:${col}"></i></span></span></td>`;
 }
 function renderTable(rows){
   rows=rows.slice().sort((a,b)=>{ const x=a[state.sort], y=b[state.sort];
-    const xn=(x==null), yn=(y==null); if(xn||yn) return xn-yn;
-    return (x>y?1:x<y?-1:0)*(state.asc?1:-1); });
+    const xn=(x==null), yn=(y==null); if(xn||yn) return xn-yn; return (x>y?1:x<y?-1:0)*(state.asc?1:-1); });
   $("#tcount").textContent=rows.length+" reps";
   $("#tbody").innerHTML=rows.map(r=>`
     <tr data-id="${r.rep_id}" class="${r.rep_id===state.sel?'sel':''}">
@@ -207,8 +247,7 @@ function renderTable(rows){
   $("#tbody").querySelectorAll("tr").forEach(tr=>tr.onclick=()=>selectRep(tr.dataset.id));
 }
 function renderComp(rows, att){
-  $("#cbody").innerHTML=rows.map(r=>{
-    const sel=Math.abs(r.attainment-att)<1e-6;
+  $("#cbody").innerHTML=rows.map(r=>{ const sel=Math.abs(r.attainment-att)<1e-6;
     return `<tr style="${sel?'background:rgba(91,140,255,.12)':''}">
       <td style="text-align:left">${Math.round(r.attainment*100)}%${sel?' ◂':''}</td>
       <td>${fmtMRR(r.total_comp)}</td><td>${fmtMRR(r.total_bookings)}</td>
@@ -219,45 +258,46 @@ async function selectRep(id){
   state.sel=id;
   $("#tbody").querySelectorAll("tr").forEach(tr=>tr.classList.toggle("sel",tr.dataset.id===id));
   $("#funnelWho").textContent=id;
-  $("#funnel").innerHTML=`<div class="spin">Computing funnel…</div>`;
+  $("#funnel").innerHTML=`<div class="spin">Working out the deal math…</div>`;
   const d=await post("/territory/"+id, settings());
-  const w=d.waterfall, f=w.funnel, max=f.required_sqls||1;
-  const stages=[["Required SQLs",f.required_sqls],["Qualification",f.qualification],["Proposal",f.proposal],
-    ["Negotiation",f.negotiation],["Won deals",f.won_deals]];
-  const under=w.under_covered;
-  let html=`<div>${stages.map(([n,v])=>`
+  const w=d.waterfall, f=w.funnel, max=f.required_sqls||1, under=w.under_covered;
+  const stages=[["Qualified leads to source",f.required_sqls],["In qualification",f.qualification],
+    ["In proposal",f.proposal],["In negotiation",f.negotiation],["Deals to close",f.won_deals]];
+  let html=`<div class="note" style="margin:0 0 8px">Working backwards from the quota: the deals to close, and the
+    leads and pipeline needed to get there this quarter.</div>
+    <div>${stages.map(([n,v])=>`
     <div class="stage"><div class="name">${n}</div>
       <div class="track"><div class="fill" style="width:${Math.max(6,v/max*100)}%">${v.toFixed(0)}</div></div></div>`).join("")}</div>
     <div class="callout">
-      <div class="box"><div class="k">Required pipeline</div><div class="v">${fmtMRR(w.required_pipeline)}</div></div>
-      <div class="box"><div class="k">Available pipeline</div><div class="v">${fmtMRR(w.available_pipeline)}</div></div>
-      <div class="box"><div class="k">Coverage</div><div class="v ${under?'red':'green'}">${w.coverage_ratio.toFixed(2)}${under?' ⚠':' ✓'}</div></div>
+      <div class="box"><div class="k">Pipeline needed${info("The pipeline (at the negotiation stage) needed to produce the quarter's deals.")}</div><div class="v">${fmtMRR(w.required_pipeline)}</div></div>
+      <div class="box"><div class="k">Pipeline on hand${info("The addressable pipeline this rep's accounts actually hold today.")}</div><div class="v">${fmtMRR(w.available_pipeline)}</div></div>
+      <div class="box"><div class="k">Coverage${info("Pipeline on hand ÷ pipeline needed. 1.0x = just enough on paper; below 1.0x = short.")}</div><div class="v ${under?'red':'green'}">${w.coverage_ratio.toFixed(2)}×${under?' ⚠':' ✓'}</div></div>
     </div>
-    <div class="rates">${Object.entries(d.rates_used).map(([k,r])=>
-      `<span class="chip">${k.replace('->','→')} <b>${k==='avg_deal_size'?fmtMRR(r.value):r.value}</b> <span class="muted">(${r.level})</span></span>`).join("")}</div>`;
-  if(under && d.gap){ html+=`<ul class="levers">${d.gap.levers.map(l=>`<li>${l}</li>`).join("")}</ul>`; }
-  html+=`<div class="note">${d.coverage_note}</div>`;
+    <div class="lbl">Conversion assumptions${info("Stage-to-stage win rates and average deal size used for this rep. Source: default = company default; segment/rep = an override you'd set for this segment or rep.")}</div>
+    <div class="rates">${Object.entries(d.rates_used).map(([k,r])=>{
+      const lvl=r.level==='global'?'default':r.level, name=k==='avg_deal_size'?'avg deal':k.replace('->','→');
+      const val=k==='avg_deal_size'?fmtMRR(r.value):(r.value*100).toFixed(0)+'%';
+      return `<span class="chip">${name} <b>${val}</b> <span class="muted">(${lvl})</span></span>`; }).join("")}</div>`;
+  if(under && d.gap){ html+=`<div class="lbl">To close the gap</div><ul class="levers">${d.gap.levers.map(l=>`<li>${l}</li>`).join("")}</ul>`; }
+  html+=`<div class="note">A coverage check is a pipeline reality check, not a forecast — a covered rep can still miss,
+    and a short rep can still deliver. It flags where to look first.</div>`;
   $("#funnel").innerHTML=html;
 }
 
 async function refresh(keepSel){
-  const s=settings();
-  const plan=await post("/plan", s);
+  const plan=await post("/plan", settings());
   if(state.target===null){ state.target=plan.summary.company_target; $("#tgt").value=Math.round(state.target/1e6); }
   scoreCards(plan.scorecard, plan.summary);
   renderTable(plan.territories);
   renderComp(plan.comp, +$("#att").value);
-  const sel = (keepSel && state.sel) ? state.sel : plan.territories[0].rep_id;
-  selectRep(sel);
+  selectRep((keepSel && state.sel) ? state.sel : plan.territories[0].rep_id);
 }
 function debounced(){ clearTimeout(timer); timer=setTimeout(()=>refresh(true), 220); }
 
-["sp","sg","sw"].forEach(id=>$("#"+id).addEventListener("input",debounced));
-$("#tgt").addEventListener("input",debounced);
+["sp","sg","sw","tgt"].forEach(id=>$("#"+id).addEventListener("input",debounced));
 $("#att").addEventListener("change",()=>refresh(true));
 document.querySelectorAll("th[data-k]").forEach(th=>th.onclick=()=>{
-  const k=th.dataset.k; state.asc = state.sort===k ? !state.asc : true; state.sort=k;
-  refresh(true);
+  const k=th.dataset.k; state.asc = state.sort===k ? !state.asc : true; state.sort=k; refresh(true);
 });
 refresh(false);
 </script>
