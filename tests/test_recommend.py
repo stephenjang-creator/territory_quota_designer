@@ -36,15 +36,20 @@ def test_every_pipeline_lever_resolves_the_short_segment(data):
     assert applied >= 3
 
 
-def test_retag_keeps_source_segments_covered(data):
+def test_retag_makes_every_rep_clear_and_keeps_sources_covered(data):
     a, r, c = data
     recs = recommend.build_recommendations(a, r, c)
     pipe = next(x for x in recs if x["id"] == "pipeline-SMB")
     retag = next(lv["apply"] for lv in pipe["levers"] if "account_retags" in lv["apply"])
-    sc = run_plan(a, r, c, PlanSettings(**retag)).scorecard["per_segment_capacity"]
+    plan = run_plan(a, r, c, PlanSettings(**retag))
+    sc = plan.scorecard["per_segment_capacity"]
     assert sc["SMB"]["coverable"] is True
     # the segments the accounts came from stay coverable (we don't rob Peter to pay Paul)
     assert sc["Mid-Market"]["coverable"] and sc["Enterprise"]["coverable"]
+    # the re-tag GUARANTEES every rep clears the target — not just the segment aggregate
+    target = plan.settings["coverage_target"]
+    assert plan.scorecard["coverage_floor"]["optimized"] >= target - 1e-6
+    assert plan.scorecard["reps_covered"]["optimized"] == plan.scorecard["reps_covered"]["of"]
 
 
 def test_hiring_plan_lands_covered(data):

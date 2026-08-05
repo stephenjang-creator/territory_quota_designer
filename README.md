@@ -179,15 +179,17 @@ applyable settings delta — same engine, nothing invented in the UI:
 
 | Finding | Levers (each an **Apply**) |
 | --- | --- |
-| **SMB short $233K** | re-tag **35 Mid-Market accounts** into SMB ($233K, sources stay covered) · lower the SMB multiple to **3.25×** · accept a **2.44×** SMB target |
+| **SMB short $233K** | re-tag **36 Mid-Market accounts** into SMB ($241K — every SMB rep then clears 3×, sources stay covered) · lower the SMB multiple to **3.25×** · accept a **2.44×** SMB target |
 | **Hiring capacity** | apply the safe plan — **1 Enterprise + 1 Mid-Market AE**, freeze SMB |
 | **Comp at 85%** | auto-tune the decelerator/base to hold cost-of-sale under a ceiling (a no-op at the default 26%) |
 | **Sensitivity** | drop to a **2.43×** global target, or a **3.24×** multiple, and every rep clears |
 
 "Re-tag" is a **true account move**: the tool picks the smallest-addressable
-surplus-segment accounts, changes their segment, and re-carves — SMB's pool grows, the
-source stays covered, no quota moves. Applying a lever merges its delta into the
-settings and recomputes; an agent gets the identical fixes via `recommend_actions`.
+surplus-segment accounts, changes their segment, and re-carves — and it keeps moving
+accounts, **re-carving to verify at each step, until every target-segment rep clears the
+target** (not just the segment aggregate), while the source stays covered and no quota
+moves. Applying a lever merges its delta into the settings and recomputes; an agent gets
+the identical fixes via `recommend_actions`.
 
 ## Plan hires against capacity
 
