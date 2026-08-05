@@ -155,3 +155,22 @@ SMB as the segment you can't hire into without sourcing more pipeline. Returns t
 company-target delta, reps covered before/after, the coverage floor, and the segment's
 pipeline vs. required. The dashboard does the same interactively: add reps in the roster
 (bottom section) and watch the capacity bars.
+
+---
+
+### 11. "The SMB gap — what do I actually do about it?"
+
+```
+recommend_actions()                                  # every issue + a one-click fix
+whatif_segment_override("SMB", quota_to_ote=3.25)    # or model one lever directly
+```
+
+`recommend_actions` returns the plan's issues, each with an **applyable settings delta**.
+For the SMB shortfall it offers three fixes — **re-tag 35 Mid-Market accounts** into SMB
+($233K of pipeline, the source segment stays covered), **lower the SMB quota multiple to
+3.25×**, or **accept a 2.44× coverage target for SMB** — plus a safe hire plan (1
+Enterprise + 1 Mid-Market AE), a comp-cost check, and the global target/multiple at which
+every rep clears. `whatif_segment_override` models one lever directly: cutting SMB to
+3.25× makes the segment coverable and drops the company target from $2.86M to
+$2.79M/quarter. The dashboard renders the same actions with an **Apply** button on each.
+

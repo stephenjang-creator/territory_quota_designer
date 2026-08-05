@@ -170,6 +170,25 @@ No assignment can invent pipeline — the fix is to reassign pipeline in, lower 
 SMB role's quota (OTE or the multiple), or source more. That's the decision the
 tool exists to surface.
 
+## Recommended actions — resolve, not just diagnose
+
+The dashboard's **executive summary** turns the scorecard into a decision (a verdict
+plus four tiles), and **Recommended actions** turns each finding into a fix you can
+apply in one click. Every lever is computed by `core/recommend.py` and carries an
+applyable settings delta — same engine, nothing invented in the UI:
+
+| Finding | Levers (each an **Apply**) |
+| --- | --- |
+| **SMB short $233K** | re-tag **35 Mid-Market accounts** into SMB ($233K, sources stay covered) · lower the SMB multiple to **3.25×** · accept a **2.44×** SMB target |
+| **Hiring capacity** | apply the safe plan — **1 Enterprise + 1 Mid-Market AE**, freeze SMB |
+| **Comp at 85%** | auto-tune the decelerator/base to hold cost-of-sale under a ceiling (a no-op at the default 26%) |
+| **Sensitivity** | drop to a **2.43×** global target, or a **3.24×** multiple, and every rep clears |
+
+"Re-tag" is a **true account move**: the tool picks the smallest-addressable
+surplus-segment accounts, changes their segment, and re-carves — SMB's pool grows, the
+source stays covered, no quota moves. Applying a lever merges its delta into the
+settings and recomputes; an agent gets the identical fixes via `recommend_actions`.
+
 ## Plan hires against capacity
 
 The roster in the dashboard is **editable**: add a rep — a name, or **"TBH"** for an
@@ -252,7 +271,7 @@ Interactive docs at `/docs`.
 
 | Endpoint | Purpose |
 | --- | --- |
-| `GET /` | the **interactive dashboard** (self-contained HTML, served same-origin) |
+| `GET /` | the **interactive dashboard** — executive summary + recommended actions (one-click Apply) over the config |
 | `GET /api` · `GET /health` | JSON service index · liveness probe |
 | `GET /roles` | default OTE + standardized quota per role (seeds the OTE panel) |
 | `GET /conversions` · `GET /comp/defaults` | per-segment rate defaults · comp params |
@@ -260,21 +279,26 @@ Interactive docs at `/docs`.
 | `POST /quota` | Stage 2 — standardized quota by role (from OTE) |
 | `POST /waterfall` | Stage 3 — reverse-waterfall coverage roll-up |
 | `POST /comp` | Stage 4 — payouts, cost-of-sale, scenarios, payout curve |
-| `POST /plan` | the whole chain in one call (the dashboard's hot path) |
+| `POST /plan` | the whole chain **+ recommendations** in one call (the dashboard's hot path) |
 | `GET /territory/{rep_id}` | full single-territory detail (coverage + funnel) |
 | `POST /explain` | optional LLM rationale; skips cleanly with no API key |
 
 Settings a request can send: `quota_to_ote`, `coverage_target`, `ote_overrides`
 (`{segment:{level:ote}}`), `prefer_home_region`, `overrides` (conversions), `comp`,
-`attainment`, `added_reps` (`[{name, segment, level}]` — what-if hires).
+`attainment`, `added_reps` (`[{name, segment, level}]` — what-if hires),
+`segment_overrides` (`{segment:{quota_to_ote?, coverage_target?}}` — per-segment), and
+`account_retags` (`{account_id: segment}` — a true re-tag). A recommendation's **Apply**
+just merges its delta into these and re-POSTs — no stateful endpoint.
 
 ## Agent / MCP
 
-The same engine is an **MCP server** (`mcp_server.py`) — twelve read-only tools so an
-agent can interrogate a plan conversationally: `plan_summary`, `list_territories`,
-`assess_territory`, `coverage_gaps`, `whatif_ote`, `whatif_hire`, `whatif_coverage`,
-`whatif_conversions`, `comp_scenario`, `get_scorecard`, `list_reps`, `list_segments`.
-See **[EXAMPLES.md](EXAMPLES.md)** for natural-language questions mapped to tools.
+The same engine is an **MCP server** (`mcp_server.py`) — fifteen read-only tools so an
+agent can interrogate *and resolve* a plan conversationally: `plan_summary`,
+`list_territories`, `assess_territory`, `coverage_gaps`, `recommend_actions`,
+`whatif_ote`, `whatif_hire`, `whatif_segment_override`, `whatif_coverage`,
+`whatif_conversions`, `autotune_comp`, `comp_scenario`, `get_scorecard`, `list_reps`,
+`list_segments`. `recommend_actions` returns the same applyable fixes the dashboard
+shows. See **[EXAMPLES.md](EXAMPLES.md)** for natural-language questions mapped to tools.
 
 ```bash
 make mcp        # stdio (Claude Desktop / claude mcp)
@@ -298,7 +322,7 @@ dashboard) and the MCP server over bearer-auth'd HTTP. Pushing to `main` redeplo
 ## Project layout
 
 ```
-generate_territory_data.py   synthetic data generator (curated 12-rep team)
+generate_territory_data.py   synthetic data generator (curated 14-rep team)
 data/                        accounts.csv · reps.csv · conversions.csv
 config.py                    all tunable knobs (OTE, quota multiple, coverage target, comp)
 core/
@@ -310,6 +334,7 @@ core/
   comp.py                    Stage 4 — OTE-anchored comp
   overrides.py               rep > segment > global conversion-rate resolution
   evaluate.py                capacity scorecard (work-back vs naive)
+  recommend.py               recommended actions + applyable fixes (re-tag / overrides / autotune)
   plan.py                    run_plan orchestrator (quota → carve → waterfall → comp)
   views.py                   JSON-safe roll-up views (shared by API + MCP)
 api/main.py                  FastAPI app (serves the dashboard + JSON endpoints)
