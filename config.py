@@ -54,9 +54,9 @@ MAX_LOCAL_SEARCH_PASSES = 30
 # Default quarterly company_target = COMPANY_TARGET_MULTIPLE * total opportunity
 # potential (MRR). Tuned (seed 42) so the book can *roughly* support the target
 # but a few territories fall under-covered — that tension is exactly what the
-# dashboard exists to surface. At 0.27 the three full-time Enterprise reps land
-# ~0.91 coverage (lowest win-rate segment); the ramping Enterprise rep is rescued
-# by the quota haircut. See the reverse-waterfall math in the README.
+# dashboard exists to surface. At 0.27 the two Sr. Strategic AEs on Enterprise
+# books land ~0.79 coverage (heaviest quota load on the lowest-win-rate segment);
+# the ramping reps are rescued by their lighter load. See the README waterfall math.
 COMPANY_TARGET_MULTIPLE = 0.27
 
 # AE seniority levels and the quota-capacity multiplier each carries. Quota is
@@ -73,10 +73,14 @@ LEVEL_QUOTA_MULTIPLIER = {
     "Sr. AE": 1.15,
     "Sr. Strategic AE": 1.30,
 }
-# Tenure (months) -> level, used by the generator and as a dataio fallback when a
-# reps row has no explicit `level`. Upper-exclusive bands, ascending.
+# Tenure (months) -> level, used as a dataio fallback when a reps row has no
+# explicit `level`. Upper-exclusive bands, ascending.
 AE_LEVEL_TENURE_BANDS = [(6, "ramping"), (18, "AE"), (36, "Sr. AE")]
 AE_LEVEL_TOP = "Sr. Strategic AE"  # tenure at/above the last band
+# Seniority tracks account size: the strategic tier is Enterprise-only, senior reps
+# top out in Mid-Market, SMB is AEs + new hires. A rep's level is its tenure band
+# capped at its segment's ceiling.
+SEGMENT_MAX_LEVEL = {"Enterprise": "Sr. Strategic AE", "Mid-Market": "Sr. AE", "SMB": "AE"}
 
 # Back-compat alias: a ramping rep's multiplier is the old flat ramp haircut.
 RAMP_QUOTA_HAIRCUT = LEVEL_QUOTA_MULTIPLIER["ramping"]
@@ -87,11 +91,18 @@ QUOTA_FAIRNESS_TOLERANCE = 0.15
 
 
 def level_for_tenure(tenure_months: int) -> str:
-    """Map a rep's tenure to a seniority level (the default assignment)."""
+    """Map a rep's tenure to a seniority level (ignoring segment)."""
     for upper, level in AE_LEVEL_TENURE_BANDS:
         if tenure_months < upper:
             return level
     return AE_LEVEL_TOP
+
+
+def level_for(segment: str, tenure_months: int) -> str:
+    """Tenure band capped at the segment's seniority ceiling (see SEGMENT_MAX_LEVEL)."""
+    base = level_for_tenure(tenure_months)
+    cap = SEGMENT_MAX_LEVEL.get(segment, AE_LEVEL_TOP)
+    return base if AE_LEVELS.index(base) <= AE_LEVELS.index(cap) else cap
 
 
 # ----------------------------------------------------------------------

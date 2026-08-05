@@ -67,8 +67,10 @@ def load_reps(path: str | os.PathLike | None = None) -> list[Rep]:
                 tenure_months=int(r["tenure_months"]),
                 ramp_status=r["ramp_status"],
                 # `level` is the seniority/quota-load tier; older data without the
-                # column falls back to a tenure-derived default.
-                level=(r.get("level") or config.level_for_tenure(int(r["tenure_months"]))),
+                # column falls back to a segment-capped, tenure-derived default.
+                level=(
+                    r.get("level") or config.level_for(r["segment_focus"], int(r["tenure_months"]))
+                ),
             )
             for r in csv.DictReader(fh)
         ]

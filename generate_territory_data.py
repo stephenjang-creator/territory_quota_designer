@@ -133,6 +133,12 @@ def _accounts(n):
 # config.AE_LEVEL_TENURE_BANDS (the generator stays import-light on purpose).
 LEVEL_BANDS = [(6, "ramping"), (18, "AE"), (36, "Sr. AE")]
 LEVEL_TOP = "Sr. Strategic AE"
+LEVEL_ORDER = ["ramping", "AE", "Sr. AE", "Sr. Strategic AE"]
+# Seniority tracks account size: the strategic tier is Enterprise-only, senior reps
+# top out in Mid-Market, and SMB is covered by AEs and new hires. A rep's level is
+# its tenure band capped at its segment's ceiling -- so a tenured SMB rep is a
+# (senior-paid) AE, never a "Sr. Strategic AE" sitting on a small book.
+SEGMENT_MAX_LEVEL = {"Enterprise": "Sr. Strategic AE", "Mid-Market": "Sr. AE", "SMB": "AE"}
 
 
 def _level_for_tenure(tenure):
@@ -142,6 +148,33 @@ def _level_for_tenure(tenure):
     return LEVEL_TOP
 
 
+def _level_for(segment, tenure):
+    """Tenure band, capped at the segment's seniority ceiling."""
+    base = _level_for_tenure(tenure)
+    cap = SEGMENT_MAX_LEVEL.get(segment, LEVEL_TOP)
+    return base if LEVEL_ORDER.index(base) <= LEVEL_ORDER.index(cap) else cap
+
+
+# The default 12-rep demo team, curated so seniority tracks account size (see
+# above): strategic reps sell Enterprise, senior reps the larger Mid-Market books,
+# SMB is AEs + a new hire. Segments match the random draw they replace, so the
+# Stage-1 carve is unchanged; only seniority/tenure differ. (segment, level, tenure)
+DEFAULT_TEAM = [
+    ("Mid-Market", "Sr. AE", 30),            # R-100
+    ("Enterprise", "Sr. Strategic AE", 48),  # R-101
+    ("Enterprise", "Sr. Strategic AE", 42),  # R-102
+    ("Mid-Market", "AE", 14),                # R-103
+    ("SMB", "AE", 20),                        # R-104
+    ("Enterprise", "AE", 14),                # R-105
+    ("Mid-Market", "ramping", 4),            # R-106
+    ("Mid-Market", "AE", 9),                 # R-107
+    ("SMB", "AE", 30),                        # R-108
+    ("Enterprise", "ramping", 4),            # R-109
+    ("SMB", "ramping", 2),                    # R-110
+    ("Mid-Market", "Sr. AE", 36),            # R-111
+]
+
+
 def _reps(n):
     # Weight the team toward the segments that have the most accounts.
     focus_pool = (["Enterprise"] * 2 + ["Mid-Market"] * 3 + ["SMB"] * 3
@@ -149,10 +182,12 @@ def _reps(n):
     rows = []
     regions = list(REGIONS)
     for i in range(n):
+        # Draw name/region/metro from the pools (and a random focus/tenure so the
+        # RNG stream is stable); the default team below then curates seniority.
         focus = random.choice(focus_pool)
         region = random.choice(regions)
         tenure = random.choice([2, 4, 6, 9, 14, 20, 30, 48])
-        rows.append({
+        row = {
             "rep_id": f"R-{100 + i}",
             "name": _person(),
             "segment_focus": focus,
@@ -160,9 +195,17 @@ def _reps(n):
             "home_metro": random.choice(REGIONS[region]),
             "tenure_months": tenure,
             "ramp_status": "ramping" if tenure < 6 else "full",
-            # Seniority tier -> quota-load multiplier at plan time (see config).
-            "level": _level_for_tenure(tenure),
-        })
+            "level": _level_for(focus, tenure),
+        }
+        if i < len(DEFAULT_TEAM):  # curate the default team for realism
+            seg, level, ten = DEFAULT_TEAM[i]
+            row.update(
+                segment_focus=seg,
+                tenure_months=ten,
+                level=level,
+                ramp_status="ramping" if level == "ramping" else "full",
+            )
+        rows.append(row)
     return pd.DataFrame(rows)
 
 
