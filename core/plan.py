@@ -12,11 +12,40 @@ Deterministic given the data seed and settings.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 import config
 from core import balance, comp, evaluate, quota, waterfall
 from core.models import Account, PlanResult, Rep
+
+
+def apply_retags(accounts: list[Account], account_retags: dict | None) -> list[Account]:
+    """Return `accounts` with segment replaced per {account_id: segment} — a TRUE
+    re-tag that moves an account (and its pipeline) into another segment's pool, so
+    that segment's reps can carve it. Frozen Accounts, so replace() makes copies;
+    unknown segments/ids are ignored."""
+    if not account_retags:
+        return accounts
+    out = []
+    for a in accounts:
+        seg = account_retags.get(a.account_id)
+        out.append(replace(a, segment=seg) if seg in config.SEGMENT_OTE and seg != a.segment else a)
+    return out
+
+
+def segment_coverage_target(
+    segment: str, global_target: float, segment_overrides: dict | None
+) -> float:
+    """Per-segment coverage target: an override wins, else the global target."""
+    if segment_overrides:
+        v = (segment_overrides.get(segment) or {}).get("coverage_target")
+        if v is not None:
+            try:
+                return float(v)
+            except (TypeError, ValueError):
+                pass
+    return global_target
+
 
 # Nominal tenure per level for a planned hire (level is explicit, so this only
 # feeds display; it never changes quota or OTE, which come from the role).
@@ -71,6 +100,10 @@ class PlanSettings:
     attainment: float = 1.0
     attainment_scenarios: list | None = None
     added_reps: list = field(default_factory=list)  # what-if hires [{name, segment, level}]
+    segment_overrides: dict = field(
+        default_factory=dict
+    )  # {seg: {quota_to_ote?, coverage_target?}}
+    account_retags: dict = field(default_factory=dict)  # {account_id: segment} true re-tag
 
     def as_dict(self) -> dict:
         return {
@@ -96,6 +129,8 @@ class PlanSettings:
             "attainment": self.attainment,
             "attainment_scenarios": self.attainment_scenarios or config.ATTAINMENT_SCENARIOS,
             "added_reps": self.added_reps,
+            "segment_overrides": self.segment_overrides,
+            "account_retags": self.account_retags,
         }
 
 
@@ -111,10 +146,25 @@ def run_plan(
     # Fold in any what-if hires so the whole chain (quota, carve, coverage, comp,
     # scorecard) sees the larger team — the point of the hiring-plan feature.
     reps = merge_added_reps(reps, s.added_reps)
+    # True re-tag: move accounts into another segment's pool BEFORE anything reads
+    # segment, so the carve/coverage/per-segment math all see the effective segment.
+    accounts = apply_retags(accounts, s.account_retags)
 
-    # Stage 2 (first now) — standardized quota by role, from OTE.
+    # Per-rep coverage target (a segment can accept its own lower target).
+    global_target = (
+        config.PIPELINE_COVERAGE_TARGET if s.coverage_target is None else s.coverage_target
+    )
+    target_by_rep = {
+        r.rep_id: segment_coverage_target(r.segment_focus, global_target, s.segment_overrides)
+        for r in reps
+    }
+
+    # Stage 2 (first now) — standardized quota by role, from OTE (per-segment multiple).
     quotas = quota.standardized_quotas(
-        reps, ote_overrides=s.ote_overrides, quota_to_ote=s.quota_to_ote
+        reps,
+        ote_overrides=s.ote_overrides,
+        quota_to_ote=s.quota_to_ote,
+        segment_overrides=s.segment_overrides,
     )
     otes = quota.resolve_ote(reps, s.ote_overrides)
 
@@ -124,6 +174,7 @@ def run_plan(
         reps,
         quotas,
         coverage_target=s.coverage_target,
+        target_by_rep=target_by_rep,
         respect_segment_focus=s.respect_segment_focus,
         prefer_home_region=s.prefer_home_region,
     )
@@ -143,6 +194,8 @@ def run_plan(
         quota_to_ote=s.quota_to_ote,
         coverage_target=s.coverage_target,
         optimized=territories,
+        segment_overrides=s.segment_overrides,
+        target_by_rep=target_by_rep,
     )
 
     n_under = sum(1 for t in territories if t.under_covered)

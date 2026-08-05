@@ -60,12 +60,20 @@ def carve(
     quota_by_rep: dict[str, float],
     *,
     coverage_target: float | None = None,
+    target_by_rep: dict[str, float] | None = None,
     respect_segment_focus: bool | None = None,
     prefer_home_region: bool | None = None,
     generalist_focus: str | None = None,
 ) -> list[Territory]:
-    """Carve territories back from fixed per-rep quotas. Deterministic."""
+    """Carve territories back from fixed per-rep quotas. Deterministic.
+
+    `coverage_target` is the global pack-to multiple; `target_by_rep` optionally
+    overrides it per rep (so a segment can carve to its own accepted target)."""
     target_mult = config.PIPELINE_COVERAGE_TARGET if coverage_target is None else coverage_target
+
+    def _target(rid: str) -> float:
+        return target_by_rep.get(rid, target_mult) if target_by_rep else target_mult
+
     respect = (
         config.RESPECT_SEGMENT_FOCUS if respect_segment_focus is None else respect_segment_focus
     )
@@ -84,7 +92,7 @@ def carve(
                 f"No rep can carry segment {seg!r} under segment focus "
                 f"(add a {generalist!r} rep or turn RESPECT_SEGMENT_FOCUS off)."
             )
-        need = {rid: target_mult * quota_by_rep.get(rid, 0.0) for rid in pool}
+        need = {rid: _target(rid) * quota_by_rep.get(rid, 0.0) for rid in pool}
         got = dict.fromkeys(pool, 0.0)
 
         # Largest addressable accounts first packs to target with fewer accounts and

@@ -39,21 +39,43 @@ def resolve_ote(reps: list[Rep], ote_overrides: dict | None = None) -> dict[str,
     return {r.rep_id: role_ote(r.segment_focus, r.level, ote_overrides) for r in reps}
 
 
+def role_multiple(
+    segment: str, quota_to_ote: float, segment_overrides: dict | None = None
+) -> float:
+    """The annual quota-to-OTE multiple for a segment: a per-segment override
+    (segment_overrides[segment]['quota_to_ote']) wins, else the global multiple.
+    This is what lets a planner lower one segment's quota without touching the rest."""
+    if segment_overrides:
+        ov = segment_overrides.get(segment) or {}
+        if ov.get("quota_to_ote") is not None:
+            try:
+                return float(ov["quota_to_ote"])
+            except (TypeError, ValueError):
+                pass
+    return quota_to_ote
+
+
 def standardized_quotas(
     reps: list[Rep],
     *,
     ote_overrides: dict | None = None,
     quota_to_ote: float | None = None,
     periods_per_year: float | None = None,
+    segment_overrides: dict | None = None,
 ) -> dict[str, float]:
     """rep_id -> standardized QUARTERLY quota. Same role -> same value.
 
-    annual quota = (quota_to_ote) * role OTE  (industry norm 4-6x); the returned
-    quarterly quota = annual quota / periods_per_year (default 4)."""
-    mult = config.QUOTA_TO_OTE if quota_to_ote is None else float(quota_to_ote)
+    annual quota = multiple * role OTE  (industry norm 4-6x); the returned quarterly
+    quota = annual quota / periods_per_year (default 4). The multiple is the global
+    `quota_to_ote` unless a per-segment override lowers it (see role_multiple)."""
+    base = config.QUOTA_TO_OTE if quota_to_ote is None else float(quota_to_ote)
     ppy = config.QUOTA_PERIODS_PER_YEAR if periods_per_year is None else float(periods_per_year)
     ppy = ppy or 1.0
-    return {rid: mult * ote / ppy for rid, ote in resolve_ote(reps, ote_overrides).items()}
+    otes = resolve_ote(reps, ote_overrides)
+    return {
+        r.rep_id: role_multiple(r.segment_focus, base, segment_overrides) * otes[r.rep_id] / ppy
+        for r in reps
+    }
 
 
 def default_company_target(
@@ -61,9 +83,15 @@ def default_company_target(
     *,
     ote_overrides: dict | None = None,
     quota_to_ote: float | None = None,
+    segment_overrides: dict | None = None,
 ) -> float:
     """The derived company target: the sum of every rep's standardized quota."""
-    quotas = standardized_quotas(reps, ote_overrides=ote_overrides, quota_to_ote=quota_to_ote)
+    quotas = standardized_quotas(
+        reps,
+        ote_overrides=ote_overrides,
+        quota_to_ote=quota_to_ote,
+        segment_overrides=segment_overrides,
+    )
     return sum(quotas.values())
 
 

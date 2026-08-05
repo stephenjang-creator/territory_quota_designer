@@ -19,7 +19,7 @@ from pydantic import BaseModel, Field
 
 import config
 import narrative
-from core import comp, evaluate, quota, views, waterfall
+from core import comp, evaluate, quota, recommend, views, waterfall
 from core.dataio import load_all
 from core.plan import PlanSettings, merge_added_reps, run_plan
 
@@ -47,6 +47,10 @@ class PlanRequest(BaseModel):
     attainment: float = 1.0
     attainment_scenarios: list | None = None
     added_reps: list = Field(default_factory=list)  # what-if hires [{name, segment, level}]
+    segment_overrides: dict = Field(
+        default_factory=dict
+    )  # {seg: {quota_to_ote?, coverage_target?}}
+    account_retags: dict = Field(default_factory=dict)  # {account_id: segment} true re-tag
 
     def to_settings(self) -> PlanSettings:
         return PlanSettings(**self.model_dump())
@@ -343,6 +347,9 @@ def plan_endpoint(req: PlanRequest):
         "comp": comp.scenario_compare(plan.territories, req.attainment_scenarios, req.comp),
         "comp_params": comp.resolved_params(req.comp),
         "payout_curve": comp.payout_curve(sample_ote, sample_quota, req.comp),
+        "recommendations": recommend.build_recommendations(
+            ACCOUNTS, REPS, CONVERSIONS, req.to_settings(), plan=plan
+        ),
     }
 
 

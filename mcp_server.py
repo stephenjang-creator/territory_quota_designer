@@ -25,7 +25,7 @@ import os
 from mcp.server.fastmcp import FastMCP
 
 import config
-from core import comp, evaluate, quota, views
+from core import comp, evaluate, quota, recommend, views
 from core.dataio import load_all
 from core.plan import PlanSettings, run_plan
 
@@ -56,7 +56,13 @@ _SORT_KEYS = {
 # Helpers
 # ----------------------------------------------------------------------
 def _plan(
-    quota_to_ote=None, coverage_target=None, ote_overrides=None, overrides=None, added_reps=None
+    quota_to_ote=None,
+    coverage_target=None,
+    ote_overrides=None,
+    overrides=None,
+    added_reps=None,
+    segment_overrides=None,
+    account_retags=None,
 ):
     """The default plan when nothing is overridden, else a fresh in-memory re-run."""
     if (
@@ -65,6 +71,8 @@ def _plan(
         and not ote_overrides
         and not overrides
         and not added_reps
+        and not segment_overrides
+        and not account_retags
     ):
         return DEFAULT_PLAN
     return run_plan(
@@ -77,6 +85,8 @@ def _plan(
             ote_overrides=ote_overrides or {},
             overrides=overrides or {},
             added_reps=added_reps or [],
+            segment_overrides=segment_overrides or {},
+            account_retags=account_retags or {},
         ),
     )
 
@@ -452,6 +462,92 @@ def get_scorecard() -> dict:
             "scorecard": DEFAULT_PLAN.scorecard,
             "markdown": evaluate.scorecard_markdown(DEFAULT_PLAN.scorecard),
         }
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@mcp.tool()
+def recommend_actions(
+    quota_to_ote: float | None = None, coverage_target: float | None = None
+) -> dict:
+    """Recommended actions to RESOLVE the plan's issues — each lever carries an
+    applyable settings delta you can merge and re-plan.
+
+    Categories: pipeline (a short segment's fixes — re-tag surplus accounts into it,
+    lower its quota multiple, or accept a lower coverage target), hiring (a safe hire
+    plan for the segments with headroom), comp (auto-tune to a cost-of-sale ceiling),
+    sensitivity (a global target/multiple at which every rep clears). Omit args for
+    the default plan. Powers "what should I do about the SMB gap / who can I hire".
+    """
+    try:
+        plan = _plan(quota_to_ote, coverage_target)
+        settings = PlanSettings(quota_to_ote=quota_to_ote, coverage_target=coverage_target)
+        recs = recommend.build_recommendations(ACCOUNTS, REPS, CONVERSIONS, settings, plan=plan)
+        return {"units": config.UNITS, "count": len(recs), "recommendations": recs}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@mcp.tool()
+def whatif_segment_override(
+    segment: str,
+    quota_to_ote: float | None = None,
+    coverage_target: float | None = None,
+) -> dict:
+    """Lower ONE segment's quota multiple and/or accept a per-segment coverage target,
+    then DIFF vs. the default — the applyable fix for a capacity-short segment.
+
+    Returns whether the segment becomes coverable, the company-target change, and reps
+    covered before/after. Valid segments: call list_segments. Pass at least one of
+    quota_to_ote / coverage_target. Powers "if I cut SMB's quota, does SMB cover?".
+    """
+    try:
+        if segment not in config.SEGMENT_OTE:
+            return {"error": f"unknown segment {segment!r}; valid: {sorted(config.SEGMENT_OTE)}"}
+        ov: dict = {}
+        if quota_to_ote is not None:
+            ov["quota_to_ote"] = float(quota_to_ote)
+        if coverage_target is not None:
+            ov["coverage_target"] = float(coverage_target)
+        if not ov:
+            return {"error": "pass quota_to_ote and/or coverage_target"}
+        plan = _plan(segment_overrides={segment: ov})
+        base = DEFAULT_PLAN
+        sc, bc = plan.scorecard, base.scorecard
+        return {
+            "units": config.UNITS,
+            "segment": segment,
+            "override": ov,
+            "coverable": {
+                "default": bc["per_segment_capacity"][segment]["coverable"],
+                "whatif": sc["per_segment_capacity"][segment]["coverable"],
+            },
+            "company_target": {
+                "default": round(base.company_target),
+                "whatif": round(plan.company_target),
+            },
+            "reps_covered": {
+                "default": bc["reps_covered"]["optimized"],
+                "whatif": sc["reps_covered"]["optimized"],
+                "of": sc["reps_covered"]["of"],
+            },
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@mcp.tool()
+def autotune_comp(target_cos: float = 0.30, at_attainment: float = 0.85) -> dict:
+    """Tune the comp curve to hold cost-of-sale <= target_cos at a stress attainment.
+
+    Because base pay is fixed, cost-of-sale spikes when the team misses; this harshens
+    the decelerator (then trims the base split) to cap it. Returns the applyable `comp`
+    delta, the achieved cost-of-sale, and feasibility. Powers "keep cost of sale under
+    30% even at 85% attainment".
+    """
+    try:
+        res = comp.autotune_comp(DEFAULT_PLAN.territories, float(target_cos), float(at_attainment))
+        return {"units": config.UNITS, **res}
     except Exception as e:
         return {"error": str(e)}
 

@@ -22,8 +22,16 @@ quarter-comp-vs-year-quota mismatch. cost_of_sale is a ratio, denomination-invar
 
 from __future__ import annotations
 
+import math
+
 import config
 from core.models import Territory
+
+
+def _floor4(x: float) -> float:
+    """Round DOWN to 4 decimals — a tuned comp param must stay on the satisfied side
+    of a cost-of-sale ceiling, never round a hair over it."""
+    return math.floor(x * 1e4) / 1e4
 
 
 def _params(overrides: dict | None) -> dict:
@@ -155,6 +163,76 @@ def scenario_compare(
             }
         )
     return out
+
+
+def autotune_comp(
+    territories: list[Territory],
+    target_cos: float = 0.30,
+    at_attainment: float = 0.85,
+    comp_overrides: dict | None = None,
+) -> dict:
+    """Find comp params that hold cost-of-sale <= target_cos at a stress attainment.
+
+    Because base pay is fixed, cost-of-sale spikes when the team misses. The most
+    direct, least-disruptive lever is a harsher DECELERATOR (lower payout below the
+    floor lowers on-target-normalized pay at low attainment); if that alone can't
+    reach the target, the base split is lowered too. Returns an applyable `comp`
+    delta (only the changed keys), the achieved cost-of-sale, and feasibility."""
+    start = _params(comp_overrides)
+
+    def cos_with(**kw) -> float | None:
+        sim = simulate(territories, at_attainment, {**start, **kw})
+        return sim["cost_of_sale"]
+
+    base_cos = cos_with()
+    if base_cos is None:
+        return {"comp": {}, "achieved_cos": None, "feasible": False, "at_attainment": at_attainment}
+    if base_cos <= target_cos:
+        return {
+            "comp": {},
+            "achieved_cos": base_cos,
+            "feasible": True,
+            "at_attainment": at_attainment,
+        }
+
+    def bisect(key, lo, hi, fixed):
+        # cos is monotonic in this key; keep `lo` on the satisfied side.
+        for _ in range(40):
+            mid = (lo + hi) / 2
+            if cos_with(**{**fixed, key: mid}) <= target_cos:
+                lo = mid
+            else:
+                hi = mid
+        return lo
+
+    start_d = float(start.get("decelerator_multiplier") or 0.0)
+    # Phase 1 — harshen the decelerator (dmult toward 0).
+    if cos_with(decelerator_multiplier=0.0) <= target_cos:
+        d = _floor4(bisect("decelerator_multiplier", 0.0, start_d, {}))
+        return {
+            "comp": {"decelerator_multiplier": d},
+            "achieved_cos": cos_with(decelerator_multiplier=d),
+            "feasible": True,
+            "at_attainment": at_attainment,
+        }
+    # Phase 2 — dmult=0 wasn't enough; also lower the base split.
+    start_s = float(start.get("base_variable_split") or 0.0)
+    fixed = {"decelerator_multiplier": 0.0}
+    if cos_with(**fixed, base_variable_split=0.0) <= target_cos:
+        s = _floor4(bisect("base_variable_split", 0.0, start_s, fixed))
+        return {
+            "comp": {"decelerator_multiplier": 0.0, "base_variable_split": s},
+            "achieved_cos": cos_with(**fixed, base_variable_split=s),
+            "feasible": True,
+            "at_attainment": at_attainment,
+        }
+    # Not reachable even at the extremes — report the best achievable.
+    return {
+        "comp": {"decelerator_multiplier": 0.0, "base_variable_split": 0.0},
+        "achieved_cos": cos_with(**fixed, base_variable_split=0.0),
+        "feasible": False,
+        "at_attainment": at_attainment,
+    }
 
 
 def payout_curve(

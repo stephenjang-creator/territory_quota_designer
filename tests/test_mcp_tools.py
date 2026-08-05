@@ -127,3 +127,27 @@ def test_whatif_hire_diffs_capacity():
     assert len(d["added_reps"]) == 2
     assert "error" in S.whatif_hire("Nope", "AE")
     assert "error" in S.whatif_hire("SMB", "Principal")
+
+
+def test_recommend_actions():
+    d = S.recommend_actions()
+    assert "error" not in d and d["count"] >= 1
+    cats = {x["category"] for x in d["recommendations"]}
+    assert {"pipeline", "hiring", "comp", "sensitivity"} <= cats
+    pipe = next(x for x in d["recommendations"] if x["id"] == "pipeline-SMB")
+    assert pipe["levers"] and all("apply" in lv and "label" in lv for lv in pipe["levers"])
+
+
+def test_whatif_segment_override_covers_smb():
+    d = S.whatif_segment_override("SMB", quota_to_ote=3.25)
+    assert "error" not in d
+    assert d["coverable"]["default"] is False and d["coverable"]["whatif"] is True
+    assert d["company_target"]["whatif"] < d["company_target"]["default"]
+    assert "error" in S.whatif_segment_override("Nope", quota_to_ote=3)
+    assert "error" in S.whatif_segment_override("SMB")  # nothing to change
+
+
+def test_autotune_comp_tool():
+    d = S.autotune_comp(target_cos=0.30, at_attainment=0.85)
+    assert "error" not in d
+    assert "feasible" in d and "achieved_cos" in d and "comp" in d
