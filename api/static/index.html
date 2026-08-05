@@ -46,6 +46,9 @@
   input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
     border-radius:9px;padding:8px 10px;font:inherit}
   .hint{color:var(--muted);font-size:12px;margin-top:10px}
+  .warn{margin-top:12px;padding:10px 13px;border-radius:10px;background:rgba(255,180,84,.10);
+    border:1px solid var(--warn);color:var(--ink);font-size:12.5px;line-height:1.55}
+  .warn b{color:var(--warn)}
   .lead{margin:22px 2px 2px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink)}
   .lead .muted{font-weight:400;text-transform:none;letter-spacing:0}
   /* conversion overrides */
@@ -164,6 +167,7 @@
     </div>
     <div class="hint">The three splits always add up to 100%. There's a real trade-off: chase perfectly even books and
       reps travel more; keep territories tight and books get a little less even. This tool makes that choice explicit.</div>
+    <div class="warn" id="tgtWarn" style="display:none"></div>
   </div>
 
   <div class="lead">Assumptions behind the plan &middot; <span class="muted">expand any section to tune it — conversion
@@ -318,7 +322,12 @@ const $ = s => document.querySelector(s);
 const state = {sort:"coverage_ratio", asc:true, sel:null, target:null};
 let timer=null;
 
-function fmtK(x){ if(x==null) return "—"; return "$"+Math.round(x/1000).toLocaleString()+"K"; }
+function fmtK(x){ if(x==null) return "—";
+  if(x!==0 && Math.abs(x)<500) return x>0?"<$1K":">-$1K";   // don't render a real value as $0K
+  return "$"+Math.round(x/1000).toLocaleString()+"K"; }
+function covTxt(c){ return c>=100 ? Math.round(c).toLocaleString()+"×" : c.toFixed(2)+"×"; }  // clean huge coverage
+function qloadTxt(f){ if(f==null) return "—"; const p=f*100;
+  return (p>0 && p<0.05) ? "<0.1%" : p.toFixed(1)+"%"; }
 function avg(o){ const v=Object.values(o||{}); return v.length? v.reduce((a,b)=>a+b,0)/v.length : 0; }
 function imp(b,o){ return b ? (b-o)/b*100 : 0; }         // % improvement when lower is better
 function esc(t){ return t.replace(/"/g,'&quot;'); }
@@ -508,7 +517,7 @@ function scoreCards(sc, summary){
 function covCell(c){
   if(c==null) return `<td class="muted">—</td>`;
   const under=c<1, col=under?"var(--bad)":"var(--good)", fill=Math.min(c,1.5)/1.5*100;
-  return `<td><span class="pill"><span class="${under?'red':'green'}">${c.toFixed(2)}×</span>
+  return `<td><span class="pill"><span class="${under?'red':'green'}">${covTxt(c)}</span>
     <span class="covbar"><i style="width:${fill}%;background:${col}"></i></span></span></td>`;
 }
 function renderTable(rows){
@@ -521,7 +530,7 @@ function renderTable(rows){
       <td><span class="tag">${r.segment_focus}</span></td>
       <td><span class="tag ${r.level==='ramping'?'ramp':''}">${r.level||'—'}</span></td>
       <td>${r.account_count}</td><td>${fmtK(r.potential)}</td><td>${fmtK(r.quota)}</td>
-      <td>${(r.quota_to_potential*100).toFixed(1)}%</td>${covCell(r.coverage_ratio)}</tr>`).join("");
+      <td>${qloadTxt(r.quota_to_potential)}</td>${covCell(r.coverage_ratio)}</tr>`).join("");
   $("#tbody").querySelectorAll("tr").forEach(tr=>tr.onclick=()=>selectRep(tr.dataset.id));
 }
 function renderComp(rows, att){
@@ -549,7 +558,7 @@ async function selectRep(id){
     <div class="callout">
       <div class="box"><div class="k">Pipeline needed${info("The pipeline (at the negotiation stage) needed to produce the quarter's deals.")}</div><div class="v">${fmtK(w.required_pipeline)}</div></div>
       <div class="box"><div class="k">Pipeline on hand${info("The addressable pipeline this rep's accounts actually hold today.")}</div><div class="v">${fmtK(w.available_pipeline)}</div></div>
-      <div class="box"><div class="k">Coverage${info("Pipeline on hand ÷ pipeline needed. 1.0x = just enough on paper; below 1.0x = short.")}</div><div class="v ${under?'red':'green'}">${w.coverage_ratio.toFixed(2)}×${under?' ⚠':' ✓'}</div></div>
+      <div class="box"><div class="k">Coverage${info("Pipeline on hand ÷ pipeline needed. 1.0x = just enough on paper; below 1.0x = short.")}</div><div class="v ${under?'red':'green'}">${covTxt(w.coverage_ratio)}${under?' ⚠':' ✓'}</div></div>
     </div>
     <div class="lbl">Conversion assumptions${info("Stage-to-stage win rates and average deal size used for this rep. Source: default = company default; segment/rep = an override you'd set for this segment or rep.")}</div>
     <div class="rates">${Object.entries(d.rates_used).map(([k,r])=>{
@@ -565,11 +574,29 @@ async function selectRep(id){
 async function refresh(keepSel){
   const plan=await post("/plan", settings());
   if(state.target===null){ state.target=plan.summary.company_target; $("#tgt").value=Math.round(state.target/1e3); }
+  targetSanity(plan.summary);
   scoreCards(plan.scorecard, plan.summary);
   renderTable(plan.territories);
   renderComp(plan.comp, +$("#att").value);
   renderPayoutCurve(plan.payout_curve, plan.comp_params||{});
   selectRep((keepSel && state.sel) ? state.sel : plan.territories[0].rep_id);
+}
+// Flag a company target that's implausibly small (or large) for the book, so the
+// resulting near-zero quotas / off-the-chart coverage read as an input, not a bug.
+function targetSanity(sum){
+  const el=$("#tgtWarn"), tp=sum.total_potential, ct=sum.company_target, typical=tp*0.27;
+  let msg="";
+  if(tp && ct>0 && ct < tp*0.03)
+    msg=`<b>${fmtK(ct)}</b> is the <b>whole team's</b> quarterly target — far below what this book can support. It
+      holds ${fmtK(tp)} in opportunity, so a realistic target is a meaningful slice of that (the default is
+      ~${fmtK(typical)}). At ${fmtK(ct)} every rep's quota rounds to near zero and coverage runs into the
+      thousands-of-×. The field is in <b>$K</b>, so enter <b>${Math.round(typical/1e3).toLocaleString()}</b> for
+      ~${fmtK(typical)}, or <b>15000</b> for $15M.`;
+  else if(tp && ct > tp*1.5)
+    msg=`<b>${fmtK(ct)}</b> is larger than the book's entire ${fmtK(tp)} of opportunity — most reps will be
+      under-covered by design. The default is ~${fmtK(typical)}.`;
+  el.style.display = msg ? "" : "none";
+  el.innerHTML = msg ? "⚠ "+msg : "";
 }
 function debounced(){ clearTimeout(timer); timer=setTimeout(()=>refresh(true), 220); }
 
