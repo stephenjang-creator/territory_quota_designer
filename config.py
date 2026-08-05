@@ -43,6 +43,12 @@ PIPELINE_COVERAGE_TARGET = 3.0  # pack each book to >= this x quota in addressab
 PREFER_HOME_REGION = True  # geo tiebreaker: fill from home-region accounts first
 RESPECT_SEGMENT_FOCUS = True  # an Enterprise account never goes to an SMB rep
 GENERALIST_FOCUS = "Generalist"  # a rep with this focus can take any segment
+# Coverage-equalizing granularity: the carve quantizes each rep's fill ratio into
+# 1/CARVE_FILL_BANDS buckets, treats reps in the same bucket as equally needy, and
+# breaks that tie by home region. Higher = finer equalization (fairer floor, a touch
+# less geo-compact); it's what spreads a short segment ACROSS regions rather than
+# letting the home-region preference starve a rep parked in a thin geo.
+CARVE_FILL_BANDS = 20
 
 # opportunity value = whitespace + open_pipeline + 0.25*current_arr; reported as a
 # territory's "opportunity" and the denominator of quota-load. (The carve packs on

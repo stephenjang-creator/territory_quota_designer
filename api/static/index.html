@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Territory &amp; Quota Designer — FY26 capacity plan</title>
+<title>Territory &amp; Quota Designer: FY26 capacity plan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -132,11 +132,11 @@
       <div class="kicker">Territory &amp; Quota Designer · FY26 plan</div>
       <h1>Sales capacity plan</h1>
       <div class="lead">Quota is standardized by role and set from pay; territories are carved backward to support it.
-        The plan flags where it can't — and each recommendation below carries a one-click fix. All figures USD ACV, synthetic data.</div>
+        The plan flags where it can't, and each recommendation below carries a one-click fix. All figures USD ACV, synthetic data.</div>
     </div>
     <div class="mono" style="font-size:11px;color:var(--muted);text-align:right;line-height:1.7">
-      <div id="hdrCounts">— reps · — segments</div>
-      <div id="hdrKnobs">quota — × OTE · coverage —×</div>
+      <div id="hdrCounts">- reps · - segments</div>
+      <div id="hdrKnobs">quota -× OTE · coverage -×</div>
     </div>
   </header>
 
@@ -146,10 +146,10 @@
     <div class="card pad">
       <div class="tiles" id="tiles"><div class="spin">Loading…</div></div>
       <div class="segwrap">
-        <div class="lbl">Where the pipeline is — available vs. required at target</div>
+        <div class="lbl">Where the pipeline is: available vs. required at target</div>
         <div class="segs" id="segbars"></div>
       </div>
-      <div class="verdict"><div class="dot" id="verdictDot"></div><p id="verdict">—</p></div>
+      <div class="verdict"><div class="dot" id="verdictDot"></div><p id="verdict">-</p></div>
     </div>
 
     <div class="sechead" style="margin:34px 0 16px"><h2 class="sec">Recommended actions</h2>
@@ -161,8 +161,8 @@
   <section style="border-top:1px solid var(--line);padding-top:28px">
     <div class="sechead" style="margin-bottom:6px"><h2 class="sec">Configuration &amp; supporting data</h2>
       <span class="note mono">every number above traces back to here</span></div>
-    <div class="lead" style="margin-bottom:16px">Change any assumption — pay by role, the quota multiple, the coverage target,
-      per-segment overrides, conversion rates, the comp curve, planned hires — and the summary recomputes.
+    <div class="lead" style="margin-bottom:16px">Change any assumption (pay by role, the quota multiple, the coverage target,
+      per-segment overrides, conversion rates, the comp curve, planned hires) and the summary recomputes.
       <span id="resetAll" class="clearlink">reset all</span><span id="retagNote"></span></div>
 
     <!-- use case -->
@@ -171,9 +171,9 @@
         <span class="badge mono">expand</span></summary>
       <div class="pad" style="padding-top:4px;color:var(--ink2);font-size:14.5px;line-height:1.65;max-width:820px">
         A ~$250M ARR B2B software company plans next year's territories, quotas, and capacity. OTE and quota are fixed by
-        title, not derived from book size — so nothing guarantees a rep's territory can support their number. The engine
+        title, not derived from book size, so nothing guarantees a rep's territory can support their number. The engine
         standardizes quota by role, carves territories backward to a coverage target, runs a reverse waterfall to flag
-        which books can't generate the pipeline to hit quota, and models comp cost-of-sale — then recommends the fix.
+        which books can't generate the pipeline to hit quota, and models comp cost-of-sale, then recommends the fix.
       </div>
     </details>
 
@@ -197,12 +197,12 @@
         </div>
         <div>
           <div class="kicker">Company target</div>
-          <div class="big" id="companyTarget">—</div>
+          <div class="big" id="companyTarget">-</div>
           <div class="hint" id="companyAnnual">per quarter · derived</div>
         </div>
         <div>
           <div class="kicker">Cost of sale</div>
-          <div class="big" id="cosNow">—</div>
+          <div class="big" id="cosNow">-</div>
           <div class="hint" id="cosAtt">at 100% attainment</div>
         </div>
       </div>
@@ -216,7 +216,7 @@
         <div class="tbl-in"><table><thead><tr>
           <th>Segment</th><th class="r">Quota multiple (× OTE)</th><th class="r">Coverage target (×)</th>
         </tr></thead><tbody id="segOvBody"></tbody></table></div>
-        <div class="foot">Blank = the global setting above. These override just this segment — lowering SMB's multiple or accepting
+        <div class="foot">Blank = the global setting above. These override just this segment: lowering SMB's multiple or accepting
           a lower SMB target is how a structurally short segment is resolved without touching the rest.</div>
       </div>
     </details>
@@ -269,7 +269,7 @@
           <div class="kicker" style="margin-bottom:10px">Team comp &amp; cost of sale by attainment</div>
           <table><thead><tr><th>Attainment</th><th class="r">Total comp</th><th class="r">Bookings</th><th class="r">Cost of sale</th></tr></thead>
             <tbody id="compBody"></tbody></table>
-          <div class="foot">Comp and bookings are annual. Base is fixed, so cost of sale rises when attainment falls — and the accelerator lifts it again above target.</div>
+          <div class="foot">Comp and bookings are annual. Base is fixed, so cost of sale rises when attainment falls, and the accelerator lifts it again above target.</div>
         </div>
       </div>
     </details>
@@ -294,7 +294,7 @@
     <div class="grid2">
       <div class="card pad">
         <div class="sechead" style="margin-bottom:0"><span class="nm">Reps &amp; territories</span>
-          <span class="note mono" id="repMeta">— reps · lowest coverage first</span></div>
+          <span class="note mono" id="repMeta">- reps · lowest coverage first</span></div>
         <div class="tbl-in" style="margin-top:14px"><table><thead><tr id="repThead">
           <th class="sortable" data-sort="rep_name">Rep<span class="sarw"></span></th>
           <th class="sortable" data-sort="role">Role<span class="sarw"></span></th>
@@ -316,16 +316,16 @@
     </div>
 
     <div class="foot" style="margin-top:24px;color:var(--muted2)">Every figure is computed from the roster, the segment pipeline pools, and the
-      assumptions above — synthetic data, reproducible from a fixed seed. Source:
+      assumptions above: synthetic data, reproducible from a fixed seed. Source:
       <a href="https://github.com/stephenjang-creator/territory_quota_designer">territory_quota_designer</a>.</div>
   </section>
 </div>
 
 <script>
 const $ = s => document.querySelector(s);
-const money = x => x==null||!isFinite(x) ? "—" : (Math.abs(x)>=1e6 ? "$"+(x/1e6).toFixed(2)+"M" : "$"+Math.round(x/1000).toLocaleString()+"K");
-const mult2 = x => x==null||!isFinite(x) ? "—" : x.toFixed(2)+"×";
-const pct = x => x==null ? "—" : (x*100).toFixed(1)+"%";
+const money = x => x==null||!isFinite(x) ? "-" : (Math.abs(x)>=1e6 ? "$"+(x/1e6).toFixed(2)+"M" : "$"+Math.round(x/1000).toLocaleString()+"K");
+const mult2 = x => x==null||!isFinite(x) ? "-" : x.toFixed(2)+"×";
+const pct = x => x==null ? "-" : (x*100).toFixed(1)+"%";
 const esc = t => (""+t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const COLOR = {good:"var(--good)", bad:"var(--bad)", warn:"var(--warn)", blue:"var(--blue)", ink:"var(--ink)"};
 const TAGBG = {pipeline:"var(--badBg)", hiring:"var(--blueBg)", comp:"var(--warnBg)", sensitivity:"var(--warnBg)"};
@@ -502,9 +502,9 @@ function renderExec(sum){
   const shortSegs = segs.filter(s=>!s.coverable).map(s=>s.name);
   $("#verdictDot").style.background = (shortSegs.length||covered.optimized<covered.of)?(shortSegs.length?"var(--bad)":"var(--warn)"):"var(--good)";
   if(shortSegs.length){
-    $("#verdict").textContent = `The plan covers ${covered.optimized} of ${covered.of} reps at ${st.target}× pipeline. ${shortSegs.join(" and ")} ${shortSegs.length>1?"are":"is"} short ${money(gap.optimized)} of addressable pipeline against ${money(sum.company_target)} of standardized quarterly quota — a capacity decision, not an assignment problem.`;
+    $("#verdict").textContent = `The plan covers ${covered.optimized} of ${covered.of} reps at ${st.target}× pipeline. ${shortSegs.join(" and ")} ${shortSegs.length>1?"are":"is"} short ${money(gap.optimized)} of addressable pipeline against ${money(sum.company_target)} of standardized quarterly quota: a capacity decision, not an assignment problem.`;
   } else if(covered.optimized < covered.of){
-    $("#verdict").textContent = `${covered.optimized} of ${covered.of} reps clear the ${st.target}× target; every segment pool now covers, and the rest sit a whisker under (${money(gap.optimized)} total) — the carve can't split whole accounts perfectly evenly. The floor is ${mult2(floor.optimized)}.`;
+    $("#verdict").textContent = `${covered.optimized} of ${covered.of} reps clear the ${st.target}× target; every segment pool now covers, and the rest sit a whisker under (${money(gap.optimized)} total): the carve can't split whole accounts perfectly evenly. The floor is ${mult2(floor.optimized)}.`;
   } else {
     $("#verdict").textContent = `Every one of the ${covered.of} reps clears the ${st.target}× coverage target on ${money(sum.company_target)} of standardized quarterly quota. The floor sits at ${mult2(floor.optimized)}.`;
   }
@@ -646,7 +646,7 @@ async function selectRep(){
       <div class="fb"><i style="width:${Math.max(8,(v||0)/max*100).toFixed(0)}%"></i></div>
       <div class="fv">${Math.round(v||0).toLocaleString()}</div></div>`).join("");
     const ru=d.rates_used||{};
-    const rate=k=>{ const e=ru[k]; return e? Math.round((e.value||0)*100)+"%":"—"; };
+    const rate=k=>{ const e=ru[k]; return e? Math.round((e.value||0)*100)+"%":"-"; };
     $("#selRates").textContent = `Using ${d.segment_focus} rates: Disc→Qual ${rate("Discovery->Qualification")}, Qual→Prop ${rate("Qualification->Proposal")}, Prop→Nego ${rate("Proposal->Negotiation")}, Nego→Won ${rate("Negotiation->Won")}, avg deal ${money((ru.avg_deal_size||{}).value)}.`;
   } else { $("#funnel").innerHTML=`<div class="spin">Funnel unavailable (a rate or deal size ≤ 0).</div>`; $("#selRates").textContent=""; }
 }
