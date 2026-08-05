@@ -166,9 +166,9 @@ whatif_segment_override("SMB", quota_to_ote=3.25)    # or model one lever direct
 ```
 
 `recommend_actions` returns the plan's issues, each with an **applyable settings delta**.
-For the SMB shortfall it offers three fixes — **re-tag 35 Mid-Market accounts** into SMB
-($233K of pipeline, the source segment stays covered), **lower the SMB quota multiple to
-3.25×**, or **accept a 2.44× coverage target for SMB** — plus a safe hire plan (1
+For the SMB shortfall it offers three fixes — **re-tag 36 Mid-Market accounts** into SMB
+($241K of pipeline — every SMB rep then clears 3×, the source segment stays covered),
+**lower the SMB quota multiple to 3.25×**, or **accept a 2.44× coverage target for SMB** — plus a safe hire plan (1
 Enterprise + 1 Mid-Market AE), a comp-cost check, and the global target/multiple at which
 every rep clears. `whatif_segment_override` models one lever directly: cutting SMB to
 3.25× makes the segment coverable and drops the company target from $2.86M to

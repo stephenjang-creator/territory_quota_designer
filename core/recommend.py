@@ -20,8 +20,10 @@ re-run the plan). The three headline resolutions:
 from __future__ import annotations
 
 import math
+from dataclasses import replace
 
 import config
+from core import balance
 from core import comp as comp_mod
 from core import quota as quota_mod
 from core.plan import (
@@ -31,6 +33,7 @@ from core.plan import (
     run_plan,
     segment_coverage_target,
 )
+from core.potential import available_potential
 
 TARGET_COS = 0.30  # cost-of-sale ceiling the comp auto-tune aims for
 STRESS_ATT = 0.85  # the attainment scenario the comp risk is judged at
@@ -54,6 +57,21 @@ def _fmt(x: float | None) -> str:
     return f"${round(x / 1000):,}K"
 
 
+def _segment_floor(seg_accts: list, seg_reps: list, quotas: dict, target_by_rep: dict) -> float:
+    """Worst per-rep coverage after carving `seg_accts` (all one segment) among
+    `seg_reps` — the true test of 'does every rep in this segment clear'."""
+    if not seg_reps:
+        return float("inf")
+    terrs = balance.carve(seg_accts, seg_reps, quotas, target_by_rep=target_by_rep)
+    by_id = {a.account_id: a for a in seg_accts}
+    covs = [
+        available_potential([by_id[x] for x in t.account_ids]) / quotas[t.rep_id]
+        for t in terrs
+        if quotas.get(t.rep_id)
+    ]
+    return min(covs) if covs else float("inf")
+
+
 def retag_to_cover(
     accounts: list,
     reps: list,
@@ -62,9 +80,21 @@ def retag_to_cover(
     target_by_rep: dict,
     target_segment: str,
 ) -> dict:
-    """Smallest-addressable accounts from SURPLUS segments -> target_segment until it
-    reaches its coverage target, keeping every source segment coverable. Returns
-    {account_id: target_segment} (empty if already covered or no surplus)."""
+    """Smallest-addressable accounts from SURPLUS segments -> target_segment until
+    EVERY target-segment rep clears its coverage target — re-carving to verify at each
+    step, so the lever's promise holds exactly — while keeping each source segment
+    coverable. Returns {account_id: target_segment} (empty if already clear/no surplus)."""
+    seg_reps = [r for r in reps if r.segment_focus == target_segment]
+    if not seg_reps:
+        return {}
+    target = target_by_rep[seg_reps[0].rep_id]
+    eps = 1e-6
+
+    base_target = [a for a in accounts if a.segment == target_segment]
+    if _segment_floor(base_target, seg_reps, quotas, target_by_rep) >= target - eps:
+        return {}
+
+    # source-segment surplus budget (aggregate): never push a source below its own req
     seg_avail: dict[str, float] = {}
     for a in accounts:
         seg_avail[a.segment] = seg_avail.get(a.segment, 0.0) + _addr(a)
@@ -74,27 +104,23 @@ def retag_to_cover(
             r.rep_id
         ] * quotas.get(r.rep_id, 0.0)
 
-    gap = seg_req.get(target_segment, 0.0) - seg_avail.get(target_segment, 0.0)
-    if gap <= 0:
-        return {}
-
     avail = dict(seg_avail)
-    retags: dict[str, str] = {}
-    moved = 0.0
-    # smallest-addressable first: the most "target-segment-like" accounts move first
+    moved: list = []
+    # smallest-addressable first: the most "target-segment-like" accounts, and the
+    # finest granularity for lifting the worst rep exactly to the line.
     for a in sorted(
         (a for a in accounts if a.segment != target_segment),
         key=lambda a: (_addr(a), a.account_id),
     ):
-        if moved >= gap:
-            break
         src = a.segment
         if avail[src] - _addr(a) < seg_req.get(src, 0.0):
             continue  # moving this would push the source below its own target
-        retags[a.account_id] = target_segment
+        moved.append(a)
         avail[src] -= _addr(a)
-        moved += _addr(a)
-    return retags
+        eff = base_target + [replace(m, segment=target_segment) for m in moved]
+        if _segment_floor(eff, seg_reps, quotas, target_by_rep) >= target - eps:
+            break
+    return {m.account_id: target_segment for m in moved}
 
 
 def _seg_capacity(scorecard: dict) -> dict:
@@ -146,14 +172,17 @@ def build_recommendations(
         levers = []
         if retags:
             src_counts: dict[str, int] = {}
-            for aid in retags:
-                src = next(a.segment for a in acc2 if a.account_id == aid)
-                src_counts[src] = src_counts.get(src, 0) + 1
+            moved = 0.0
+            for a in acc2:
+                if a.account_id in retags:
+                    src_counts[a.segment] = src_counts.get(a.segment, 0) + 1
+                    moved += _addr(a)
             src_txt = ", ".join(f"{n} from {sg}" for sg, n in src_counts.items())
             levers.append(
                 {
                     "label": f"Re-tag {len(retags)} accounts into {seg} ({src_txt}) — "
-                    f"{_fmt(gap)} of pipeline, sources stay covered.",
+                    f"{_fmt(moved)} of pipeline; every {seg} rep then clears {seg_target:g}×, "
+                    f"sources stay covered.",
                     "apply": {"account_retags": retags},
                 }
             )
