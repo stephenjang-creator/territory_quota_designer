@@ -20,7 +20,12 @@ from core.models import Account, Rep, Territory
 from core.potential import available_potential
 
 
-def _coverage_stats(territories: list[Territory], quotas: dict, target: float, acc_by_id) -> dict:
+def _coverage_stats(
+    territories: list[Territory], quotas: dict, target: float, acc_by_id, target_by_rep=None
+) -> dict:
+    def tgt(rid: str) -> float:
+        return target_by_rep.get(rid, target) if target_by_rep else target
+
     covered = 0
     gap = 0.0
     mults = []
@@ -29,11 +34,12 @@ def _coverage_stats(territories: list[Territory], quotas: dict, target: float, a
         avail = available_potential(accts)
         q = quotas.get(t.rep_id, 0.0)
         mult = (avail / q) if q else None
+        rt = tgt(t.rep_id)
         if mult is not None:
             mults.append(mult)
-            if mult >= target:
+            if mult >= rt:
                 covered += 1
-        gap += max(0.0, target * q - avail)
+        gap += max(0.0, rt * q - avail)
     return {
         "covered": covered,
         "short": len(territories) - covered,
@@ -50,18 +56,34 @@ def build_scorecard(
     quota_to_ote: float | None = None,
     coverage_target: float | None = None,
     optimized: list[Territory] | None = None,
+    segment_overrides: dict | None = None,
+    target_by_rep: dict | None = None,
 ) -> dict:
-    """Capacity coverage: work-back carve vs a naive equal-count carve, same quotas."""
+    """Capacity coverage: work-back carve vs a naive equal-count carve, same quotas.
+
+    `segment_overrides` can lower a segment's quota multiple; `target_by_rep` can set
+    a per-rep (per-segment) coverage target. `accounts` are already retagged upstream."""
     target = config.PIPELINE_COVERAGE_TARGET if coverage_target is None else coverage_target
-    quotas = quota.standardized_quotas(reps, ote_overrides=ote_overrides, quota_to_ote=quota_to_ote)
+
+    def rt(rid: str) -> float:
+        return target_by_rep.get(rid, target) if target_by_rep else target
+
+    quotas = quota.standardized_quotas(
+        reps,
+        ote_overrides=ote_overrides,
+        quota_to_ote=quota_to_ote,
+        segment_overrides=segment_overrides,
+    )
 
     if optimized is None:
-        optimized = balance.carve(accounts, reps, quotas, coverage_target=target)
+        optimized = balance.carve(
+            accounts, reps, quotas, coverage_target=target, target_by_rep=target_by_rep
+        )
     baseline = balance.naive_carve(accounts, reps)
 
     acc_by_id = {a.account_id: a for a in accounts}
-    opt = _coverage_stats(optimized, quotas, target, acc_by_id)
-    base = _coverage_stats(baseline, quotas, target, acc_by_id)
+    opt = _coverage_stats(optimized, quotas, target, acc_by_id, target_by_rep)
+    base = _coverage_stats(baseline, quotas, target, acc_by_id, target_by_rep)
 
     # Per-segment capacity: is there enough pipeline in the segment to cover its
     # reps to target at all? (An assignment problem can't invent pipeline.)
@@ -69,7 +91,7 @@ def build_scorecard(
     per_seg = {}
     for seg in sorted(set(rep_seg.values())):
         seg_reps = [rid for rid, s in rep_seg.items() if s == seg]
-        required = sum(target * quotas[rid] for rid in seg_reps)
+        required = sum(rt(rid) * quotas[rid] for rid in seg_reps)
         available = sum(
             a.whitespace_potential + a.open_pipeline for a in accounts if a.segment == seg
         )
