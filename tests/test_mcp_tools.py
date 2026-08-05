@@ -10,13 +10,30 @@ import mcp_server as S
 
 
 def test_list_reps_and_segments():
-    reps = S.list_reps()["reps"]
+    out = S.list_reps()
+    reps = out["reps"]
     assert len(reps) == 12
     assert {r["rep_id"] for r in reps} >= {"R-100", "R-101"}
+    # every rep carries a seniority level drawn from the advertised set
+    assert out["levels"] == ["ramping", "AE", "Sr. AE", "Sr. Strategic AE"]
+    assert all(r["level"] in out["levels"] for r in reps)
     segs = S.list_segments()["segments"]
     assert set(segs) == {"Enterprise", "Mid-Market", "SMB"}
     assert "Negotiation->Won" in segs["Enterprise"]
     assert "avg_deal_size" in segs["SMB"]
+
+
+def test_whatif_levels_shifts_quota_and_validates():
+    d = S.whatif_levels({"Sr. Strategic AE": 1.8})
+    assert "error" not in d
+    assert d["level_multipliers_used"]["Sr. Strategic AE"] == 1.8
+    strat = [x for x in d["quota_deltas"] if x["level"] == "Sr. Strategic AE"]
+    assert strat and all(x["delta_quota"] > 0 for x in strat)  # they carry more
+    assert any(x["delta_quota"] < 0 for x in d["quota_deltas"])  # renormalized off others
+    # validation: unknown level and non-dict are reported, never raised
+    assert "error" in S.whatif_levels({"Principal AE": 2.0})
+    assert "error" in S.whatif_levels("nope")
+    assert "error" in S.whatif_levels({})
 
 
 def test_plan_summary_shape_and_units():

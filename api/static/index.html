@@ -46,6 +46,46 @@
   input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
     border-radius:9px;padding:8px 10px;font:inherit}
   .hint{color:var(--muted);font-size:12px;margin-top:10px}
+  .lead{margin:22px 2px 2px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink)}
+  .lead .muted{font-weight:400;text-transform:none;letter-spacing:0}
+  /* conversion overrides */
+  details.conv{margin:0}
+  details.conv>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  details.conv>summary::-webkit-details-marker{display:none}
+  .chev{transition:transform .15s;color:var(--muted);font-size:11px}
+  details.conv[open] .chev{transform:rotate(90deg)}
+  .ovbadge{font-size:11px;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--muted)}
+  .ovbadge.on{background:#1d3a5f;color:var(--accent)}
+  .btn{background:var(--panel2);border:1px solid var(--line);color:var(--muted);border-radius:8px;
+    padding:5px 11px;font:inherit;font-size:12px;cursor:pointer}
+  .btn:hover{color:var(--ink);border-color:var(--accent)}
+  .btn:disabled{opacity:.45;cursor:default}
+  .convtbl{width:100%;border-collapse:collapse;margin-top:14px}
+  .convtbl th,.convtbl td{padding:7px 8px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+  .convtbl th{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+  .convtbl th:first-child,.convtbl td:first-child{text-align:left}
+  .convtbl td.seg{color:var(--ink);font-weight:600}
+  .convtbl .u{color:var(--muted);font-size:10px;font-weight:400;margin-left:2px}
+  .convtbl input{width:78px;text-align:right;padding:6px 8px}
+  .convtbl input.ovr{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:#fff}
+  /* comp plan panel */
+  .compgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
+  @media(max-width:700px){.compgrid{grid-template-columns:1fr}}
+  .compgrid .u,.band .u{color:var(--muted);font-size:10.5px;font-weight:400}
+  .compbands{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+  .band{display:flex;align-items:center;flex-wrap:wrap;gap:7px;background:var(--panel2);border:1px solid var(--line);
+    border-radius:10px;padding:10px 13px;font-size:13px;color:var(--ink)}
+  .band .tagname{font-weight:700} .band.decel .tagname{color:var(--warn)} .band.accel .tagname{color:var(--good)}
+  .compgrid input,.band input{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;font:inherit}
+  .band input{width:58px;text-align:right;padding:5px 7px;background:var(--panel)}
+  .compgrid input.ovr,.band input.ovr{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:#fff}
+  .curvewrap{margin-top:18px}
+  .curvecap{font-size:11px;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+  .dot{width:9px;height:9px;border-radius:2px;display:inline-block;margin:0 2px 0 8px} .dot.d{background:var(--warn)} .dot.a{background:var(--good)}
+  svg#payoutCurve{width:100%;height:140px;display:block;background:#141b2c;border:1px solid var(--line);border-radius:10px}
+  svg#payoutCurve .axis{stroke:var(--line)} svg#payoutCurve .pl{fill:none;stroke:var(--accent);stroke-width:2}
+  svg#payoutCurve .g{stroke-dasharray:3 3} svg#payoutCurve .g.decel{stroke:var(--warn)}
+  svg#payoutCurve .g.accel{stroke:var(--good)} svg#payoutCurve .g.mid{stroke:var(--muted)}
   /* scorecard */
   .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   @media(max-width:980px){.cards{grid-template-columns:1fr 1fr}}
@@ -126,6 +166,100 @@
       reps travel more; keep territories tight and books get a little less even. This tool makes that choice explicit.</div>
   </div>
 
+  <div class="lead">Assumptions behind the plan &middot; <span class="muted">expand any section to tune it — conversion
+    rates, quota by seniority, and how reps get paid. Everything recomputes live.</span></div>
+
+  <!-- CONVERSION OVERRIDES -->
+  <div class="card pad" style="margin-top:16px">
+    <details class="conv" id="convPanel">
+      <summary>
+        <span class="chev">&#9654;</span>
+        <h2 style="margin:0;display:inline">Conversion assumptions
+          <span class="info b" data-tip="The stage-to-stage win rates and average deal size behind every pipeline-coverage check. Change them to stress-test the plan — e.g. 'if Enterprise close rates slip to 25%, who runs short on pipeline?' Edits apply to every rep in that segment.">i</span></h2>
+        <span class="ovbadge" id="ovBadge">using defaults</span>
+        <button class="btn" id="ovReset" type="button" disabled>Reset to defaults</button>
+      </summary>
+      <div class="hint" style="margin-top:10px">How a lead moves down the funnel and the typical deal it becomes. These drive
+        the "what it takes to hit quota" math on the right — territories, quotas, and fairness don't change. Win rates are the
+        percent of deals that advance one stage; blank or 0 falls back to the default.</div>
+      <div style="overflow-x:auto">
+        <table class="convtbl" id="convtbl"><thead><tr>
+          <th>Segment</th>
+          <th>Discovery &rarr; Qualified <span class="u">%</span></th>
+          <th>Qualified &rarr; Proposal <span class="u">%</span></th>
+          <th>Proposal &rarr; Negotiation <span class="u">%</span></th>
+          <th>Negotiation &rarr; Won <span class="u">%</span></th>
+          <th>Avg deal <span class="u">$K</span></th>
+        </tr></thead><tbody id="convbody"><tr><td colspan="6" class="spin">Loading…</td></tr></tbody></table>
+      </div>
+    </details>
+  </div>
+
+  <!-- QUOTA BY SENIORITY LEVEL -->
+  <div class="card pad" style="margin-top:16px">
+    <details class="conv" id="lvlPanel">
+      <summary>
+        <span class="chev">&#9654;</span>
+        <h2 style="margin:0;display:inline">Quota by seniority level
+          <span class="info b" data-tip="Reps carry different quota loads by seniority. Set how much each level carries relative to a standard AE (100%): ramping reps lighter, senior reps heavier. The whole team still adds up to the same company target — dialing one level up shares a little more onto them and a little less onto everyone else.">i</span></h2>
+        <span class="ovbadge" id="lvlBadge">using defaults</span>
+        <button class="btn" id="lvlReset" type="button" disabled>Reset to defaults</button>
+      </summary>
+      <div class="hint" style="margin-top:10px">Quota load is set relative to a standard AE at 100%. It scales each rep's quota
+        by seniority, then re-balances so the team total is unchanged — this shifts <em>who</em> carries the number, not the
+        total. Territories and coverage math update live.</div>
+      <div style="overflow-x:auto">
+        <table class="convtbl" id="lvltbl"><thead><tr>
+          <th>Seniority level</th>
+          <th>Reps at this level</th>
+          <th>Quota load <span class="u">% of a standard AE</span></th>
+        </tr></thead><tbody id="lvlbody"><tr><td colspan="3" class="spin">Loading…</td></tr></tbody></table>
+      </div>
+    </details>
+  </div>
+
+  <!-- COMPENSATION PLAN -->
+  <div class="card pad" style="margin-top:16px">
+    <details class="conv" id="compPanel">
+      <summary>
+        <span class="chev">&#9654;</span>
+        <h2 style="margin:0;display:inline">Compensation plan
+          <span class="info b" data-tip="How reps get paid. Set the base/variable pay mix and the commission rate, then shape the payout curve: a decelerator that pays a reduced rate when reps fall short, and an accelerator that pays a premium once they beat target. This drives the comp cost and cost-of-sale on the right.">i</span></h2>
+        <span class="ovbadge" id="compBadge">using defaults</span>
+        <button class="btn" id="compReset" type="button" disabled>Reset to defaults</button>
+      </summary>
+      <div class="hint" style="margin-top:10px">Set the pay mix and commission rate, then the two kickers. A <b>decelerator</b> pays a
+        reduced rate below a floor (protects the budget when reps miss); an <b>accelerator</b> pays a premium above target
+        (rewards overperformance). Cost of sale on the right updates live.</div>
+      <div class="compgrid">
+        <div class="ctl"><label>Base / variable split
+          <span class="info b" data-tip="How much of on-target earnings (OTE) is fixed base salary vs. variable commission. 50% means base equals target commission. Higher base = steadier pay, higher fixed cost.">i</span>
+          <span class="u">% base of OTE</span></label>
+          <input type="number" id="cp_split" min="0" max="90" step="5"></div>
+        <div class="ctl"><label>Commission rate
+          <span class="info b" data-tip="Cents of commission per dollar of bookings in the standard band (between the decelerator and accelerator).">i</span>
+          <span class="u">% of bookings</span></label>
+          <input type="number" id="cp_rate" min="0" step="0.5"></div>
+        <div class="ctl"><label>Cap
+          <span class="info b" data-tip="Attainment at which commission stops growing (windfall protection). Leave blank for no cap.">i</span>
+          <span class="u">% attainment · blank = none</span></label>
+          <input type="number" id="cp_cap" min="0" step="10" placeholder="none"></div>
+      </div>
+      <div class="compbands">
+        <div class="band decel"><span class="tagname">Decelerator</span> below
+          <input type="number" id="cp_dthr" min="0" max="100" step="5"><span class="u">% attainment</span>, pay
+          <input type="number" id="cp_dmult" min="0" max="100" step="5"><span class="u">% of the commission rate</span></div>
+        <div class="band accel"><span class="tagname">Accelerator</span> above
+          <input type="number" id="cp_athr" min="0" step="5"><span class="u">% attainment</span>, pay
+          <input type="number" id="cp_amult" min="100" step="10"><span class="u">% of the commission rate</span></div>
+      </div>
+      <div class="curvewrap">
+        <div class="curvecap" id="curveCap">Payout curve — total comp vs. attainment</div>
+        <svg id="payoutCurve" viewBox="0 0 100 40" preserveAspectRatio="none" aria-label="payout curve"></svg>
+      </div>
+    </details>
+  </div>
+
   <!-- SCORECARD -->
   <div class="card pad" style="margin-top:16px">
     <h2>Simple even split &nbsp;&rarr;&nbsp; this plan
@@ -142,10 +276,11 @@
           <thead><tr>
             <th data-k="rep_id">Rep</th>
             <th data-k="segment_focus" title="The customer size the rep sells to: Enterprise, Mid-Market, or SMB.">Segment</th>
+            <th data-k="level" title="Seniority tier: ramping, AE, Sr. AE, or Sr. Strategic AE. Sets how much quota the rep carries — tune it in 'Quota by seniority level' above.">Level</th>
             <th data-k="account_count" title="Number of accounts assigned to the rep.">Accounts</th>
             <th data-k="potential" title="Total revenue opportunity in the book — open pipeline + untapped expansion + a slice of installed base, in MRR.">Opportunity</th>
             <th data-k="quota" title="New MRR this rep must book this quarter — their share of the company target.">Quarterly quota</th>
-            <th data-k="quota_to_potential" title="Quota as a share of the rep's opportunity. Should be similar across reps; unusually high can mean set-up-to-fail, low can mean sandbagged.">Quota load</th>
+            <th data-k="quota_to_potential" title="Quota as a share of the rep's opportunity. Varies by seniority level by design — senior reps carry more per dollar of opportunity, ramping reps less. Big gaps between reps at the same level are worth a look.">Quota load</th>
             <th data-k="coverage_ratio" title="Pipeline the rep has vs. pipeline needed to hit quota. 1.0x = just enough on paper; below 1.0x (red) = short on pipeline.">Pipeline coverage</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
@@ -194,7 +329,149 @@ function settings(){
   $("#wp").textContent=Math.round(p/s*100)+"%"; $("#wg").textContent=Math.round(g/s*100)+"%"; $("#ww").textContent=Math.round(w/s*100)+"%";
   const body={weights:{potential:p,geo:g,whitespace:w}, attainment:+$("#att").value};
   const t=parseFloat($("#tgt").value); if(!isNaN(t)&&t>0) body.company_target=t*1e3;
+  const o=convOverrides(); if(Object.keys(o).length) body.overrides=o;
+  const ml=levelOverrides(); if(ml) body.level_multipliers=ml;
+  const c=compOverrides(); if(c) body.comp=c;
   return body;
+}
+
+// ---- Conversion-assumption overrides (per segment) --------------------------
+let CONV=null;                                  // {segments, transitions, avg_deal_key, defaults}
+async function loadConversions(){
+  CONV = await (await fetch("/conversions")).json();
+  const rows = CONV.segments.map(seg=>{
+    const d=CONV.defaults[seg];
+    const rateCells = CONV.transitions.map(k=>{
+      const v=Math.round(d[k]*100);
+      return `<td><input type="number" data-seg="${seg}" data-key="${k}" data-def="${v}"
+        min="1" max="100" step="1" value="${v}" aria-label="${seg} ${k}"></td>`;
+    }).join("");
+    const dk=CONV.avg_deal_key, dv=Math.round(d[dk]/1000);
+    return `<tr><td class="seg">${seg}</td>${rateCells}
+      <td><input type="number" data-seg="${seg}" data-key="${dk}" data-def="${dv}"
+        min="1" step="5" value="${dv}" aria-label="${seg} avg deal"></td></tr>`;
+  }).join("");
+  $("#convbody").innerHTML=rows;
+}
+// Read the inputs, mark the changed ones, and build an {segment:{...}} payload.
+function convOverrides(){
+  if(!CONV) return {};
+  const seg={}; let n=0;
+  $("#convbody").querySelectorAll("input").forEach(inp=>{
+    const cur=inp.value.trim(), num=parseFloat(cur), isDeal=inp.dataset.key===CONV.avg_deal_key;
+    const changed = cur!=="" && !isNaN(num) && num>0 && String(num)!==inp.dataset.def;
+    inp.classList.toggle("ovr", changed);
+    if(changed){ (seg[inp.dataset.seg] || (seg[inp.dataset.seg]={}))[inp.dataset.key] = isDeal?num*1000:num/100; n++; }
+  });
+  const badge=$("#ovBadge");
+  badge.textContent = n ? (n+" override"+(n>1?"s":"")+" active — applied to every rep in that segment") : "using defaults";
+  badge.classList.toggle("on", n>0);
+  $("#ovReset").disabled = n===0;
+  return n ? {segment:seg} : {};
+}
+function resetConv(ev){
+  ev.stopPropagation();
+  $("#convbody").querySelectorAll("input").forEach(inp=>{ inp.value=inp.dataset.def; inp.classList.remove("ovr"); });
+  refresh(true);
+}
+
+// ---- Quota-by-seniority-level overrides -------------------------------------
+let LVL=null;                                   // {levels, multipliers, counts}
+async function loadLevels(){
+  LVL = await (await fetch("/levels")).json();
+  $("#lvlbody").innerHTML = LVL.levels.map(lvl=>{
+    const v=Math.round((LVL.multipliers[lvl] ?? 1)*100), n=LVL.counts[lvl]||0;
+    const isRamp = lvl==='ramping';
+    return `<tr><td class="seg"><span class="tag ${isRamp?'ramp':''}">${lvl}</span></td>
+      <td>${n} rep${n===1?'':'s'}</td>
+      <td><input type="number" data-lvl="${lvl}" data-def="${v}" min="0" step="5" value="${v}" aria-label="${lvl} quota load"></td></tr>`;
+  }).join("");
+}
+// Read the inputs, mark the changed ones, and build a {level: multiplier} payload.
+function levelOverrides(){
+  if(!LVL) return null;
+  const ml={}; let n=0;
+  $("#lvlbody").querySelectorAll("input").forEach(inp=>{
+    const cur=inp.value.trim(), num=parseFloat(cur);
+    const changed = cur!=="" && !isNaN(num) && num>0 && String(num)!==inp.dataset.def;
+    inp.classList.toggle("ovr", changed);
+    if(changed){ ml[inp.dataset.lvl]=num/100; n++; }
+  });
+  const badge=$("#lvlBadge");
+  badge.textContent = n ? (n+" level"+(n>1?"s":"")+" retuned") : "using defaults";
+  badge.classList.toggle("on", n>0);
+  $("#lvlReset").disabled = n===0;
+  return n ? ml : null;
+}
+function resetLevels(ev){
+  ev.stopPropagation();
+  $("#lvlbody").querySelectorAll("input").forEach(inp=>{ inp.value=inp.dataset.def; inp.classList.remove("ovr"); });
+  refresh(true);
+}
+
+// ---- Compensation plan (payout rates + accelerator / decelerator) -----------
+let COMPD=null;                                 // default comp params from /comp/defaults
+const CP_IDS=["cp_split","cp_rate","cp_dthr","cp_dmult","cp_athr","cp_amult","cp_cap"];
+async function loadComp(){
+  COMPD = (await (await fetch("/comp/defaults")).json()).defaults;
+  const set=(id,v)=>{ const el=$("#"+id); el.value=v; el.dataset.def=String(v); };
+  set("cp_split", Math.round(COMPD.base_variable_split*100));
+  set("cp_rate", +(COMPD.commission_rate*100).toFixed(1));
+  set("cp_dthr", Math.round((COMPD.decelerator_threshold||0)*100));
+  set("cp_dmult", Math.round((COMPD.decelerator_multiplier ?? 1)*100));
+  set("cp_athr", Math.round(COMPD.accelerator_threshold*100));
+  set("cp_amult", Math.round(COMPD.accelerator_multiplier*100));
+  set("cp_cap", COMPD.cap_attainment==null ? "" : Math.round(COMPD.cap_attainment*100));
+}
+// Build the full comp param object from the inputs (always sent once loaded).
+function compOverrides(){
+  if(!COMPD) return null;
+  let changed=0;
+  CP_IDS.forEach(id=>{ const el=$("#"+id), diff=el.value.trim()!==(el.dataset.def||"");
+    el.classList.toggle("ovr", diff); if(diff) changed++; });
+  const num=(id,def)=>{ const v=parseFloat($("#"+id).value); return Number.isFinite(v)?v:def; };
+  let split=Math.min(Math.max(num("cp_split",50),0),90);      // base<OTE -> split<1
+  const capRaw=$("#cp_cap").value.trim(), cap=parseFloat(capRaw);
+  const c={
+    base_variable_split: split/100,
+    commission_rate: Math.max(0,num("cp_rate",10))/100,
+    decelerator_threshold: Math.max(0,num("cp_dthr",70))/100,
+    decelerator_multiplier: Math.max(0,num("cp_dmult",50))/100,
+    accelerator_threshold: Math.max(0,num("cp_athr",100))/100,
+    accelerator_multiplier: Math.max(0,num("cp_amult",150))/100,
+    cap_attainment: (capRaw===""||!Number.isFinite(cap)) ? null : Math.max(0,cap)/100,
+  };
+  const badge=$("#compBadge");
+  badge.textContent = changed ? "customized plan" : "using defaults";
+  badge.classList.toggle("on", changed>0);
+  $("#compReset").disabled = changed===0;
+  return c;
+}
+function resetComp(ev){
+  ev.stopPropagation();
+  CP_IDS.forEach(id=>{ const el=$("#"+id); el.value=el.dataset.def||""; el.classList.remove("ovr"); });
+  refresh(true);
+}
+// Inline-SVG payout curve (total comp vs attainment) with decel / accel guides.
+function renderPayoutCurve(curve, cp){
+  const el=$("#payoutCurve"); if(!el) return;
+  if(!curve || !curve.length){ el.innerHTML=""; return; }
+  const W=100,H=40,pad=1.5;
+  const xs=curve.map(p=>p.attainment), ys=curve.map(p=>p.total_comp);
+  const xmin=Math.min(...xs), xmax=Math.max(...xs), ymax=Math.max(...ys)||1;
+  const X=a=>((a-xmin)/((xmax-xmin)||1))*W;
+  const Y=v=>H-pad-(v/ymax)*(H-2*pad);
+  const pts=curve.map(p=>`${X(p.attainment).toFixed(2)},${Y(p.total_comp).toFixed(2)}`).join(" ");
+  const guide=(att,cls)=>{ if(att==null||att<xmin||att>xmax) return "";
+    const x=X(att).toFixed(2); return `<line class="g ${cls}" x1="${x}" y1="${pad}" x2="${x}" y2="${H-pad}" vector-effect="non-scaling-stroke"/>`; };
+  el.innerHTML=`<line class="axis" x1="0" y1="${H-pad}" x2="${W}" y2="${H-pad}" vector-effect="non-scaling-stroke"/>
+    ${guide(cp.decelerator_threshold,"decel")}${guide(cp.accelerator_threshold,"accel")}${guide(1.0,"mid")}
+    <polyline class="pl" points="${pts}" vector-effect="non-scaling-stroke"/>`;
+  const pk=curve[curve.length-1];
+  $("#curveCap").innerHTML=`Payout curve — total comp vs. attainment (per average rep)
+    <span class="dot d"></span>decel below ${Math.round((cp.decelerator_threshold||0)*100)}%
+    <span class="dot a"></span>accel above ${Math.round(cp.accelerator_threshold*100)}%
+    <span class="muted">· peak ${fmtK(pk.total_comp)} at ${Math.round(pk.attainment*100)}%</span>`;
 }
 async function post(path, body){
   const r=await fetch(path,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
@@ -241,7 +518,8 @@ function renderTable(rows){
   $("#tbody").innerHTML=rows.map(r=>`
     <tr data-id="${r.rep_id}" class="${r.rep_id===state.sel?'sel':''}">
       <td><b>${r.rep_id}</b> <span class="muted">${r.rep_name}</span></td>
-      <td><span class="tag">${r.segment_focus}</span> ${r.ramp_status==='ramping'?'<span class="tag ramp">ramping</span>':''}</td>
+      <td><span class="tag">${r.segment_focus}</span></td>
+      <td><span class="tag ${r.level==='ramping'?'ramp':''}">${r.level||'—'}</span></td>
       <td>${r.account_count}</td><td>${fmtK(r.potential)}</td><td>${fmtK(r.quota)}</td>
       <td>${(r.quota_to_potential*100).toFixed(1)}%</td>${covCell(r.coverage_ratio)}</tr>`).join("");
   $("#tbody").querySelectorAll("tr").forEach(tr=>tr.onclick=()=>selectRep(tr.dataset.id));
@@ -290,16 +568,31 @@ async function refresh(keepSel){
   scoreCards(plan.scorecard, plan.summary);
   renderTable(plan.territories);
   renderComp(plan.comp, +$("#att").value);
+  renderPayoutCurve(plan.payout_curve, plan.comp_params||{});
   selectRep((keepSel && state.sel) ? state.sel : plan.territories[0].rep_id);
 }
 function debounced(){ clearTimeout(timer); timer=setTimeout(()=>refresh(true), 220); }
 
 ["sp","sg","sw","tgt"].forEach(id=>$("#"+id).addEventListener("input",debounced));
 $("#att").addEventListener("change",()=>refresh(true));
+$("#convbody").addEventListener("input",debounced);           // per-segment rate/deal overrides
+$("#ovReset").addEventListener("click",resetConv);
+$("#lvlbody").addEventListener("input",debounced);            // per-level quota multipliers
+$("#lvlReset").addEventListener("click",resetLevels);
+CP_IDS.forEach(id=>$("#"+id).addEventListener("input",debounced));  // comp payout params
+$("#compReset").addEventListener("click",resetComp);
 document.querySelectorAll("th[data-k]").forEach(th=>th.onclick=()=>{
   const k=th.dataset.k; state.asc = state.sort===k ? !state.asc : true; state.sort=k; refresh(true);
 });
-refresh(false);
+(async function init(){
+  try{ await loadConversions(); }
+  catch(e){ $("#convbody").innerHTML=`<tr><td colspan="6" class="muted">Couldn't load conversion defaults.</td></tr>`; }
+  try{ await loadLevels(); }
+  catch(e){ $("#lvlbody").innerHTML=`<tr><td colspan="3" class="muted">Couldn't load level defaults.</td></tr>`; }
+  try{ await loadComp(); }
+  catch(e){ /* comp panel keeps its blank inputs; plan still runs on config defaults */ }
+  refresh(false);
+})();
 </script>
 </body>
 </html>

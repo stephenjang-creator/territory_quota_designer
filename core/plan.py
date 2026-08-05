@@ -25,6 +25,7 @@ class PlanSettings:
     respect_segment_focus: bool | None = None
     max_accounts_per_rep: int | None = None
     overrides: dict = field(default_factory=dict)  # conversion overrides
+    level_multipliers: dict | None = None  # {level: quota multiplier} overrides
     comp: dict | None = None  # comp param overrides
     attainment: float = 1.0
     attainment_scenarios: list | None = None
@@ -41,6 +42,7 @@ class PlanSettings:
             ),
             "max_accounts_per_rep": self.max_accounts_per_rep,
             "overrides": self.overrides,
+            "level_multipliers": quota.resolve_level_multipliers(self.level_multipliers),
             "comp": self.comp or config.COMP,
             "attainment": self.attainment,
             "attainment_scenarios": self.attainment_scenarios or config.ATTAINMENT_SCENARIOS,
@@ -67,7 +69,9 @@ def run_plan(
     )
 
     # Stage 2 — quota
-    company_target = quota.derive_quotas(territories, reps, s.company_target)
+    company_target = quota.derive_quotas(
+        territories, reps, s.company_target, level_multipliers=s.level_multipliers
+    )
 
     # Stage 3 — reverse waterfall
     waterfall.run_waterfall(territories, accounts, conversions, s.overrides)
@@ -86,6 +90,7 @@ def run_plan(
         max_accounts_per_rep=s.max_accounts_per_rep,
         company_target=company_target,
         overrides=s.overrides,
+        level_multipliers=s.level_multipliers,
         optimized=territories,
     )
 

@@ -129,6 +129,19 @@ def _accounts(n):
     return pd.DataFrame(rows)
 
 
+# Tenure (months) -> AE seniority level. Upper-exclusive bands, ascending; mirrors
+# config.AE_LEVEL_TENURE_BANDS (the generator stays import-light on purpose).
+LEVEL_BANDS = [(6, "ramping"), (18, "AE"), (36, "Sr. AE")]
+LEVEL_TOP = "Sr. Strategic AE"
+
+
+def _level_for_tenure(tenure):
+    for upper, level in LEVEL_BANDS:
+        if tenure < upper:
+            return level
+    return LEVEL_TOP
+
+
 def _reps(n):
     # Weight the team toward the segments that have the most accounts.
     focus_pool = (["Enterprise"] * 2 + ["Mid-Market"] * 3 + ["SMB"] * 3
@@ -147,6 +160,8 @@ def _reps(n):
             "home_metro": random.choice(REGIONS[region]),
             "tenure_months": tenure,
             "ramp_status": "ramping" if tenure < 6 else "full",
+            # Seniority tier -> quota-load multiplier at plan time (see config).
+            "level": _level_for_tenure(tenure),
         })
     return pd.DataFrame(rows)
 

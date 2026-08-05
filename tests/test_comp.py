@@ -19,6 +19,22 @@ def test_accelerator_pays_faster_above_threshold():
     assert above > below  # accelerator_multiplier > 1
 
 
+def test_decelerator_pays_slower_below_threshold():
+    q = 1_000_000  # default decel: below 0.7 attainment, 0.5x the commission rate
+    pay = lambda att: comp.variable_payout(q, att, config.COMP)  # noqa: E731
+    decel_step = pay(0.6) - pay(0.5)  # both inside the decel band
+    std_step = pay(0.9) - pay(0.8)  # both inside the standard band
+    assert decel_step < std_step  # decelerator_multiplier < 1
+
+
+def test_decelerator_disabled_reduces_to_flat_standard_band():
+    q = 1_000_000
+    no_decel = {**config.COMP, "decelerator_multiplier": 1.0}
+    # with the decel penalty off, everything below the accelerator pays the flat rate
+    expected = q * no_decel["commission_rate"] * 0.8
+    assert abs(comp.variable_payout(q, 0.8, no_decel) - expected) < 1e-6
+
+
 def test_cap_freezes_payout():
     capped = {**config.COMP, "cap_attainment": 1.0}
     assert comp.variable_payout(1_000_000, 1.5, capped) == comp.variable_payout(

@@ -59,11 +59,40 @@ MAX_LOCAL_SEARCH_PASSES = 30
 # by the quota haircut. See the reverse-waterfall math in the README.
 COMPANY_TARGET_MULTIPLE = 0.27
 
-# Ramping reps carry a lighter load; quotas re-normalize to the target afterward.
-RAMP_QUOTA_HAIRCUT = 0.6
+# AE seniority levels and the quota-capacity multiplier each carries. Quota is
+# proportional to a territory's potential, then scaled by the rep's level
+# multiplier, then re-normalized so the book still sums to exactly the company
+# target — so these set how much MORE (or less) load each level carries relative
+# to a standard AE (1.0). A ramping rep carries the old ramp haircut (0.6); the
+# two senior tiers carry progressively more. Every multiplier is overridable in
+# the API/UI (PlanSettings.level_multipliers). Ordered ramping -> most senior.
+AE_LEVELS = ["ramping", "AE", "Sr. AE", "Sr. Strategic AE"]
+LEVEL_QUOTA_MULTIPLIER = {
+    "ramping": 0.6,
+    "AE": 1.0,
+    "Sr. AE": 1.15,
+    "Sr. Strategic AE": 1.30,
+}
+# Tenure (months) -> level, used by the generator and as a dataio fallback when a
+# reps row has no explicit `level`. Upper-exclusive bands, ascending.
+AE_LEVEL_TENURE_BANDS = [(6, "ramping"), (18, "AE"), (36, "Sr. AE")]
+AE_LEVEL_TOP = "Sr. Strategic AE"  # tenure at/above the last band
+
+# Back-compat alias: a ramping rep's multiplier is the old flat ramp haircut.
+RAMP_QUOTA_HAIRCUT = LEVEL_QUOTA_MULTIPLIER["ramping"]
 # Flag reps whose quota/potential ratio deviates more than this from the mean
-# (set-up-to-fail high, sandbagged low).
+# (set-up-to-fail high, sandbagged low). With levels, quota load varies by level
+# by design, so senior tiers can read "stretch" and ramping "sandbag" — expected.
 QUOTA_FAIRNESS_TOLERANCE = 0.15
+
+
+def level_for_tenure(tenure_months: int) -> str:
+    """Map a rep's tenure to a seniority level (the default assignment)."""
+    for upper, level in AE_LEVEL_TENURE_BANDS:
+        if tenure_months < upper:
+            return level
+    return AE_LEVEL_TOP
+
 
 # ----------------------------------------------------------------------
 # Stage 3 — Reverse waterfall / coverage
@@ -79,18 +108,23 @@ STANDARD_COVERAGE_MULTIPLE = 3.0  # sanity band: available_potential / quota
 # ----------------------------------------------------------------------
 # Stage 4 — Comp (all overridable via API/UI)
 # ----------------------------------------------------------------------
-# Model: variable pay is commission on bookings — commission_rate up to
-# accelerator_threshold (in attainment), then commission_rate * accelerator_multiplier
-# above it, optionally capped at cap_attainment. Base salary is derived from the
-# base/variable OTE split so cost-of-sale reflects fully-loaded comp:
+# Variable pay is commission on bookings, paid on a THREE-band piecewise curve in
+# attainment (all thresholds/multipliers overridable):
+#   below decelerator_threshold : commission_rate * decelerator_multiplier  (<1 = penalty)
+#   up to accelerator_threshold : commission_rate                           (standard)
+#   above accelerator_threshold : commission_rate * accelerator_multiplier  (>1 = kicker)
+# optionally frozen at cap_attainment. Base salary is derived from the base/variable
+# OTE split so cost-of-sale reflects fully-loaded comp, not just commission:
 #   target_variable = commission_rate * quota            (variable earned at 100%)
 #   base_salary     = target_variable * split/(1 - split)
 #   total_comp      = base_salary + variable_payout(attainment)
 COMP = {
     "base_variable_split": 0.5,  # base as a fraction of OTE
-    "commission_rate": 0.10,  # of bookings, below the accelerator
-    "accelerator_multiplier": 1.5,  # commission multiple above threshold
-    "accelerator_threshold": 1.0,  # attainment at which the accelerator starts
+    "commission_rate": 0.10,  # of bookings, in the standard band
+    "decelerator_threshold": 0.7,  # below this attainment, the reduced (decel) rate
+    "decelerator_multiplier": 0.5,  # commission multiple below the decel threshold (<1)
+    "accelerator_threshold": 1.0,  # at/above this attainment, the accelerated rate
+    "accelerator_multiplier": 1.5,  # commission multiple above the accel threshold (>1)
     "cap_attainment": None,  # optional attainment cap (None = uncapped)
 }
 

@@ -42,10 +42,11 @@ class Rep:
     home_metro: str
     tenure_months: int
     ramp_status: str  # "ramping" | "full"
+    level: str = "AE"  # ramping | AE | Sr. AE | Sr. Strategic AE (quota-load tier)
 
     @property
     def is_ramping(self) -> bool:
-        return self.ramp_status == "ramping"
+        return self.level == "ramping" or self.ramp_status == "ramping"
 
 
 @dataclass

@@ -1,10 +1,12 @@
 """
 core/comp.py — Stage 4: comp simulation.
 
-Variable pay is commission on bookings: `commission_rate` up to the accelerator
-threshold (in attainment), then `commission_rate * accelerator_multiplier` above
-it, optionally capped. Base salary is derived from the base/variable OTE split so
-cost-of-sale reflects fully-loaded comp, not just commission::
+Variable pay is commission on bookings on a three-band curve in attainment: a
+reduced `commission_rate * decelerator_multiplier` below `decelerator_threshold`,
+the standard `commission_rate` up to `accelerator_threshold`, then
+`commission_rate * accelerator_multiplier` above it, optionally capped. Base
+salary is derived from the base/variable OTE split so cost-of-sale reflects
+fully-loaded comp, not just commission::
 
     target_variable = commission_rate * quota          # variable earned at 100%
     base_salary     = target_variable * split/(1 - split)
@@ -29,16 +31,35 @@ def _params(overrides: dict | None) -> dict:
     return p
 
 
+def resolved_params(overrides: dict | None = None) -> dict:
+    """The effective comp parameters: config.COMP with any overrides layered on."""
+    return _params(overrides)
+
+
 def variable_payout(quota: float, attainment: float, comp: dict) -> float:
-    """Commission earned at a given attainment (with accelerator + optional cap)."""
-    thr = comp["accelerator_threshold"]
+    """Commission earned at a given attainment on the three-band curve.
+
+    A decelerated (reduced) rate below `decelerator_threshold`, the standard rate
+    up to `accelerator_threshold`, and the accelerated rate above it — optionally
+    frozen at `cap_attainment`. With no decelerator (threshold 0 or multiplier 1)
+    this reduces to the plain accelerator model.
+    """
     rate = comp["commission_rate"]
-    mult = comp["accelerator_multiplier"]
+    a_thr = comp["accelerator_threshold"]
+    a_mult = comp["accelerator_multiplier"]
+    d_thr = comp.get("decelerator_threshold") or 0.0
+    d_mult = comp.get("decelerator_multiplier")
+    d_mult = 1.0 if d_mult is None else d_mult
+
     cap = comp.get("cap_attainment")
     att = min(attainment, cap) if cap is not None else attainment
-    base_att = min(att, thr)
-    accel_att = max(0.0, att - thr)
-    return quota * rate * base_att + quota * rate * mult * accel_att
+    att = max(0.0, att)
+    d_thr = max(0.0, min(d_thr, a_thr))  # keep 0 <= decel <= accel
+
+    decel_att = min(att, d_thr)  # 0 .. decel_threshold   (reduced rate)
+    std_att = max(0.0, min(att, a_thr) - d_thr)  # decel .. accel_threshold (standard)
+    accel_att = max(0.0, att - a_thr)  # accel_threshold ..     (accelerated)
+    return quota * rate * (decel_att * d_mult + std_att + accel_att * a_mult)
 
 
 def base_salary(quota: float, comp: dict) -> float:

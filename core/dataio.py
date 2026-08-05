@@ -66,6 +66,9 @@ def load_reps(path: str | os.PathLike | None = None) -> list[Rep]:
                 home_metro=r["home_metro"],
                 tenure_months=int(r["tenure_months"]),
                 ramp_status=r["ramp_status"],
+                # `level` is the seniority/quota-load tier; older data without the
+                # column falls back to a tenure-derived default.
+                level=(r.get("level") or config.level_for_tenure(int(r["tenure_months"]))),
             )
             for r in csv.DictReader(fh)
         ]

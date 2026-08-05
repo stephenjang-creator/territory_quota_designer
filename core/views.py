@@ -25,6 +25,7 @@ def territory_row(t: Territory, rep: Rep) -> dict:
         "rep_name": rep.name,
         "segment_focus": rep.segment_focus,
         "ramp_status": rep.ramp_status,
+        "level": rep.level,
         "account_count": t.account_count,
         "potential": _r(t.potential, 0),
         "whitespace": _r(t.whitespace, 0),
