@@ -1,79 +1,74 @@
 # Territory & Quota Designer
 
-**Quota-first capacity planning for RevOps.** Standardize quotas by role, derive
-them from pay, then carve territories *backward* from those quotas — packing each
-book with enough pipeline to give the rep a fair shot at their number. Where a
-segment can't cover its standardized quotas, the tool surfaces the capacity gap
-instead of hiding it in an uneven carve. Change anything upstream (a role's OTE,
-the quota multiple, the coverage target, a conversion rate) and everything
-downstream recomputes.
+**A quota-first sales-capacity planner for RevOps.** It standardizes quota by role,
+carves each rep's territory *backward* to support that quota, and flags every seller
+whose book can't generate the pipeline to hit their number — **before** the plan
+locks and comp letters go out. And it doesn't just diagnose: every finding comes with
+a **one-click fix** — re-tag pipeline into a short segment, adjust that segment's
+quota, approve or freeze a hire, tune comp — that recomputes the whole plan.
 
-**AI-first, human-in-the-loop.** A deterministic engine owns every number a
-planner sees — the standardized quotas, the work-back assignment, the coverage
-math, the comp. The optional LLM layer only *explains* ("why is SMB short on
-pipeline", "what does this cost at 85% attainment"); it never sets a quota or
-assigns an account. The engine makes zero network calls and is reproducible given
-the data seed.
+**[▶ Live demo](https://territory-quota-designer.onrender.com)** &nbsp;·&nbsp; deterministic engine, **all data synthetic** &nbsp;·&nbsp; [what this demonstrates](#what-this-demonstrates) &nbsp;·&nbsp; [how it works](#the-chain-quota-rules)
 
-> All data is **synthetic** (`generate_territory_data.py`). No real customer or
-> company data, ever — this is a portfolio project.
+![Executive summary and one-click recommended actions](docs/dashboard.png)
 
-**Units.** Every dollar figure is **USD ACV** (annual contract value). OTE is
-annual on-target earnings; the **annual** quota = 4–6× OTE (industry norm) and the
-per-rep **quarterly** quota shown = annual ÷ 4. Comp and cost-of-sale are reported
-annually; coverage is a ratio, so denomination never changes an outcome. The
-dashboard shows money in thousands ($K).
+> **Worked example** (synthetic data): 14 reps, a **$2.86M/quarter** target. The plan
+> covers **10 of 14** — SMB is short **$233K** of pipeline. The tool says so plainly,
+> then offers three one-click fixes — re-tag 36 accounts into SMB, lower SMB's quota
+> multiple, or accept a lower SMB coverage target — plus a safe hiring plan and a
+> cost-of-sale check. Change any assumption and everything recomputes.
 
-## Use case: sales capacity & territory planning at scale
+## The problem it solves
 
-**Situation.** A ~$250M ARR B2B software company is planning next fiscal year's
-go-to-market coverage. Leadership has a company growth target and needs to translate
-it into a concrete field plan — how many reps, carrying what quotas, covering which
-accounts, and whether that structure can realistically produce the number.
-Compensation is governed by a **role-based OTE-and-quota model**: a tenured Enterprise
-AE carries a fixed quota and OTE tied to their title band, a Mid-Market AE a different
-band, ramping reps a haircut. Quotas are set by **title** — not recomputed per rep
-from book size, not distributed proportionally to hit a top-down goal. That's how most
-enterprises actually operate, and it's the core planning risk this tool exists to
-expose.
+**For a CRO or Head of Sales Ops.** Most companies set quota by **title** — every
+Enterprise AE carries the same number, derived from their pay band — not by the size
+of the book in front of them. That's how sales orgs actually run, and it's the core
+risk: nothing guarantees a rep's territory holds enough pipeline to produce that
+number at the team's real win rates. When it doesn't, the rep is under-covered before
+the year starts — attainment slips, cost-of-sale climbs, and the forecast built on
+those quotas was optimistic from day one. Usually you find out at the QBR. This tool
+finds out **before the plan locks**, quantifies the gap, and proposes the fix.
 
-**Complication.** Because quota is assigned by title rather than derived from
-territory potential, nothing guarantees a rep's territory is big enough to support the
-quota they've been handed. A $1.2M quota assumes a book that can generate enough
-qualified pipeline to produce $1.2M in bookings at the team's *real* conversion rates.
-If it can't, the rep is under-covered before the year begins — no amount of activity
-closes the gap, attainment suffers, cost-of-sale rises, and the forecast built on
-those quotas is structurally optimistic. Before the plan locks, leaders need to know:
+## What it does
 
-- Given each rep's fixed, title-based quota, how much qualified pipeline and how many
-  opportunities must their territory generate to hit it?
-- Does the territory as carved actually hold that much addressable potential?
-- Which territories are under-covered, and by how much — so coverage can be rebalanced,
-  quotas adjusted, or headcount added before commitments are made?
-- What does the plan cost in total comp and cost-of-sale, and how sensitive is that to
-  attainment?
+- **Standardizes quota by role, from pay** — same title + segment → same quota,
+  derived from OTE (industry-norm 4–6×). No politics, no per-rep guesswork.
+- **Carves territories backward** from those fixed quotas to a pipeline-coverage
+  target, then runs a **reverse waterfall** through your real stage win-rates to prove
+  each book can actually produce its number.
+- **Surfaces the gap honestly** — a per-rep coverage ratio and an explicit dollar
+  shortfall for every under-covered territory, instead of hiding it in an uneven carve.
+- **Recommends the fix, one click** — re-tag pipeline into a short segment (a real
+  account move, verified to lift *every* rep over the line), lower that segment's quota,
+  accept a lower coverage target, apply a safe hiring plan, or auto-tune comp to a
+  cost-of-sale ceiling. Applying any lever recomputes the whole plan.
+- **Prices the plan** — total comp, cost-of-sale, and how both move across attainment
+  scenarios.
 
-**How the tool answers it.** Load the account universe (segment, industry, size, geo,
-current ARR, whitespace, open pipeline) and the rep roster (title-based OTE/quota
-bands, ramp status); the [four-stage chain](#the-chain-quota-rules) runs quota-first.
-It sets each rep's title-based quota, **carves territories backward** from those quotas
-to a pipeline-coverage target, then works the quota *up the funnel* — dividing through
-each stage's conversion rate (configurable, with a rep > segment > global override
-hierarchy, so Enterprise, SMB, and a ramping rep each model their own reality rather
-than one blended rate that lies) to compute the qualified pipeline and opportunities
-the territory must produce. It compares that against the territory's available
-potential, yields a **coverage ratio per rep**, and flags every territory that can't
-physically support its quota — then rolls the plan up into total comp, cost-of-sale,
-and payout curves across attainment scenarios. Add planned hires (or a "TBH") to test
-whether more headcount closes a gap or just spreads a segment thinner.
+## What this demonstrates
 
-**Outcome.** A defensible capacity plan before comp letters go out: quotas matched to
-territories that can actually support them, an explicit list of under-covered
-territories with each gap's size and the lever to close it, and a full cost-of-sale
-picture. The optional AI layer explains each result in plain language — *"this
-territory is 18% short on required Enterprise pipeline at a 30% win rate; closing it
-needs either +$400K in reassigned potential or a quota cut to $1.05M"* — while every
-number stays owned by deterministic, auditable math.
+A compact but complete slice of building a decision tool on top of a real domain model:
+
+- **RevOps / GTM domain modeling** — quota policy, capacity planning, reverse-waterfall
+  funnel math, comp design and cost-of-sale, hiring capacity.
+- **A deterministic, tested engine** — every number the UI shows comes from pure Python
+  in `core/` (85 unit tests, `ruff` + `black` clean); a fixed seed reproduces the plan.
+- **Recommendations that resolve, not just report** — each fix is computed *and* returned
+  as an applyable settings delta, with round-trip tests proving it clears the issue it
+  targets (the re-tag lever even re-carves until *every* rep clears).
+- **An AI/agent layer, human-in-the-loop** — the same engine is an **MCP server** (15
+  read-only tools) an LLM can drive to interrogate and fix a plan; the model only
+  *explains and proposes*, the deterministic core owns every number.
+- **Full-stack, and shipped** — FastAPI backend, a self-contained interactive dashboard,
+  CI-quality checks, and a live deploy on Render.
+
+**Tech:** Python · FastAPI · pydantic · pytest · Model Context Protocol · vanilla-JS
+dashboard · Render. The optional narrative layer uses the Anthropic API and degrades
+cleanly with no key. All data is synthetic (`generate_territory_data.py`) — no real
+customer or company data, ever.
+
+**Units.** Every dollar figure is **USD ACV**; OTE is annual, the **annual** quota is
+4–6× OTE, and the per-rep **quarterly** quota shown is that ÷ 4. Coverage is a ratio,
+so denomination never changes an outcome.
 
 ## The chain (quota rules)
 
