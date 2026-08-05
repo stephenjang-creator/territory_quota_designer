@@ -93,7 +93,8 @@
   <h1>Territory &amp; Quota Designer</h1>
   <div class="sub">Split your accounts into fair, balanced territories, set each rep's quarterly number, and check
   whether every rep has enough pipeline to actually hit it. Drag the sliders to try different trade-offs — the plan
-  updates instantly. Dollar figures are monthly recurring revenue (MRR); quotas are per quarter. Sample data.
+  updates instantly. Dollar figures are monthly recurring revenue (MRR) shown in thousands ($K); quotas are per
+  quarter. Sample data.
   &middot; <a href="/docs">API</a></div>
 </header>
 
@@ -113,9 +114,9 @@
         <span class="info b" data-tip="How evenly the planner spreads untapped expansion opportunity (whitespace) across reps, so future growth isn't concentrated in a few territories.">i</span>
         <span class="val" id="ww">15%</span></label>
         <input type="range" id="sw" min="0" max="100" value="15"></div>
-      <div class="ctl"><label>Quarterly target ($M MRR)
-        <span class="info b" data-tip="Total new monthly-recurring revenue the whole team should book this quarter. Each rep's quota is their fair share of it.">i</span></label>
-        <input type="number" id="tgt" step="1" min="1"></div>
+      <div class="ctl"><label>Quarterly target ($K MRR)
+        <span class="info b" data-tip="Total new monthly-recurring revenue the whole team should book this quarter, entered in thousands. Each rep's quota is their fair share of it.">i</span></label>
+        <input type="number" id="tgt" step="500" min="100"></div>
       <div class="ctl"><label>Attainment
         <span class="info b" data-tip="The percent of quota reps achieve. Used only to model comp cost and cost-of-sale — it doesn't change the territories.">i</span></label>
         <select id="att"><option value="0.85">85%</option><option value="1.0" selected>100%</option>
@@ -182,8 +183,7 @@ const $ = s => document.querySelector(s);
 const state = {sort:"coverage_ratio", asc:true, sel:null, target:null};
 let timer=null;
 
-function fmtMRR(x){ if(x==null) return "—"; const a=Math.abs(x);
-  if(a>=1e6) return "$"+(x/1e6).toFixed(1)+"M"; if(a>=1e3) return "$"+(x/1e3).toFixed(0)+"K"; return "$"+Math.round(x); }
+function fmtK(x){ if(x==null) return "—"; return "$"+Math.round(x/1000).toLocaleString()+"K"; }
 function avg(o){ const v=Object.values(o||{}); return v.length? v.reduce((a,b)=>a+b,0)/v.length : 0; }
 function imp(b,o){ return b ? (b-o)/b*100 : 0; }         // % improvement when lower is better
 function esc(t){ return t.replace(/"/g,'&quot;'); }
@@ -193,7 +193,7 @@ function settings(){
   const p=+$("#sp").value, g=+$("#sg").value, w=+$("#sw").value, s=(p+g+w)||1;
   $("#wp").textContent=Math.round(p/s*100)+"%"; $("#wg").textContent=Math.round(g/s*100)+"%"; $("#ww").textContent=Math.round(w/s*100)+"%";
   const body={weights:{potential:p,geo:g,whitespace:w}, attainment:+$("#att").value};
-  const t=parseFloat($("#tgt").value); if(!isNaN(t)&&t>0) body.company_target=t*1e6;
+  const t=parseFloat($("#tgt").value); if(!isNaN(t)&&t>0) body.company_target=t*1e3;
   return body;
 }
 async function post(path, body){
@@ -224,7 +224,7 @@ function scoreCards(sc, summary){
       evenTxt(grow), grow>=0?"green":"red", `<span class="flat">growth upside vs a simple even split</span>`),
     metric("Coverage risk",
       "Reps whose available pipeline is less than what's needed to hit quota on paper. A risk flag, not a prediction — these reps start the quarter behind unless you lower the quota or add pipeline.",
-      under+" of "+n+" reps", under>0?"red":"green", `<span class="flat">short on pipeline · target ${fmtMRR(summary.company_target)}</span>`),
+      under+" of "+n+" reps", under>0?"red":"green", `<span class="flat">short on pipeline · target ${fmtK(summary.company_target)}</span>`),
   ].join("");
 }
 
@@ -242,7 +242,7 @@ function renderTable(rows){
     <tr data-id="${r.rep_id}" class="${r.rep_id===state.sel?'sel':''}">
       <td><b>${r.rep_id}</b> <span class="muted">${r.rep_name}</span></td>
       <td><span class="tag">${r.segment_focus}</span> ${r.ramp_status==='ramping'?'<span class="tag ramp">ramping</span>':''}</td>
-      <td>${r.account_count}</td><td>${fmtMRR(r.potential)}</td><td>${fmtMRR(r.quota)}</td>
+      <td>${r.account_count}</td><td>${fmtK(r.potential)}</td><td>${fmtK(r.quota)}</td>
       <td>${(r.quota_to_potential*100).toFixed(1)}%</td>${covCell(r.coverage_ratio)}</tr>`).join("");
   $("#tbody").querySelectorAll("tr").forEach(tr=>tr.onclick=()=>selectRep(tr.dataset.id));
 }
@@ -250,7 +250,7 @@ function renderComp(rows, att){
   $("#cbody").innerHTML=rows.map(r=>{ const sel=Math.abs(r.attainment-att)<1e-6;
     return `<tr style="${sel?'background:rgba(91,140,255,.12)':''}">
       <td style="text-align:left">${Math.round(r.attainment*100)}%${sel?' ◂':''}</td>
-      <td>${fmtMRR(r.total_comp)}</td><td>${fmtMRR(r.total_bookings)}</td>
+      <td>${fmtK(r.total_comp)}</td><td>${fmtK(r.total_bookings)}</td>
       <td><b>${(r.cost_of_sale*100).toFixed(1)}%</b></td></tr>`; }).join("");
 }
 
@@ -269,14 +269,14 @@ async function selectRep(id){
     <div class="stage"><div class="name">${n}</div>
       <div class="track"><div class="fill" style="width:${Math.max(6,v/max*100)}%">${v.toFixed(0)}</div></div></div>`).join("")}</div>
     <div class="callout">
-      <div class="box"><div class="k">Pipeline needed${info("The pipeline (at the negotiation stage) needed to produce the quarter's deals.")}</div><div class="v">${fmtMRR(w.required_pipeline)}</div></div>
-      <div class="box"><div class="k">Pipeline on hand${info("The addressable pipeline this rep's accounts actually hold today.")}</div><div class="v">${fmtMRR(w.available_pipeline)}</div></div>
+      <div class="box"><div class="k">Pipeline needed${info("The pipeline (at the negotiation stage) needed to produce the quarter's deals.")}</div><div class="v">${fmtK(w.required_pipeline)}</div></div>
+      <div class="box"><div class="k">Pipeline on hand${info("The addressable pipeline this rep's accounts actually hold today.")}</div><div class="v">${fmtK(w.available_pipeline)}</div></div>
       <div class="box"><div class="k">Coverage${info("Pipeline on hand ÷ pipeline needed. 1.0x = just enough on paper; below 1.0x = short.")}</div><div class="v ${under?'red':'green'}">${w.coverage_ratio.toFixed(2)}×${under?' ⚠':' ✓'}</div></div>
     </div>
     <div class="lbl">Conversion assumptions${info("Stage-to-stage win rates and average deal size used for this rep. Source: default = company default; segment/rep = an override you'd set for this segment or rep.")}</div>
     <div class="rates">${Object.entries(d.rates_used).map(([k,r])=>{
       const lvl=r.level==='global'?'default':r.level, name=k==='avg_deal_size'?'avg deal':k.replace('->','→');
-      const val=k==='avg_deal_size'?fmtMRR(r.value):(r.value*100).toFixed(0)+'%';
+      const val=k==='avg_deal_size'?fmtK(r.value):(r.value*100).toFixed(0)+'%';
       return `<span class="chip">${name} <b>${val}</b> <span class="muted">(${lvl})</span></span>`; }).join("")}</div>`;
   if(under && d.gap){ html+=`<div class="lbl">To close the gap</div><ul class="levers">${d.gap.levers.map(l=>`<li>${l}</li>`).join("")}</ul>`; }
   html+=`<div class="note">A coverage check is a pipeline reality check, not a forecast — a covered rep can still miss,
@@ -286,7 +286,7 @@ async function selectRep(id){
 
 async function refresh(keepSel){
   const plan=await post("/plan", settings());
-  if(state.target===null){ state.target=plan.summary.company_target; $("#tgt").value=Math.round(state.target/1e6); }
+  if(state.target===null){ state.target=plan.summary.company_target; $("#tgt").value=Math.round(state.target/1e3); }
   scoreCards(plan.scorecard, plan.summary);
   renderTable(plan.territories);
   renderComp(plan.comp, +$("#att").value);
