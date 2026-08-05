@@ -157,9 +157,9 @@
         <span class="info b" data-tip="How evenly the planner spreads untapped expansion opportunity (whitespace) across reps, so future growth isn't concentrated in a few territories.">i</span>
         <span class="val" id="ww">15%</span></label>
         <input type="range" id="sw" min="0" max="100" value="15"></div>
-      <div class="ctl"><label>Quarterly target ($K MRR)
-        <span class="info b" data-tip="Total new monthly-recurring revenue the whole team should book this quarter, entered in thousands. Each rep's quota is their fair share of it.">i</span></label>
-        <input type="number" id="tgt" step="500" min="100"></div>
+      <div class="ctl"><label>Quarterly target ($ MRR)
+        <span class="info b" data-tip="Total new monthly-recurring revenue the whole team should book this quarter, entered as a full dollar amount — e.g. 45000000 for $45M. Each rep's quota is their fair share of it.">i</span></label>
+        <input type="number" id="tgt" step="1000000" min="0" placeholder="e.g. 45000000"></div>
       <div class="ctl"><label>Attainment
         <span class="info b" data-tip="The percent of quota reps achieve. Used only to model comp cost and cost-of-sale — it doesn't change the territories.">i</span></label>
         <select id="att"><option value="0.85">85%</option><option value="1.0" selected>100%</option>
@@ -337,7 +337,7 @@ function settings(){
   const p=+$("#sp").value, g=+$("#sg").value, w=+$("#sw").value, s=(p+g+w)||1;
   $("#wp").textContent=Math.round(p/s*100)+"%"; $("#wg").textContent=Math.round(g/s*100)+"%"; $("#ww").textContent=Math.round(w/s*100)+"%";
   const body={weights:{potential:p,geo:g,whitespace:w}, attainment:+$("#att").value};
-  const t=parseFloat($("#tgt").value); if(!isNaN(t)&&t>0) body.company_target=t*1e3;
+  const t=parseFloat($("#tgt").value); if(!isNaN(t)&&t>0) body.company_target=t;   // full $ MRR
   const o=convOverrides(); if(Object.keys(o).length) body.overrides=o;
   const ml=levelOverrides(); if(ml) body.level_multipliers=ml;
   const c=compOverrides(); if(c) body.comp=c;
@@ -573,7 +573,7 @@ async function selectRep(id){
 
 async function refresh(keepSel){
   const plan=await post("/plan", settings());
-  if(state.target===null){ state.target=plan.summary.company_target; $("#tgt").value=Math.round(state.target/1e3); }
+  if(state.target===null){ state.target=plan.summary.company_target; $("#tgt").value=Math.round(state.target); }
   targetSanity(plan.summary);
   scoreCards(plan.scorecard, plan.summary);
   renderTable(plan.territories);
@@ -590,8 +590,7 @@ function targetSanity(sum){
     msg=`<b>${fmtK(ct)}</b> is the <b>whole team's</b> quarterly target — far below what this book can support. It
       holds ${fmtK(tp)} in opportunity, so a realistic target is a meaningful slice of that (the default is
       ~${fmtK(typical)}). At ${fmtK(ct)} every rep's quota rounds to near zero and coverage runs into the
-      thousands-of-×. The field is in <b>$K</b>, so enter <b>${Math.round(typical/1e3).toLocaleString()}</b> for
-      ~${fmtK(typical)}, or <b>15000</b> for $15M.`;
+      thousands-of-×. Enter the <b>full dollar amount</b> — e.g. <b>45000000</b> for $45M, or <b>15000000</b> for $15M.`;
   else if(tp && ct > tp*1.5)
     msg=`<b>${fmtK(ct)}</b> is larger than the book's entire ${fmtK(tp)} of opportunity — most reps will be
       under-covered by design. The default is ~${fmtK(typical)}.`;
