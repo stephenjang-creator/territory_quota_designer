@@ -24,6 +24,57 @@ per-rep **quarterly** quota shown = annual ÷ 4. Comp and cost-of-sale are repor
 annually; coverage is a ratio, so denomination never changes an outcome. The
 dashboard shows money in thousands ($K).
 
+## Use case: sales capacity & territory planning at scale
+
+**Situation.** A ~$250M ARR B2B software company is planning next fiscal year's
+go-to-market coverage. Leadership has a company growth target and needs to translate
+it into a concrete field plan — how many reps, carrying what quotas, covering which
+accounts, and whether that structure can realistically produce the number.
+Compensation is governed by a **role-based OTE-and-quota model**: a tenured Enterprise
+AE carries a fixed quota and OTE tied to their title band, a Mid-Market AE a different
+band, ramping reps a haircut. Quotas are set by **title** — not recomputed per rep
+from book size, not distributed proportionally to hit a top-down goal. That's how most
+enterprises actually operate, and it's the core planning risk this tool exists to
+expose.
+
+**Complication.** Because quota is assigned by title rather than derived from
+territory potential, nothing guarantees a rep's territory is big enough to support the
+quota they've been handed. A $1.2M quota assumes a book that can generate enough
+qualified pipeline to produce $1.2M in bookings at the team's *real* conversion rates.
+If it can't, the rep is under-covered before the year begins — no amount of activity
+closes the gap, attainment suffers, cost-of-sale rises, and the forecast built on
+those quotas is structurally optimistic. Before the plan locks, leaders need to know:
+
+- Given each rep's fixed, title-based quota, how much qualified pipeline and how many
+  opportunities must their territory generate to hit it?
+- Does the territory as carved actually hold that much addressable potential?
+- Which territories are under-covered, and by how much — so coverage can be rebalanced,
+  quotas adjusted, or headcount added before commitments are made?
+- What does the plan cost in total comp and cost-of-sale, and how sensitive is that to
+  attainment?
+
+**How the tool answers it.** Load the account universe (segment, industry, size, geo,
+current ARR, whitespace, open pipeline) and the rep roster (title-based OTE/quota
+bands, ramp status); the [four-stage chain](#the-chain-quota-rules) runs quota-first.
+It sets each rep's title-based quota, **carves territories backward** from those quotas
+to a pipeline-coverage target, then works the quota *up the funnel* — dividing through
+each stage's conversion rate (configurable, with a rep > segment > global override
+hierarchy, so Enterprise, SMB, and a ramping rep each model their own reality rather
+than one blended rate that lies) to compute the qualified pipeline and opportunities
+the territory must produce. It compares that against the territory's available
+potential, yields a **coverage ratio per rep**, and flags every territory that can't
+physically support its quota — then rolls the plan up into total comp, cost-of-sale,
+and payout curves across attainment scenarios. Add planned hires (or a "TBH") to test
+whether more headcount closes a gap or just spreads a segment thinner.
+
+**Outcome.** A defensible capacity plan before comp letters go out: quotas matched to
+territories that can actually support them, an explicit list of under-covered
+territories with each gap's size and the lever to close it, and a full cost-of-sale
+picture. The optional AI layer explains each result in plain language — *"this
+territory is 18% short on required Enterprise pipeline at a 30% win rate; closing it
+needs either +$400K in reassigned potential or a quota cut to $1.05M"* — while every
+number stays owned by deterministic, auditable math.
+
 ## The chain (quota rules)
 
 ```
