@@ -8,7 +8,7 @@ from core.plan import PlanSettings, run_plan
 
 
 def test_plan_fills_every_stage(plan):
-    assert plan.n_territories == 12
+    assert plan.n_territories == 14
     for t in plan.territories:
         assert t.quota is not None and t.ote is not None
         assert t.pipeline_coverage_multiple is not None

@@ -18,15 +18,16 @@ the data seed.
 > All data is **synthetic** (`generate_territory_data.py`). No real customer or
 > company data, ever — this is a portfolio project.
 
-**Units.** Every dollar figure is **MRR** (monthly recurring revenue); quota is a
-**quarterly** new-MRR target and OTE is annual on-target earnings. Coverage and
-cost-of-sale are ratios, so the denomination never changes an outcome. The
+**Units.** Every dollar figure is **USD ACV** (annual contract value). OTE is
+annual on-target earnings; the **annual** quota = 4–6× OTE (industry norm) and the
+per-rep **quarterly** quota shown = annual ÷ 4. Comp and cost-of-sale are reported
+annually; coverage is a ratio, so denomination never changes an outcome. The
 dashboard shows money in thousands ($K).
 
 ## The chain (quota rules)
 
 ```
-OTE by role  →  ① Quota    standardized per role: quota = multiple × OTE (same role → same number)
+OTE by role  →  ① Quota    standardized per role: annual quota = multiple × OTE, shown quarterly (same role → same number)
              →  ② Carve    work back from quota: pack each book to a pipeline-coverage target (3×)
              →  ③ Waterfall reverse-funnel adequacy on the packed pipeline (a second lens)
              →  ④ Comp      OTE-anchored payouts, cost-of-sale, attainment scenarios
@@ -57,23 +58,29 @@ destroys morale and breaks the comp/CAC model. A "role" is `segment × seniority
 level`, and quota is derived backward from on-target earnings:
 
 ```
-OTE(role) = SEGMENT_OTE[segment] × LEVEL_OTE_FACTOR[level]     (annual OTE, editable per role)
-quota     = QUOTA_TO_OTE × OTE                                  (default 5×; industry norm 4–6×)
-company target = Σ every rep's quota                            (derived, not handed down)
+OTE(role)    = SEGMENT_OTE[segment] × LEVEL_OTE_FACTOR[level]   (annual OTE, editable per role)
+annual quota = QUOTA_TO_OTE × OTE                               (default 4×; industry norm 4–6×)
+quota        = annual quota ÷ 4                                 (the quarterly target the model plans on)
+company target = Σ every rep's quarterly quota                 (derived, not handed down)
 ```
 
-The default roster (quota = 5 × OTE):
+OTE is sized for a US SaaS company of ~$100–500M revenue; the default roster
+(annual quota = 4 × OTE, shown quarterly):
 
-| Role | OTE | Quarterly quota | | Role | OTE | Quarterly quota |
-| --- | ---: | ---: | --- | --- | ---: | ---: |
-| Enterprise · Sr. Strategic AE | $1.215M | **$6.075M** | | Mid-Market · AE | $550K | **$2.75M** |
-| Enterprise · AE | $900K | **$4.50M** | | Mid-Market · ramping | $330K | **$1.65M** |
-| Enterprise · ramping | $540K | **$2.70M** | | SMB · AE | $300K | **$1.25M**† |
-| Mid-Market · Sr. AE | $660K | **$3.30M** | | SMB · ramping | $180K | **$0.90M**† |
+| Role | OTE (annual) | Annual quota (4×) | Quarterly quota |
+| --- | ---: | ---: | ---: |
+| Enterprise · Sr. Strategic AE | $420K | $1.68M | **$420K** |
+| Enterprise · AE | $280K | $1.12M | **$280K** |
+| Enterprise · ramping | $224K | $896K | **$224K** |
+| Mid-Market · Sr. AE | $219K | $875K | **$219K** |
+| Mid-Market · AE | $175K | $700K | **$175K** |
+| Mid-Market · ramping | $140K | $560K | **$140K** |
+| SMB · AE | $110K | $440K | **$110K** |
+| SMB · ramping | $88K | $352K | **$88K** |
 
-Company target ≈ **$37.0M** (the sum). Edit any role's OTE or the multiple in the
-dashboard and every rep in that role — plus the target — moves. († SMB quotas are
-set a touch rich on purpose; see below.)
+Company target ≈ **$2.86M/quarter** ($11.5M annual) — the sum of the 14-rep team's
+quarterly quotas. Edit any role's OTE or the multiple in the dashboard and every rep
+in that role — plus the target — moves.
 
 ## Work-back carve + the capacity scorecard
 
@@ -88,21 +95,23 @@ the **same** standardized quotas:
 
 | Metric | Naive equal-split | Work-back carve | (target 3×) |
 | --- | ---: | ---: | ---: |
-| **Total capacity gap** (pipeline short, MRR) | $1,964,700 | **$1,373,100** | −30.1% |
-| **Coverage floor** — worst-covered rep (higher = fairer) | 2.23× | **2.63×** | +18.1% |
-| Reps covered to 3× pipeline (of 12) | 10 | 9 | evenly-spread shortfall |
-| Off-home-region share (lower = compact) | 0.82 | 0.48 | −41.0% |
+| **Total capacity gap** (pipeline short, USD) | $233,000 | **$233,000** | structural |
+| **Coverage floor** — worst-covered rep (higher = fairer) | 2.24× | **2.43×** | +8.5% |
+| Reps covered to 3× pipeline (of 14) | 10 | 10 | evenly-spread shortfall |
+| Off-home-region share (lower = compact) | 0.81 | **0.47** | −41.6% |
 
-The naive split "covers" one more rep only by handing one SMB rep a 3.66× book
-while another starves at 2.23×. The work-back carve won't rob Peter to pay Paul:
-it minimizes the **total** gap and lifts the floor. The remaining gap isn't a carve
-mistake — it's structural:
+The total gap is **identical** between the two carves — and that's the honest point:
+SMB is short by $233K no matter how you slice it, so no assignment can beat it on the
+total. What the work-back carve *does* is refuse to rob Peter to pay Paul — it spreads
+the shortfall evenly instead of starving one SMB rep to over-fill another, which lifts
+the **worst-covered rep's floor** (2.24× → 2.43×) and keeps books compact (off-home
+−41.6%). The gap that remains is structural:
 
 ```
 Per-segment pipeline vs. required at 3×:
-  Enterprise   $91.9M available   vs   $58.1M required   → OK
-  Mid-Market   $52.2M available   vs   $41.3M required   → OK
-  SMB          $10.3M available   vs   $11.7M required   → SHORT by $1.4M
+  Enterprise   $5.15M available   vs   $4.03M required   → OK
+  Mid-Market   $4.01M available   vs   $3.31M required   → OK
+  SMB          $1.02M available   vs   $1.25M required   → SHORT by $0.23M
 ```
 
 SMB simply doesn't hold enough pipeline to cover its standardized quotas to 3×.
@@ -113,17 +122,18 @@ tool exists to surface.
 ## Worked example (two reps)
 
 ```
-R-101 · Enterprise · Sr. Strategic AE          R-104 · SMB · AE
-  OTE                 $1,215,000  (annual)        OTE                 $300,000
-  quota = 5 × OTE     $6,075,000  (quarterly)     quota = 5 × OTE     $1,500,000
-  pipeline packed    $24,134,800                  pipeline packed     $4,007,000
-  pipeline coverage  24,134,800 / 6,075,000       pipeline coverage   4,007,000 / 1,500,000
-                     = 3.97×   (≥ 3×  ✓)                              = 2.67×   (< 3×  ⚠)
-  capacity gap        none                         capacity gap        $493,000 short of 3×
+R-101 · Enterprise · Sr. Strategic AE          R-110 · SMB · AE
+  OTE  (annual)         $420,000                  OTE  (annual)         $110,000
+  annual quota = 4×OTE  $1,680,000                annual quota = 4×OTE  $440,000
+  quarterly quota       $420,000                  quarterly quota       $110,000
+  pipeline packed       $1,534,100                pipeline packed       $267,700
+  pipeline coverage  1,534,100 / 420,000          pipeline coverage   267,700 / 110,000
+                     = 3.65×   (≥ 3×  ✓)                              = 2.43×   (< 3×  ⚠)
+  capacity gap        none                         capacity gap        $62,300 short of 3×
 ```
 
 Same-role reps get the identical quota; the carve packs Enterprise books past 3×
-(surplus pipeline) but can only reach ~2.67× for SMB AEs — the SMB segment is
+(surplus pipeline) but can only reach ~2.43× for SMB AEs — the SMB segment is
 capacity-constrained. A second lens, the **reverse waterfall**, works the quota
 back up the funnel (won deals → negotiation → … → required SQLs) to sanity-check
 the packed pipeline against stage win-rates; the dashboard shows both.
@@ -150,18 +160,21 @@ Pay is anchored on the **same OTE** that sets quota, so the two are always
 consistent:
 
 ```
-base            = split × OTE                       (fixed)
+base            = split × OTE                       (fixed, annual)
 target_variable = (1 − split) × OTE                 (earned in full at 100% attainment)
 variable(att)   = target_variable × payout_factor(att)   (3-band curve, normalized to 1.0 on-target)
-total_comp      = base + variable(att)
+total_comp      = base + variable(att)                   (annual)
+cost_of_sale    = Σ total_comp / Σ annual bookings       (both annual; ≈ 25% at plan)
 ```
 
-`payout_factor` is a piecewise-linear multiplier normalized so on-target pays
-exactly the target variable: a **decelerator** below a floor (reduced slope), the
-standard slope up to target, and an **accelerator** above it — with an optional
-cap. All parameters are editable, with a live payout curve. Because the accelerator
-lifts variable faster than bookings, cost-of-sale can tick *up* above 100%
-attainment — which the tool shows honestly.
+Comp and bookings are **annual** (OTE is annual, and bookings = quarterly quota ×
+4 × attainment), so cost-of-sale lands at the usual ~20–30% rather than a quarter-
+vs-year mismatch. `payout_factor` is a piecewise-linear multiplier normalized so
+on-target pays exactly the target variable: a **decelerator** below a floor (reduced
+slope), the standard slope up to target, and an **accelerator** above it — with an
+optional cap. All parameters are editable, with a live payout curve. Because the
+accelerator lifts variable faster than bookings, cost-of-sale can tick *up* above
+100% attainment — which the tool shows honestly.
 
 ## API
 
@@ -202,9 +215,10 @@ make mcp-http   # HTTP on $PORT, MCP_AUTH_TOKEN bearer auth (hosted use)
 ## Configuration
 
 All tunable knobs live in `config.py` — `SEGMENT_OTE` / `LEVEL_OTE_FACTOR` /
-`QUOTA_TO_OTE` (pay → quota), `PIPELINE_COVERAGE_TARGET` (the carve's 3× target),
-`PREFER_HOME_REGION`, and the OTE-anchored `COMP` params — or come from the loaded
-CSVs. Every one is overridable per API/MCP call.
+`QUOTA_TO_OTE` (annual pay → quota multiple) / `QUOTA_PERIODS_PER_YEAR` (annual →
+quarterly), `PIPELINE_COVERAGE_TARGET` (the carve's 3× target), `PREFER_HOME_REGION`,
+and the OTE-anchored `COMP` params — or come from the loaded CSVs. Every one is
+overridable per API/MCP call.
 
 ## Deploy (Render)
 

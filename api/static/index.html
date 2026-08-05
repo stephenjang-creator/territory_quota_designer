@@ -146,7 +146,7 @@
   <div class="sub">Quota-first capacity planning. Each rep's quota is <b>standardized by role</b> (same title + segment →
   same number) and set from pay — <b>quota = a multiple of OTE</b>. Territories are then carved <b>back</b> from those
   quotas: each book is packed with enough pipeline to give the rep a fair shot at their number. Reps a segment can't
-  cover show up as a capacity gap. Dollar figures are MRR, shown in thousands ($K). Sample data.
+  cover show up as a capacity gap. Dollar figures are USD (annual contract value), shown in thousands ($K). Sample data.
   &middot; <a href="/docs">API</a></div>
 </header>
 
@@ -154,8 +154,8 @@
   <!-- CONTROLS -->
   <div class="card pad">
     <div class="controls">
-      <div class="ctl"><label>Quota = N&times; OTE
-        <span class="info b" data-tip="Each rep's quota is a fixed multiple of their on-target earnings (OTE). Industry norm is 4–6x. Raise it and every quota (and the company target) scales up.">i</span></label>
+      <div class="ctl"><label>Annual quota = N&times; OTE
+        <span class="info b" data-tip="Each rep's ANNUAL quota is a fixed multiple of their on-target earnings (OTE); industry norm is 4–6x. The per-rep number shown below is quarterly (this multiple ÷ 4). Raise it and every quota (and the company target) scales up.">i</span></label>
         <input type="number" id="qm" min="1" max="12" step="0.5"></div>
       <div class="ctl"><label>Coverage target (&times; pipeline)
         <span class="info b" data-tip="How much addressable pipeline each rep's book should hold, as a multiple of their quota. The rule of thumb is 3x. The carve packs each book to this; reps a segment can't cover to it are flagged.">i</span></label>
@@ -184,18 +184,19 @@
       <summary>
         <span class="chev">&#9654;</span>
         <h2 style="margin:0;display:inline">Pay &amp; quota by role
-          <span class="info b" data-tip="A role is a segment + seniority title. Set on-target earnings (OTE) for each role; quota = the multiple above x OTE, and every rep in that role carries the identical number. The company target is the sum.">i</span></h2>
+          <span class="info b" data-tip="A role is a segment + seniority title. Set on-target earnings (OTE) for each role; annual quota = the multiple above x OTE (quarterly = ÷ 4), and every rep in that role carries the identical number. The company target is the sum of quarterly quotas.">i</span></h2>
         <span class="ovbadge" id="roleBadge">using defaults</span>
         <button class="btn" id="roleReset" type="button" disabled>Reset to defaults</button>
       </summary>
-      <div class="hint" style="margin-top:10px">Quota is standardized by role and derived from pay: <b>quota = multiple &times; OTE</b>.
-        Edit OTE (annual, $K) per role; the quota column and the company target update live. This is where quota "rules".</div>
+      <div class="hint" style="margin-top:10px">Quota is standardized by role and derived from pay: <b>annual quota = multiple &times; OTE</b>
+        (industry norm 4–6×); the quarterly quota shown is that ÷ 4. Edit OTE (annual, $K) per role; the quota column and the
+        company target update live. This is where quota "rules".</div>
       <div style="overflow-x:auto">
         <table class="convtbl" id="roletbl"><thead><tr>
           <th>Role <span class="u">segment &middot; title</span></th>
           <th>Reps</th>
           <th>OTE <span class="u">$K / yr</span></th>
-          <th>Quarterly quota <span class="u">= N&times; OTE</span></th>
+          <th>Quarterly quota <span class="u">$K / qtr</span></th>
         </tr></thead><tbody id="rolebody"><tr><td colspan="4" class="spin">Loading…</td></tr></tbody></table>
       </div>
     </details>
@@ -285,7 +286,7 @@
             <th data-k="ote" title="On-target earnings (annual). Quota is a fixed multiple of this. Edit OTE per role above.">OTE</th>
             <th data-k="quota" title="Standardized quarterly quota for the role — quota = multiple x OTE. Same role, same number.">Quarterly quota</th>
             <th data-k="account_count" title="Accounts the work-back carve assigned to this rep.">Accounts</th>
-            <th data-k="available_pipeline" title="Addressable pipeline in the book: whitespace + open pipeline, in MRR.">Pipeline</th>
+            <th data-k="available_pipeline" title="Addressable pipeline in the book: whitespace + open pipeline, in USD (ACV).">Pipeline</th>
             <th data-k="pipeline_coverage" title="Addressable pipeline ÷ quota. The carve packs each book to the coverage target (3x); below it (red) = capacity-short.">Coverage</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
@@ -305,11 +306,11 @@
         <h2>Comp &amp; cost of sale</h2>
         <div style="overflow-x:auto"><table id="comp"><thead><tr>
           <th style="text-align:left" title="Percent of quota the team achieves.">Attainment</th>
-          <th title="Total rep compensation for the quarter (base + variable).">Total comp</th>
-          <th title="Revenue booked at this attainment.">Bookings</th>
-          <th title="Total comp divided by bookings — what you spend in comp per dollar booked.">Cost of sale</th>
+          <th title="Total team compensation, annual (base + variable). OTE is annual, so comp is too.">Total comp</th>
+          <th title="Annual bookings at this attainment (quarterly quota × 4 × attainment).">Bookings</th>
+          <th title="Annual comp divided by annual bookings — what you spend in comp per dollar booked (~20–30%).">Cost of sale</th>
         </tr></thead><tbody id="cbody"></tbody></table></div>
-        <div class="note">Base is fixed (a slice of OTE); the accelerator can lift cost-of-sale above 100% attainment.</div>
+        <div class="note">Comp and bookings are annual (OTE is annual). Base is fixed (a slice of OTE); the accelerator can lift cost-of-sale above 100% attainment.</div>
       </div>
     </div>
   </div>
@@ -374,7 +375,7 @@ function roleOverrides(){
     inp.classList.toggle("ovr", changed);
     const oteK = (!isNaN(num)&&num>0) ? num : parseFloat(inp.dataset.def);
     const q=$(`.qcell[data-q="${inp.dataset.seg}|${inp.dataset.level}"]`);
-    if(q) q.textContent=fmtK(qm*oteK*1000);
+    if(q) q.textContent=fmtK(qm*oteK*1000/(ROLES.periods_per_year||4));  // quarterly = annual / 4
     if(changed){ (ov[inp.dataset.seg] || (ov[inp.dataset.seg]={}))[inp.dataset.level]=num*1000; n++; }
   });
   const badge=$("#roleBadge");
@@ -494,7 +495,7 @@ function scoreCards(sum){
   const floorUp = flr.optimized>=flr.baseline;
   $("#score").innerHTML=[
     metric("Quota — standardized",
-      "Every rep in the same role (segment + title) carries the identical quota, derived from pay (quota = multiple x OTE). The company target is the sum, not a top-down number.",
+      "Every rep in the same role (segment + title) carries the identical quota, derived from pay (annual quota = multiple × OTE, shown quarterly). The company target is the sum of quarterly quotas, not a top-down number.",
       fmtK(sum.company_target), "green",
       `<span class="flat">team target · same quota per role ✓</span>`),
     metric("Covered to "+tgt+"×",
@@ -507,7 +508,7 @@ function scoreCards(sum){
       covTxt(flr.optimized)+" worst rep", floorUp?"green":"red",
       `<span class="${floorUp?'up':'down'}">${floorUp?'↑':'↓'} vs ${covTxt(flr.baseline)}</span> <span class="flat">even split</span>`),
     metric("Capacity gap",
-      "Total pipeline short of the coverage target across all reps, in MRR. The work-back carve minimizes it; where it can't reach zero, the segment simply lacks pipeline.",
+      "Total pipeline short of the coverage target across all reps, in USD. The work-back carve minimizes it; where it can't reach zero, the segment simply lacks pipeline.",
       gap.optimized>0?fmtK(gap.optimized):"none", gap.optimized>0?"red":"green",
       gap.optimized>0?`<span class="flat">vs ${fmtK(gap.baseline)} even split · cost of sale ${(sum.cost_of_sale*100).toFixed(1)}%</span>`
                      :`<span class="flat">cost of sale ${(sum.cost_of_sale*100).toFixed(1)}%</span>`),
@@ -558,7 +559,7 @@ async function selectRep(id){
   const tgt=state.covTarget, pc=d.pipeline_coverage, under=pc!=null && pc<tgt;
   const gap=Math.max(0,(tgt*(d.quota||0))-(d.available_pipeline||0));
   let html=`<div class="callout">
-      <div class="box"><div class="k">Quota${info("Standardized for the role (segment + title): quota = multiple × OTE.")}</div><div class="v">${fmtK(d.quota)}</div></div>
+      <div class="box"><div class="k">Quarterly quota${info("Standardized for the role (segment + title): annual quota = multiple × OTE, shown here quarterly (÷ 4).")}</div><div class="v">${fmtK(d.quota)}</div></div>
       <div class="box"><div class="k">Pipeline on hand${info("Addressable pipeline this book holds: whitespace + open pipeline.")}</div><div class="v">${fmtK(d.available_pipeline)}</div></div>
       <div class="box"><div class="k">Coverage${info("Pipeline ÷ quota. The carve packs each book to the "+tgt+"× target; below it = capacity-short.")}</div><div class="v ${under?'red':'green'}">${covTxt(pc)}${under?' ⚠':' ✓'} <span class="muted" style="font-size:12px">/ ${tgt}×</span></div></div>
     </div>`;

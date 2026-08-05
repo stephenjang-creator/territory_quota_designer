@@ -11,8 +11,8 @@ import mcp_server as S
 def test_list_reps_and_segments():
     out = S.list_reps()
     reps = out["reps"]
-    assert len(reps) == 12
-    assert out["quota_to_ote"] == 5.0
+    assert len(reps) == 14
+    assert out["quota_to_ote"] == 4.0
     assert all({"role", "ote", "quota"} <= set(r) for r in reps)
     # same role -> same quota
     by_role: dict[str, set] = {}
@@ -27,7 +27,7 @@ def test_plan_summary_shape():
     s = S.plan_summary()
     for k in ("company_target", "coverage_target", "reps_covered", "coverage_floor", "units"):
         assert k in s
-    assert s["reps_covered"]["of"] == 12
+    assert s["reps_covered"]["of"] == 14
 
 
 def test_plan_summary_accepts_settings():
@@ -40,7 +40,7 @@ def test_list_territories_sorted_worst_first():
     d = S.list_territories()
     covs = [r["pipeline_coverage"] for r in d["territories"]]
     assert covs == sorted(covs)
-    assert d["sort_by"] == "pipeline_coverage" and len(d["territories"]) == 12
+    assert d["sort_by"] == "pipeline_coverage" and len(d["territories"]) == 14
     assert "error" in S.list_territories(sort_by="not_a_field")
 
 

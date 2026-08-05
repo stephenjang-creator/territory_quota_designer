@@ -1,10 +1,10 @@
 """
 core/waterfall.py — Stage 3: the reverse waterfall (the flagship).
 
-Units: quota is a quarterly new-MRR target and avg deal size is MRR added per
+Units: quota is a quarterly bookings target and avg deal size is ACV added per
 deal, so ``won_deals = quota / avg_deal_size`` is deals to close in the quarter,
 and every stage of the funnel is a deal/SQL count. Required and available
-pipeline are both in MRR, so coverage_ratio is a pure ratio.
+pipeline are both USD ACV, so coverage_ratio is a pure ratio.
 
 For each territory we work *backward* from the quota up the funnel to the number
 of SQLs the rep would have to source, then ask a blunt question: does the

@@ -4,18 +4,20 @@ core/comp.py — Stage 4: comp simulation, anchored on OTE.
 Pay is anchored on the SAME on-target earnings (OTE) that sets quota (Stage 2), so
 the two are always consistent:
 
-    base_salary     = split * OTE                                  (fixed)
+    base_salary     = split * OTE                                  (fixed, annual)
     target_variable = (1 - split) * OTE                            (earned in full at 100%)
     variable(att)   = target_variable * payout_factor(att)         (3-band curve, f(1.0)=1)
-    total_comp      = base_salary + variable(att)
-    cost_of_sale    = sum(total_comp) / sum(bookings)              (bookings = quota * att)
+    total_comp      = base_salary + variable(att)                  (annual)
+    cost_of_sale    = sum(total_comp) / sum(bookings)              (both annual)
 
 `payout_factor` is a piecewise-linear multiplier on target variable, normalized so
 it equals 1.0 at the accelerator threshold (on-target). Below the decelerator
 threshold the slope is reduced (under-attainment penalty); above the accelerator
 threshold it is raised (kicker); an optional cap freezes it. Every parameter is
-overridable via the API/UI. Quota is quarterly, so payouts/bookings/cost-of-sale
-are per-quarter; cost_of_sale is a ratio and so denomination-invariant.
+overridable via the API/UI. OTE (hence comp) is annual, so bookings are annualized
+too: bookings = quarterly quota * QUOTA_PERIODS_PER_YEAR * attainment. That keeps
+cost-of-sale = annual comp / annual bookings at the usual ~20-30%, rather than a
+quarter-comp-vs-year-quota mismatch. cost_of_sale is a ratio, denomination-invariant.
 """
 
 from __future__ import annotations
@@ -72,15 +74,24 @@ def variable_payout(ote: float, attainment: float, comp: dict) -> float:
     return target_variable * payout_factor(attainment, comp)
 
 
-def rep_payout(ote: float, quota: float, attainment: float, comp: dict) -> dict:
-    """Full payout breakdown for one rep at one attainment."""
+def rep_payout(
+    ote: float,
+    quota: float,
+    attainment: float,
+    comp: dict,
+    periods_per_year: float | None = None,
+) -> dict:
+    """Full payout breakdown for one rep at one attainment. `quota` is quarterly;
+    `bookings` is annualized (quota * periods_per_year * attainment) so it sits on
+    the same annual footing as OTE-anchored comp."""
+    ppy = config.QUOTA_PERIODS_PER_YEAR if periods_per_year is None else float(periods_per_year)
     base = base_salary(ote, comp)
     var = variable_payout(ote, attainment, comp)
     return {
         "ote": ote,
         "quota": quota,
         "attainment": attainment,
-        "bookings": quota * attainment,
+        "bookings": quota * ppy * attainment,  # annualized
         "base_salary": base,
         "variable_payout": var,
         "total_comp": base + var,

@@ -6,12 +6,14 @@ book size, so every rep in the same role carries the identical number. Quota is
 derived backward from on-target earnings:
 
     OTE(role)      = SEGMENT_OTE[segment] * LEVEL_OTE_FACTOR[level]   (overridable per role)
-    quota          = QUOTA_TO_OTE * OTE(role)
-    company target = sum of every rep's quota                         (derived)
+    annual quota   = QUOTA_TO_OTE * OTE(role)                         (industry norm 4-6x)
+    quota          = annual quota / QUOTA_PERIODS_PER_YEAR            (the quarterly target)
+    company target = sum of every rep's quarterly quota              (derived)
 
 The carve (Stage 1) then works back from these quotas to build books with enough
 addressable pipeline; this module only sets the numbers the carve targets. All $
-are the synthetic MRR-scaled units the rest of the model uses (see config.UNITS).
+are USD ACV (annual contract value); OTE is annual and the quota it returns is the
+quarterly bookings target the rest of the model plans against (see config.UNITS).
 """
 
 from __future__ import annotations
@@ -42,10 +44,16 @@ def standardized_quotas(
     *,
     ote_overrides: dict | None = None,
     quota_to_ote: float | None = None,
+    periods_per_year: float | None = None,
 ) -> dict[str, float]:
-    """rep_id -> standardized quota (= QUOTA_TO_OTE * role OTE). Same role -> same value."""
+    """rep_id -> standardized QUARTERLY quota. Same role -> same value.
+
+    annual quota = (quota_to_ote) * role OTE  (industry norm 4-6x); the returned
+    quarterly quota = annual quota / periods_per_year (default 4)."""
     mult = config.QUOTA_TO_OTE if quota_to_ote is None else float(quota_to_ote)
-    return {rid: mult * ote for rid, ote in resolve_ote(reps, ote_overrides).items()}
+    ppy = config.QUOTA_PERIODS_PER_YEAR if periods_per_year is None else float(periods_per_year)
+    ppy = ppy or 1.0
+    return {rid: mult * ote / ppy for rid, ote in resolve_ote(reps, ote_overrides).items()}
 
 
 def default_company_target(

@@ -151,10 +151,12 @@ def comp_defaults():
 def role_defaults():
     """Default OTE + standardized quota per role (segment x level), plus the quota
     multiple and coverage target. The dashboard pre-fills its editable OTE-by-role
-    panel from this; every rep in a role carries the same quota = quota_to_ote x OTE.
+    panel from this; every rep in a role carries the same quota. `quota` is the
+    QUARTERLY target (= quota_to_ote x OTE / 4); `annual_quota` is the 4-6x headline.
     """
     from collections import Counter
 
+    ppy = config.QUOTA_PERIODS_PER_YEAR
     counts = Counter((r.segment_focus, r.level) for r in REPS)
     segments = sorted({r.segment_focus for r in REPS}, key=lambda s: -config.SEGMENT_OTE.get(s, 0))
     roles = []
@@ -164,13 +166,15 @@ def role_defaults():
             if n == 0:
                 continue
             ote = quota.role_ote(seg, lvl)
+            annual = config.QUOTA_TO_OTE * ote
             roles.append(
                 {
                     "segment": seg,
                     "level": lvl,
                     "reps": n,
                     "ote": round(ote),
-                    "quota": round(config.QUOTA_TO_OTE * ote),
+                    "quota": round(annual / ppy),  # quarterly
+                    "annual_quota": round(annual),
                 }
             )
     return {
@@ -178,10 +182,13 @@ def role_defaults():
         "segments": segments,
         "levels": config.AE_LEVELS,
         "quota_to_ote": config.QUOTA_TO_OTE,
+        "periods_per_year": ppy,
         "coverage_target": config.PIPELINE_COVERAGE_TARGET,
         "roles": roles,
-        "note": "Quota = quota_to_ote x OTE, standardized per role. Edit OTE per role; "
-        "the company target is the sum. The carve packs each book to coverage_target x quota.",
+        "note": "Annual quota = quota_to_ote x OTE (norm 4-6x), standardized per role; "
+        "the quarterly `quota` shown = annual / 4. Edit OTE per role; the company "
+        "target is the sum of quarterly quotas. The carve packs each book to "
+        "coverage_target x quota in addressable pipeline.",
     }
 
 
@@ -206,9 +213,9 @@ def data_summary():
         "n_reps": len(REPS),
         "segments": dict(seg),
         "regions": dict(region),
-        "total_whitespace_mrr": round(sum(a.whitespace_potential for a in ACCOUNTS)),
-        "total_open_pipeline_mrr": round(sum(a.open_pipeline for a in ACCOUNTS)),
-        "total_current_mrr": round(sum(a.current_arr for a in ACCOUNTS)),
+        "total_whitespace_acv": round(sum(a.whitespace_potential for a in ACCOUNTS)),
+        "total_open_pipeline_acv": round(sum(a.open_pipeline for a in ACCOUNTS)),
+        "total_current_arr": round(sum(a.current_arr for a in ACCOUNTS)),
     }
 
 

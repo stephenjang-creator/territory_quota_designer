@@ -9,8 +9,8 @@ number; these tools only reshape and diff.
 
 Contract: JSON-safe returns (plain built-ins), errors as ``{"error": ...}`` never
 raised, small roll-ups only (never the 800-account dump), zero LLM calls, nothing
-persists — what-if tools recompute in memory. All $ are MRR; quota is a quarterly
-new-MRR target (see `config.UNITS`).
+persists — what-if tools recompute in memory. All $ are USD ACV; quota is a
+quarterly bookings target (annual quota = 4-6x OTE, / 4); see `config.UNITS`.
 
 Transport: stdio by default; HTTP behind ``MCP_TRANSPORT=http`` / ``--http``,
 bound to ``0.0.0.0:$PORT`` with ``MCP_AUTH_TOKEN`` bearer auth for hosted use.
@@ -141,7 +141,7 @@ def coverage_gaps() -> dict:
     """Reps whose book can't reach the pipeline-coverage target (available < 3x quota).
 
     The headline "where are my capacity problems". Each carries the pipeline gap
-    (target x quota - available pipeline, MRR), the pipeline_coverage multiple, and
+    (target x quota - available pipeline, USD), the pipeline_coverage multiple, and
     the funnel coverage_ratio. Under standardized quotas a gap is usually a whole
     segment running short on pipeline, not a carve mistake — an assignment can't
     invent pipeline that isn't there.
@@ -182,7 +182,7 @@ def coverage_gaps() -> dict:
 
 @mcp.tool()
 def whatif_ote(segment: str, level: str, ote: float) -> dict:
-    """Re-price one role's OTE and DIFF vs. the default (quota = quota_to_ote x OTE).
+    """Re-price one role's OTE and DIFF vs. the default (annual quota = quota_to_ote x OTE).
 
     Every rep in that (segment, level) role gets the new standardized quota; the
     derived company target and each affected rep's pipeline coverage move with it.
@@ -332,7 +332,7 @@ def whatif_coverage(coverage_target: float) -> dict:
 
 @mcp.tool()
 def comp_scenario(attainment: float | None = None) -> dict:
-    """Comp outputs for the default plan (quarterly MRR).
+    """Comp outputs for the default plan (annual comp + annualized bookings, USD).
 
     With an `attainment` (e.g. 0.85): total comp, cost-of-sale, and the per-rep
     payout for the top/bottom few. With no attainment: the default scenario-compare
@@ -419,7 +419,7 @@ def list_reps() -> dict:
 
 @mcp.tool()
 def list_segments() -> dict:
-    """Valid segments + their default conversion rates and avg deal size (MRR) from
+    """Valid segments + their default conversion rates and avg deal size (ACV) from
     conversions.csv — the global-tier defaults the override hierarchy falls back to."""
     try:
         return {
