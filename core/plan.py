@@ -1,9 +1,13 @@
 """
-core/plan.py — run the whole four-stage chain from one settings payload.
+core/plan.py — run the whole quota-first chain from one settings payload.
 
 `run_plan` is the single entry point the API `/plan`, the MCP server, and the
-evaluator all call: balance -> quota -> reverse waterfall -> comp, plus the
-baseline-vs-optimized scorecard. Deterministic given the data seed and settings.
+evaluator all call. The order is now quota-first:
+
+    quota (standardized by role) -> carve (work-back to a pipeline-coverage target)
+      -> reverse waterfall (funnel adequacy) -> comp (OTE-anchored) + scorecard.
+
+Deterministic given the data seed and settings.
 """
 
 from __future__ import annotations
@@ -19,30 +23,36 @@ from core.models import Account, PlanResult, Rep
 class PlanSettings:
     """Everything the dashboard can change; all optional (fall back to config)."""
 
-    weights: dict | None = None
-    potential_mix: dict | None = None
-    company_target: float | None = None
+    ote_overrides: dict = field(default_factory=dict)  # {segment: {level: ote}}
+    quota_to_ote: float | None = None  # quota = this * OTE
+    coverage_target: float | None = None  # pack each book to this x quota in pipeline
     respect_segment_focus: bool | None = None
-    max_accounts_per_rep: int | None = None
+    prefer_home_region: bool | None = None
     overrides: dict = field(default_factory=dict)  # conversion overrides
-    level_multipliers: dict | None = None  # {level: quota multiplier} overrides
     comp: dict | None = None  # comp param overrides
     attainment: float = 1.0
     attainment_scenarios: list | None = None
 
     def as_dict(self) -> dict:
         return {
-            "weights": self.weights or config.WEIGHTS,
-            "potential_mix": self.potential_mix or config.POTENTIAL_MIX,
-            "company_target": self.company_target,
+            "ote_overrides": self.ote_overrides,
+            "quota_to_ote": config.QUOTA_TO_OTE if self.quota_to_ote is None else self.quota_to_ote,
+            "coverage_target": (
+                config.PIPELINE_COVERAGE_TARGET
+                if self.coverage_target is None
+                else self.coverage_target
+            ),
             "respect_segment_focus": (
                 config.RESPECT_SEGMENT_FOCUS
                 if self.respect_segment_focus is None
                 else self.respect_segment_focus
             ),
-            "max_accounts_per_rep": self.max_accounts_per_rep,
+            "prefer_home_region": (
+                config.PREFER_HOME_REGION
+                if self.prefer_home_region is None
+                else self.prefer_home_region
+            ),
             "overrides": self.overrides,
-            "level_multipliers": quota.resolve_level_multipliers(self.level_multipliers),
             "comp": self.comp or config.COMP,
             "attainment": self.attainment,
             "attainment_scenarios": self.attainment_scenarios or config.ATTAINMENT_SCENARIOS,
@@ -55,42 +65,39 @@ def run_plan(
     conversions: dict,
     settings: PlanSettings | None = None,
 ) -> PlanResult:
-    """Run balance -> quota -> waterfall -> comp + scorecard; return a PlanResult."""
+    """Run quota -> carve -> waterfall -> comp + scorecard; return a PlanResult."""
     s = settings or PlanSettings()
 
-    # Stage 1 — balance
+    # Stage 2 (first now) — standardized quota by role, from OTE.
+    quotas = quota.standardized_quotas(
+        reps, ote_overrides=s.ote_overrides, quota_to_ote=s.quota_to_ote
+    )
+    otes = quota.resolve_ote(reps, s.ote_overrides)
+
+    # Stage 1 — carve back from quota to a pipeline-coverage target.
     territories = balance.carve(
         accounts,
         reps,
-        weights=s.weights,
-        potential_mix=s.potential_mix,
+        quotas,
+        coverage_target=s.coverage_target,
         respect_segment_focus=s.respect_segment_focus,
-        max_accounts_per_rep=s.max_accounts_per_rep,
+        prefer_home_region=s.prefer_home_region,
     )
+    company_target = quota.fill_territory_quotas(territories, quotas, otes)
 
-    # Stage 2 — quota
-    company_target = quota.derive_quotas(
-        territories, reps, s.company_target, level_multipliers=s.level_multipliers
-    )
-
-    # Stage 3 — reverse waterfall
+    # Stage 3 — reverse waterfall (funnel adequacy on top of the packed pipeline).
     waterfall.run_waterfall(territories, accounts, conversions, s.overrides)
 
-    # Stage 4 — comp roll-up (cost-of-sale at the chosen attainment)
+    # Stage 4 — comp roll-up (cost-of-sale at the chosen attainment).
     sim = comp.simulate(territories, s.attainment, s.comp)
 
-    # Scorecard (reuses the optimized carve; builds the baseline internally)
+    # Scorecard: capacity coverage vs a naive equal-count carve (same quotas).
     scorecard = evaluate.build_scorecard(
         accounts,
         reps,
-        conversions,
-        weights=s.weights,
-        potential_mix=s.potential_mix,
-        respect_segment_focus=s.respect_segment_focus,
-        max_accounts_per_rep=s.max_accounts_per_rep,
-        company_target=company_target,
-        overrides=s.overrides,
-        level_multipliers=s.level_multipliers,
+        ote_overrides=s.ote_overrides,
+        quota_to_ote=s.quota_to_ote,
+        coverage_target=s.coverage_target,
         optimized=territories,
     )
 

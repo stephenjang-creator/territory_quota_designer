@@ -1,131 +1,138 @@
 # Territory & Quota Designer
 
-Carve a book of accounts into balanced sales territories, derive fair quotas,
-**prove each territory is big enough to hit its quota via a reverse waterfall**,
-and model the resulting comp cost — as one connected chain. Change anything
-upstream (a balance weight, the company target, a conversion rate) and everything
+**Quota-first capacity planning for RevOps.** Standardize quotas by role, derive
+them from pay, then carve territories *backward* from those quotas — packing each
+book with enough pipeline to give the rep a fair shot at their number. Where a
+segment can't cover its standardized quotas, the tool surfaces the capacity gap
+instead of hiding it in an uneven carve. Change anything upstream (a role's OTE,
+the quota multiple, the coverage target, a conversion rate) and everything
 downstream recomputes.
 
-**AI-first, human-in-the-loop RevOps.** A deterministic optimizer and the
-waterfall/comp math own every number a planner sees. The optional LLM layer only
-*explains* — "why did rep R-101 get these accounts", "why is this territory
-under-covered", "what's driving this cost-of-sale". The model never allocates an
-account, sets a quota, or picks a number. The engine makes zero network calls and
-is reproducible given the data seed; only the optional narrative endpoint touches
-the Anthropic API, and it degrades gracefully with no key.
+**AI-first, human-in-the-loop.** A deterministic engine owns every number a
+planner sees — the standardized quotas, the work-back assignment, the coverage
+math, the comp. The optional LLM layer only *explains* ("why is SMB short on
+pipeline", "what does this cost at 85% attainment"); it never sets a quota or
+assigns an account. The engine makes zero network calls and is reproducible given
+the data seed.
 
 > All data is **synthetic** (`generate_territory_data.py`). No real customer or
 > company data, ever — this is a portfolio project.
 
-**Units.** Every dollar figure is **MRR** (monthly recurring revenue). Quota is a
-**quarterly** new-MRR bookings target, so `won_deals = quota / avg_deal_size`
-(MRR added per deal) reads as deals to close in the quarter. Coverage, balance,
-and cost-of-sale are all ratios, so the denomination never changes an outcome.
+**Units.** Every dollar figure is **MRR** (monthly recurring revenue); quota is a
+**quarterly** new-MRR target and OTE is annual on-target earnings. Coverage and
+cost-of-sale are ratios, so the denomination never changes an outcome. The
+dashboard shows money in thousands ($K).
 
-## The four-stage chain
+## The chain (quota rules)
 
 ```
-accounts + firmographics + reps
-  → ① Balance     weighted multi-factor optimization (potential / geo / whitespace)
-  → ② Quota       proportional to potential × the rep's seniority-level load, summed to a target
-  → ③ Reverse     work backward quota → won → … → required SQLs; is there enough pipeline?
-     waterfall
-  → ④ Comp        payout curves, cost-of-sale, attainment scenarios
+OTE by role  →  ① Quota    standardized per role: quota = multiple × OTE (same role → same number)
+             →  ② Carve    work back from quota: pack each book to a pipeline-coverage target (3×)
+             →  ③ Waterfall reverse-funnel adequacy on the packed pipeline (a second lens)
+             →  ④ Comp      OTE-anchored payouts, cost-of-sale, attainment scenarios
 ```
+
+The inversion from the usual "balance books → derive proportional quota → hope the
+pipeline's there" is the point: **quota is the fixed input**, and the territory is
+what you build to support it.
 
 ## Quickstart
 
 ```bash
 pip install -r requirements.txt      # or: make install
 make data                            # regenerate data/ (seed 42) — optional, it's committed
-make test                            # pytest — the OR core is fully unit-tested
-make plan                            # print the baseline-vs-optimized scorecard
-make api                             # FastAPI on $PORT (default 8000); see /docs
+make test                            # pytest — the engine is fully unit-tested
+make plan                            # print the capacity scorecard
+make api                             # FastAPI on $PORT (default 8000); root serves the dashboard
 ```
 
 Everything runs offline. To enable the optional explanations, set
 `ANTHROPIC_API_KEY` (and `pip install anthropic`); without it the app runs end to
 end and `/explain` returns a clear "narrative disabled" message.
 
-## Baseline vs. optimized — the scorecard
+## Standardized quota by role, anchored on pay
 
-The credibility artifact: the naive equal-account carve vs. the optimizer, run
-through the **same** quota and the same waterfall. Because segment focus is
-respected (an Enterprise account never goes to an SMB rep), the team is really
-three segment-locked pools — so the honest headline is **within-segment**
-balance, which the optimizer controls. The whole-team CoV is dominated by the
-structural gap between a ~$25M Enterprise book and a ~$3.7M SMB book and is
-reported as the floor it is.
+Two reps with the same title and segment carry the **same quota** — anything else
+destroys morale and breaks the comp/CAC model. A "role" is `segment × seniority
+level`, and quota is derived backward from on-target earnings:
 
-Quarterly company target: **$45,487,231** in new MRR (0.27 × total opportunity
-potential, all MRR).
+```
+OTE(role) = SEGMENT_OTE[segment] × LEVEL_OTE_FACTOR[level]     (annual OTE, editable per role)
+quota     = QUOTA_TO_OTE × OTE                                  (default 5×; industry norm 4–6×)
+company target = Σ every rep's quota                            (derived, not handed down)
+```
 
-| Metric | Baseline (naive) | Optimized | Change |
+The default roster (quota = 5 × OTE):
+
+| Role | OTE | Quarterly quota | | Role | OTE | Quarterly quota |
+| --- | ---: | ---: | --- | --- | ---: | ---: |
+| Enterprise · Sr. Strategic AE | $1.215M | **$6.075M** | | Mid-Market · AE | $550K | **$2.75M** |
+| Enterprise · AE | $900K | **$4.50M** | | Mid-Market · ramping | $330K | **$1.65M** |
+| Enterprise · ramping | $540K | **$2.70M** | | SMB · AE | $300K | **$1.25M**† |
+| Mid-Market · Sr. AE | $660K | **$3.30M** | | SMB · ramping | $180K | **$0.90M**† |
+
+Company target ≈ **$37.0M** (the sum). Edit any role's OTE or the multiple in the
+dashboard and every rep in that role — plus the target — moves. († SMB quotas are
+set a touch rich on purpose; see below.)
+
+## Work-back carve + the capacity scorecard
+
+Given the fixed quotas, the carve is a capacity-planning problem: pack each book
+with **addressable pipeline (whitespace + open) ≥ 3× quota**, respecting segment
+focus, preferring the rep's home region as a tiebreaker. When a segment is short,
+the carve spreads the shortfall **evenly** rather than starving one rep to over-fill
+another — so it raises the worst-covered rep's floor.
+
+The scorecard runs the work-back carve against a naive equal-account split under
+the **same** standardized quotas:
+
+| Metric | Naive equal-split | Work-back carve | (target 3×) |
 | --- | ---: | ---: | ---: |
-| **Within-segment potential balance** — mean CoV (lower better) | 0.056 | 0.024 | **−57.0%** |
-| **Geo — off-home-region share** (lower = compact) | 0.82 | 0.47 | **−42.7%** |
-| Geo — Σ distinct regions (lower better) | 47 | 28 | −40.4% |
-| Whitespace balance — CoV (lower better) | 0.609 | 0.601 | −1.4% |
-| Whole-team potential CoV *(structural floor)* | 0.608 | 0.603 | −0.8% |
-| Under-covered territories | 2 | 3 | 0 flipped |
+| **Total capacity gap** (pipeline short, MRR) | $1,964,700 | **$1,373,100** | −30.1% |
+| **Coverage floor** — worst-covered rep (higher = fairer) | 2.23× | **2.63×** | +18.1% |
+| Reps covered to 3× pipeline (of 12) | 10 | 9 | evenly-spread shortfall |
+| Off-home-region share (lower = compact) | 0.82 | 0.48 | −41.0% |
 
-The **off-home-region floor is 0.45** — 358 of 800 accounts have no rep of their
-segment *in their region*, so they must be sold cross-region no matter what. The
-optimizer captures nearly all of the discretionary remainder. Turn the geo weight
-up and it compacts further at the cost of balance — that trade-off is the point
-of the sliders.
-
-Coverage is **segment- and seniority-structural** here: quota is proportional to
-potential *scaled by the rep's level*, so a territory's coverage ratio is set
-mostly by its segment's win rate and how heavily its level is loaded — not by
-which accounts it holds, so re-carving doesn't flip it. At this target the three
-under-covered reps are exactly the ones you'd worry about: the two **Sr. Strategic
-AEs on Enterprise books** (lowest win rate, loaded ×1.30 → ~$8.6M quotas → 0.79
-coverage) and a **Sr. AE** sitting right on the line, while the ramping reps sit
-comfortably over-covered on their lighter load. Dial the level multipliers, the
-conversion rates, or the target and watch who moves — that's what the dashboard and
-the what-if tools are for.
-
-## Worked reverse-waterfall example (R-101, a Sr. Strategic AE on Enterprise)
-
-Work **backward** from the quota up the funnel, then ask: does the territory hold
-enough addressable pipeline to support it?
+The naive split "covers" one more rep only by handing one SMB rep a 3.66× book
+while another starves at 2.23×. The work-back carve won't rob Peter to pay Paul:
+it minimizes the **total** gap and lifts the floor. The remaining gap isn't a carve
+mistake — it's structural:
 
 ```
-quota (quarterly)     $8,612,153 MRR  (new-MRR target; R-101 is a Sr. Strategic AE, ×1.3)
-avg deal size         $120,000 MRR    (Enterprise default, from conversions.csv)
-
-won deals    = 8,612,153 / 120,000                    =    71.8   (deals this quarter)
-at negotiation = 71.8 / 0.30  (Negotiation→Won)       =   239.2
-at proposal    = 239.2 / 0.60 (Proposal→Negotiation)  =   398.7
-at qualification = 398.7 / 0.55 (Qualification→Prop)  =   724.9
-at discovery   = 724.9 / 0.45 (Discovery→Qual)        = 1,611.0   ← required SQLs
-
-required_pipeline = at_negotiation × avg_deal = $28,707,178 MRR ( = quota / 0.30 )
-available_pipeline = Σ (whitespace + open_pipeline)  = $22,595,100 MRR
-coverage_ratio     = 22,595,100 / 28,707,178         = 0.79      → UNDER-COVERED
+Per-segment pipeline vs. required at 3×:
+  Enterprise   $91.9M available   vs   $58.1M required   → OK
+  Mid-Market   $52.2M available   vs   $41.3M required   → OK
+  SMB          $10.3M available   vs   $11.7M required   → SHORT by $1.4M
 ```
 
-`available_pipeline` is the addressable portion (whitespace + open pipeline); it
-excludes installed ARR, which isn't new pipeline you can close against a
-new-bookings quota. Coverage is an **adequacy / risk** signal, not a guarantee of
-attainment. Levers the engine surfaces to close this gap:
+SMB simply doesn't hold enough pipeline to cover its standardized quotas to 3×.
+No assignment can invent pipeline — the fix is to reassign pipeline in, lower the
+SMB role's quota (OTE or the multiple), or source more. That's the decision the
+tool exists to surface.
 
-- lower quota to ~$6,778,530 (makes coverage = 1.0), or
-- reassign ~$6,112,078 of addressable potential into this book, or
-- source ~343 more SQLs.
-
-## The override hierarchy (a first-class feature)
-
-Every conversion rate and average deal size the waterfall reads resolves as:
+## Worked example (two reps)
 
 ```
-rep override  >  segment override  >  global default (conversions.csv)
+R-101 · Enterprise · Sr. Strategic AE          R-104 · SMB · AE
+  OTE                 $1,215,000  (annual)        OTE                 $300,000
+  quota = 5 × OTE     $6,075,000  (quarterly)     quota = 5 × OTE     $1,500,000
+  pipeline packed    $24,134,800                  pipeline packed     $4,007,000
+  pipeline coverage  24,134,800 / 6,075,000       pipeline coverage   4,007,000 / 1,500,000
+                     = 3.97×   (≥ 3×  ✓)                              = 2.67×   (< 3×  ⚠)
+  capacity gap        none                         capacity gap        $493,000 short of 3×
 ```
 
-The waterfall never reads a rate directly — it asks `core.overrides.resolve()`,
-which also records *which tier* supplied each number, so `assess_territory` (and
-the `/territory` endpoint) can show the audit trail. Example overrides payload:
+Same-role reps get the identical quota; the carve packs Enterprise books past 3×
+(surplus pipeline) but can only reach ~2.67× for SMB AEs — the SMB segment is
+capacity-constrained. A second lens, the **reverse waterfall**, works the quota
+back up the funnel (won deals → negotiation → … → required SQLs) to sanity-check
+the packed pipeline against stage win-rates; the dashboard shows both.
+
+## The override hierarchy (conversion rates)
+
+Every conversion rate and average deal size the waterfall reads resolves as
+`rep > segment > global default (conversions.csv)`, and the engine records *which
+tier* supplied each number so the drill-in can show the audit trail:
 
 ```json
 {
@@ -135,169 +142,106 @@ the `/territory` endpoint) can show the audit trail. Example overrides payload:
 }
 ```
 
-With this, `R-105` uses its own deal size, every other Enterprise rep uses the
-0.25 win rate, and everyone else falls back to the CSV default (reported as
-`global`). "If enterprise win-rates drop to 25%, who breaks?" is exactly this.
+"If enterprise win-rates drop to 25%, whose funnel breaks?" is exactly this.
 
-## Quota by AE seniority level (a first-class lever)
+## Compensation (OTE-anchored)
 
-Reps aren't interchangeable. Every rep carries a **seniority level** — `ramping`,
-`AE`, `Sr. AE`, or `Sr. Strategic AE` — and each level carries a different quota
-load. Stage 2 makes each raw quota proportional to the territory's potential
-**times the rep's level multiplier**, then re-normalizes so the book still sums to
-exactly the company target:
+Pay is anchored on the **same OTE** that sets quota, so the two are always
+consistent:
 
 ```
-ramping 0.6 · AE 1.0 · Sr. AE 1.15 · Sr. Strategic AE 1.30   (config.LEVEL_QUOTA_MULTIPLIER)
+base            = split × OTE                       (fixed)
+target_variable = (1 − split) × OTE                 (earned in full at 100% attainment)
+variable(att)   = target_variable × payout_factor(att)   (3-band curve, normalized to 1.0 on-target)
+total_comp      = base + variable(att)
 ```
 
-Dialing one level up shifts *who carries the number* — a little more onto that
-level, a little less onto everyone else — without changing the total. The
-multipliers are overridable per call (`level_multipliers`) and editable live in
-the dashboard's "Quota by seniority level" panel; the MCP `whatif_levels` tool
-answers "if we load Sr. Strategic AEs 40% heavier, who runs short on pipeline?".
-Because coverage is linear in quota, loading a level heavier drops its reps'
-coverage proportionally — which is why the senior tiers, not the ramping reps, are
-the ones under-covered at the default target.
-
-## Compensation: accelerators & decelerators
-
-Stage 4 pays variable comp on a **three-band curve** in attainment, every
-parameter overridable (`comp`) and editable in the dashboard's "Compensation plan"
-panel (with a live payout curve):
-
-```
-below decelerator_threshold  → rate × decelerator_multiplier   (< 1: under-attainment penalty)
-up to accelerator_threshold  → rate                            (standard band)
-above accelerator_threshold  → rate × accelerator_multiplier   (> 1: overperformance kicker)
-```
-
-optionally frozen at `cap_attainment`. Base salary is derived from the
-base/variable OTE split, so `cost_of_sale = Σ total_comp / Σ bookings` reflects
-fully-loaded comp. Defaults: a decelerator at 0.5× below 70% attainment and an
-accelerator at 1.5× above 100%. Set the decelerator multiplier to 1.0 (or its
-threshold to 0) and the model collapses back to a plain accelerator.
+`payout_factor` is a piecewise-linear multiplier normalized so on-target pays
+exactly the target variable: a **decelerator** below a floor (reduced slope), the
+standard slope up to target, and an **accelerator** above it — with an optional
+cap. All parameters are editable, with a live payout curve. Because the accelerator
+lifts variable faster than bookings, cost-of-sale can tick *up* above 100%
+attainment — which the tool shows honestly.
 
 ## API
 
-Load the CSVs once at startup; each endpoint recomputes from a settings payload.
+Data is loaded once at startup; each endpoint recomputes from a settings payload.
 Interactive docs at `/docs`.
 
 | Endpoint | Purpose |
 | --- | --- |
 | `GET /` | the **interactive dashboard** (self-contained HTML, served same-origin) |
-| `GET /api` | JSON service index; `GET /health` liveness probe |
-| `GET /data/summary` | counts, total potential, segment/region mix |
-| `GET /conversions` | per-segment default conversion rates + avg deal size (override-panel seed) |
-| `GET /levels` | AE seniority levels, default quota multipliers, rep counts per level |
-| `GET /comp/defaults` | default comp parameters (split, rate, decel/accel bands, cap) |
-| `POST /balance` | Stage 1 — territories + balance scores for given weights |
-| `POST /quota` | Stage 2 — quotas + fairness for a company target |
-| `POST /waterfall` | Stage 3 — coverage results + under-covered roll-up |
+| `GET /api` · `GET /health` | JSON service index · liveness probe |
+| `GET /roles` | default OTE + standardized quota per role (seeds the OTE panel) |
+| `GET /conversions` · `GET /comp/defaults` | per-segment rate defaults · comp params |
+| `POST /balance` | Stage 1 — the work-back carve + per-segment capacity |
+| `POST /quota` | Stage 2 — standardized quota by role (from OTE) |
+| `POST /waterfall` | Stage 3 — reverse-waterfall coverage roll-up |
 | `POST /comp` | Stage 4 — payouts, cost-of-sale, scenarios, payout curve |
 | `POST /plan` | the whole chain in one call (the dashboard's hot path) |
-| `GET /territory/{rep_id}` | full single-territory detail (the assess view) |
+| `GET /territory/{rep_id}` | full single-territory detail (coverage + funnel) |
 | `POST /explain` | optional LLM rationale; skips cleanly with no API key |
+
+Settings a request can send: `quota_to_ote`, `coverage_target`, `ote_overrides`
+(`{segment:{level:ote}}`), `prefer_home_region`, `overrides` (conversions), `comp`,
+`attainment`.
 
 ## Agent / MCP
 
-The same engine is exposed as an **MCP server** (`mcp_server.py`) so an agent can
-interrogate a carve conversationally — "which territories can't hit quota and
-why", "if I weight geo at 85%, who wins and loses", "if enterprise win-rates drop
-to 25%, who breaks", "what does this cost at 85% attainment". The tools are thin,
-**read-only** wrappers over the same `core` functions (JSON in, JSON out, zero LLM
-calls, nothing persists — what-ifs recompute in memory). See **[EXAMPLES.md](EXAMPLES.md)**
-for natural-language questions mapped to the tools they trigger.
-
-Eleven tools: `plan_summary`, `list_territories`, `assess_territory`, `coverage_gaps`,
-`whatif_weights`, `whatif_conversions`, `whatif_levels`, `comp_scenario`,
-`get_scorecard`, `list_reps`, `list_segments`.
+The same engine is an **MCP server** (`mcp_server.py`) — ten read-only tools so an
+agent can interrogate a plan conversationally: `plan_summary`, `list_territories`,
+`assess_territory`, `coverage_gaps`, `whatif_ote`, `whatif_coverage`,
+`whatif_conversions`, `comp_scenario`, `get_scorecard`, `list_reps`, `list_segments`.
+See **[EXAMPLES.md](EXAMPLES.md)** for natural-language questions mapped to tools.
 
 ```bash
-make mcp        # stdio (for Claude Desktop / claude mcp)
+make mcp        # stdio (Claude Desktop / claude mcp)
 make mcp-http   # HTTP on $PORT, MCP_AUTH_TOKEN bearer auth (hosted use)
 ```
 
-**Register with Claude Code** (stdio):
-
-```bash
-claude mcp add territory-designer -- /abs/path/to/.venv/bin/python /abs/path/to/mcp_server.py
-```
-
-**Claude Desktop** (`claude_desktop_config.json`) — use the venv's Python and an
-absolute path; point `TERRITORY_DATA` at the CSV dir:
-
-```json
-{
-  "mcpServers": {
-    "territory-designer": {
-      "command": "/abs/path/to/.venv/bin/python",
-      "args": ["/abs/path/to/mcp_server.py"],
-      "env": { "TERRITORY_DATA": "/abs/path/to/data" }
-    }
-  }
-}
-```
-
-**Hosted (HTTP):** set `MCP_TRANSPORT=http` (or pass `--http`), bind to `$PORT`,
-and set `MCP_AUTH_TOKEN` to require a `Authorization: Bearer <token>` header.
-
 ## Configuration
 
-All tunable knobs live in `config.py` (weights, potential mix, segment-focus and
-cap constraints, quota target multiple, per-level quota multipliers, coverage
-band, and the three-band comp parameters) or come from the loaded CSVs — nothing
-is hardcoded mid-logic. Every one of them is also overridable per API/MCP call.
+All tunable knobs live in `config.py` — `SEGMENT_OTE` / `LEVEL_OTE_FACTOR` /
+`QUOTA_TO_OTE` (pay → quota), `PIPELINE_COVERAGE_TARGET` (the carve's 3× target),
+`PREFER_HOME_REGION`, and the OTE-anchored `COMP` params — or come from the loaded
+CSVs. Every one is overridable per API/MCP call.
 
 ## Deploy (Render)
 
-`render.yaml` is a Blueprint defining two native-Python web services — both bind
-`0.0.0.0:$PORT` (nothing hardcodes a port) and read the committed `data/` CSVs, so
-there's no build-time data step:
-
-- **`territory-quota-designer-api`** — `uvicorn api.main:app`; its root URL serves
-  the interactive dashboard. `ANTHROPIC_API_KEY` is declared `sync:false`
-  (optional; leave unset to run offline).
-- **`territory-quota-designer-mcp`** — `python mcp_server.py --http`. Render
-  generates `MCP_AUTH_TOKEN`; every request needs `Authorization: Bearer <token>`.
-
-Point Render at the repo (New → Blueprint) and it provisions both from
-`render.yaml`. Pushing to `main` triggers a redeploy.
+`render.yaml` defines two native-Python web services (both bind `0.0.0.0:$PORT`,
+both read the committed `data/` CSVs): the FastAPI app (its root serves the
+dashboard) and the MCP server over bearer-auth'd HTTP. Pushing to `main` redeploys.
 
 ## Project layout
 
 ```
-generate_territory_data.py   synthetic data generator (do not rewrite)
+generate_territory_data.py   synthetic data generator (curated 12-rep team)
 data/                        accounts.csv · reps.csv · conversions.csv
-config.py                    all tunable knobs
+config.py                    all tunable knobs (OTE, quota multiple, coverage target, comp)
 core/
   models.py                  Account · Rep · Territory · PlanResult
-  dataio.py                  CSV → typed models
-  potential.py               per-account opportunity value + coverage numerator
-  overrides.py               rep > segment > global rate resolution
-  balance.py                 Stage 1 optimizer + focus-respecting baseline
-  quota.py                   Stage 2 quota derivation + fairness
-  waterfall.py               Stage 3 reverse waterfall + coverage + gap analysis
-  comp.py                    Stage 4 comp simulation
-  evaluate.py                baseline-vs-optimized scorecard (make plan)
-  plan.py                    run_plan orchestrator (the whole chain)
+  potential.py               per-account opportunity + addressable pipeline
+  quota.py                   Stage 2 — standardized quota by role, from OTE
+  balance.py                 Stage 1 — work-back coverage carve + naive baseline
+  waterfall.py               Stage 3 — reverse waterfall + funnel coverage
+  comp.py                    Stage 4 — OTE-anchored comp
+  overrides.py               rep > segment > global conversion-rate resolution
+  evaluate.py                capacity scorecard (work-back vs naive)
+  plan.py                    run_plan orchestrator (quota → carve → waterfall → comp)
   views.py                   JSON-safe roll-up views (shared by API + MCP)
 api/main.py                  FastAPI app (serves the dashboard + JSON endpoints)
 api/static/index.html        self-contained interactive dashboard (served at /)
-mcp_server.py                MCP server (10 read-only tools over core)
-narrative.py                 optional LLM explanations (Anthropic)
-EXAMPLES.md                  natural-language questions → MCP tool calls
-tests/                       one file per core module + /plan + MCP tool tests
+mcp_server.py                MCP server (read-only tools over core)
+tests/                       one file per module + /plan + API + MCP tool tests
 ```
 
 ## Design principles
 
-- **Deterministic core, explainable everywhere.** Every assignment, quota, and
-  ratio is traceable to inputs a planner can verify.
-- **Config over magic numbers.** Weights, constraints, conversion defaults, and
-  comp parameters live in `config.py` or the CSVs.
-- **Override hierarchy is first-class** — built explicitly, with the resolution
-  tier reported alongside every number.
-- **Baseline vs. optimized is the eval** — the before/after above is the artifact.
-- **Pure, testable functions.** The OR core is unit-tested; a fixed seed → a
-  reproducible carve.
+- **Quota rules; territory is derived.** Standardized by role, anchored on pay,
+  carved backward — the inversion is the whole idea.
+- **Surface the gap, don't bury it.** When a segment can't cover its quotas, the
+  tool says so (and where the pipeline actually is) instead of hiding it.
+- **Config over magic numbers.** OTE, the multiple, the coverage target, and comp
+  live in `config.py` or the CSVs — all overridable per call.
+- **Deterministic, testable core.** A fixed seed → a reproducible plan; every
+  number is traceable to an input a planner can verify.

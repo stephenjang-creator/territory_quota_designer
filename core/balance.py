@@ -1,26 +1,23 @@
 """
-core/balance.py — Stage 1: carve the book into balanced territories.
+core/balance.py — Stage 1: carve the book *back* from quota.
 
-Objective: assign every account to exactly one rep to minimize a combined
-imbalance cost across territories:
+Quota-first. Each rep's quota is fixed by role (Stage 2), so the carve's job is
+capacity planning: pack every book with enough ADDRESSABLE pipeline (whitespace +
+open_pipeline) to reach a pipeline-coverage target (default 3x quota). Segment
+focus is respected, and the rep's home region is preferred as a tiebreaker. Reps
+who can't reach the target are left short on purpose — that capacity gap is the
+signal the tool exists to surface.
 
-    cost = w_pot * CoV(potential) + w_geo * geo_norm + w_ws * CoV(whitespace)
-
-where geo_norm is the normalized distinct-region spread (compact = low). Weights
-come from `config.WEIGHTS`.
-
-Algorithm (v1, no solver dependency, deterministic given the seed):
-  1. Seed — greedy: within each segment pool (segment focus is respected), deal
-     accounts largest-opportunity-first to the eligible rep with the least
-     potential so far, breaking ties toward a geographic match then rep_id.
-  2. Improve — local search: repeatedly move the account whose reassignment most
-     reduces the combined cost, until no move helps or a pass cap is hit. Swaps
-     are added only when an accounts-per-rep cap is set (moves alone can deadlock
-     under a cap); with no cap, moves reach the same optimum.
+Algorithm (deterministic given the seed):
+  Per segment pool (segment focus respected), deal accounts largest-addressable
+  first to the eligible rep who is furthest from their target (lowest got/need
+  ratio), preferring a rep whose home region matches the account. Once every rep
+  in the pool has hit its target, remaining accounts top up the least-covered book
+  (still home-region-first) as cushion — so no account is orphaned.
 
 `naive_carve` is the baseline the scorecard compares against: round-robin equal
-*account count* within each segment pool — same constraints as the optimizer, so
-the before/after isolates what the optimizer actually buys.
+*account count* within each segment pool — same segment constraint, so the
+before/after isolates what the capacity carve buys (more reps covered to target).
 """
 
 from __future__ import annotations
@@ -44,235 +41,85 @@ def eligible_rep_ids(
     """Rep ids allowed to carry an account of `segment` (sorted, deterministic)."""
     if not respect_focus:
         return sorted(r.rep_id for r in reps)
-    ids = sorted(
+    return sorted(
         r.rep_id for r in reps if r.segment_focus == segment or r.segment_focus == generalist
     )
-    return ids
+
+
+def _addressable(a: Account) -> float:
+    """Pipeline a rep can actually close against a new-bookings quota."""
+    return a.whitespace_potential + a.open_pipeline
 
 
 # ----------------------------------------------------------------------
-# Internal territory aggregate (mutated during local search)
-# ----------------------------------------------------------------------
-class _Agg:
-    """Mutable per-rep aggregate. `off` counts accounts assigned outside the rep's
-    home region — a smooth, single-move-optimizable proxy for geo compactness (it
-    also drags the reported distinct-region spread down as a side effect)."""
-
-    __slots__ = ("pot", "ws", "cnt", "home", "off")
-
-    def __init__(self, home: str) -> None:
-        self.pot = 0.0
-        self.ws = 0.0
-        self.cnt = 0
-        self.home = home
-        self.off = 0
-
-    def add(self, a: Account, o: float) -> None:
-        self.pot += o
-        self.ws += a.whitespace_potential
-        self.cnt += 1
-        if a.region != self.home:
-            self.off += 1
-
-    def remove(self, a: Account, o: float) -> None:
-        self.pot -= o
-        self.ws -= a.whitespace_potential
-        self.cnt -= 1
-        if a.region != self.home:
-            self.off -= 1
-
-
-def _cov(xs: list[float]) -> float:
-    """Population coefficient of variation (sd / mean). 0 if mean is 0."""
-    n = len(xs)
-    if n == 0:
-        return 0.0
-    mean = sum(xs) / n
-    if mean == 0:
-        return 0.0
-    var = sum((x - mean) ** 2 for x in xs) / n
-    return math.sqrt(var) / mean
-
-
-def _off_home_share(aggs: dict[str, _Agg]) -> float:
-    """Fraction of all accounts assigned outside their rep's home region."""
-    total = sum(a.cnt for a in aggs.values())
-    if total == 0:
-        return 0.0
-    return sum(a.off for a in aggs.values()) / total
-
-
-def _cost(aggs: dict[str, _Agg], weights: dict) -> float:
-    pots = [a.pot for a in aggs.values()]
-    wss = [a.ws for a in aggs.values()]
-    return (
-        weights["potential"] * _cov(pots)
-        + weights["geo"] * _off_home_share(aggs)
-        + weights["whitespace"] * _cov(wss)
-    )
-
-
-# ----------------------------------------------------------------------
-# Carve
+# Work-back carve
 # ----------------------------------------------------------------------
 def carve(
     accounts: list[Account],
     reps: list[Rep],
+    quota_by_rep: dict[str, float],
     *,
-    weights: dict | None = None,
-    potential_mix: dict | None = None,
+    coverage_target: float | None = None,
     respect_segment_focus: bool | None = None,
-    max_accounts_per_rep: int | None = None,
+    prefer_home_region: bool | None = None,
     generalist_focus: str | None = None,
-    max_passes: int | None = None,
 ) -> list[Territory]:
-    """Optimized carve. Deterministic; identical inputs → identical territories."""
-    weights = weights or config.WEIGHTS
-    mix = potential_mix or config.POTENTIAL_MIX
+    """Carve territories back from fixed per-rep quotas. Deterministic."""
+    target_mult = config.PIPELINE_COVERAGE_TARGET if coverage_target is None else coverage_target
     respect = (
         config.RESPECT_SEGMENT_FOCUS if respect_segment_focus is None else respect_segment_focus
     )
-    cap = config.MAX_ACCOUNTS_PER_REP if max_accounts_per_rep is None else max_accounts_per_rep
+    prefer_home = config.PREFER_HOME_REGION if prefer_home_region is None else prefer_home_region
     generalist = generalist_focus or config.GENERALIST_FOCUS
-    passes = config.MAX_LOCAL_SEARCH_PASSES if max_passes is None else max_passes
+    mix = config.POTENTIAL_MIX
 
-    opp = {a.account_id: opportunity_value(a, mix) for a in accounts}
-    acct = {a.account_id: a for a in accounts}
-
-    aggs: dict[str, _Agg] = {r.rep_id: _Agg(r.home_region) for r in reps}
+    rep_by_id = {r.rep_id: r for r in reps}
+    addr = {a.account_id: _addressable(a) for a in accounts}
     assign: dict[str, str] = {}
-    elig: dict[str, list[str]] = {}
 
-    # ---- 1. Greedy seed, per segment pool ----
-    segments = sorted({a.segment for a in accounts})
-    for seg in segments:
+    for seg in sorted({a.segment for a in accounts}):
         pool = eligible_rep_ids(seg, reps, respect, generalist)
         if not pool:
             raise ValueError(
                 f"No rep can carry segment {seg!r} under segment focus "
                 f"(add a {generalist!r} rep or turn RESPECT_SEGMENT_FOCUS off)."
             )
+        need = {rid: target_mult * quota_by_rep.get(rid, 0.0) for rid in pool}
+        got = dict.fromkeys(pool, 0.0)
+
+        # Largest addressable accounts first packs to target with fewer accounts and
+        # keeps the assignment stable; ties break by id for determinism.
         seg_accts = sorted(
             (a for a in accounts if a.segment == seg),
-            key=lambda a: (-opp[a.account_id], a.account_id),
+            key=lambda a: (-addr[a.account_id], a.account_id),
         )
         for a in seg_accts:
-            elig[a.account_id] = pool
-            o = opp[a.account_id]
-            cands = [rid for rid in pool if cap is None or aggs[rid].cnt < cap]
-            if not cands:  # every eligible rep at cap
-                raise ValueError(f"accounts-per-rep cap {cap} too small for segment {seg!r}")
-
-            # Greedy on the true objective: place the account where it least
-            # increases the combined cost (so the seed already honors the weights,
-            # incl. geo). Tie -> rep_id, for determinism.
-            best, best_key = None, None
-            for rid in cands:
-                aggs[rid].add(a, o)
-                key = (_cost(aggs, weights), rid)
-                aggs[rid].remove(a, o)
-                if best_key is None or key < best_key:
-                    best, best_key = rid, key
-            aggs[best].add(a, o)
-            assign[a.account_id] = best
-
-    # ---- 2. Local search: move sweeps (the smooth off-home geo term makes single
-    #         moves effective). Swap sweeps only when a cap binds — moves can
-    #         deadlock there — since swaps are O(n^2) and hurt interactivity. ----
-    order = sorted(assign)
-    for _ in range(passes):
-        improved = _move_pass(aggs, assign, acct, opp, elig, weights, cap, order)
-        if cap is not None:
-            improved = _swap_pass(aggs, assign, acct, opp, elig, weights, order) or improved
-        if not improved:
-            break
+            needy = [rid for rid in pool if got[rid] < need[rid]] or pool
+            if prefer_home:
+                home = [rid for rid in needy if rep_by_id[rid].home_region == a.region]
+                cands = home or needy
+            else:
+                cands = needy
+            # Furthest-from-target first (lowest fill ratio); tie -> rep_id.
+            rid = min(cands, key=lambda rid: (got[rid] / need[rid] if need[rid] else 1e18, rid))
+            assign[a.account_id] = rid
+            got[rid] += addr[a.account_id]
 
     return _build_territories(assign, accounts, reps, mix)
-
-
-def _move_pass(aggs, assign, acct, opp, elig, weights, cap, order) -> bool:
-    improved = False
-    base = _cost(aggs, weights)
-    for aid in order:
-        i = assign[aid]
-        a = acct[aid]
-        o = opp[aid]
-        cands = [rid for rid in elig[aid] if rid != i and (cap is None or aggs[rid].cnt < cap)]
-        best_j, best_cost = None, base
-        for j in cands:
-            aggs[i].remove(a, o)
-            aggs[j].add(a, o)
-            c = _cost(aggs, weights)
-            aggs[j].remove(a, o)
-            aggs[i].add(a, o)
-            if c < best_cost - 1e-12:
-                best_cost, best_j = c, j
-        if best_j is not None:
-            aggs[i].remove(a, o)
-            aggs[best_j].add(a, o)
-            assign[aid] = best_j
-            base = best_cost
-            improved = True
-    return improved
-
-
-def _swap_pass(aggs, assign, acct, opp, elig, weights, order) -> bool:
-    """Swap two accounts across reps when it lowers cost — escapes local minima
-    that single moves can't reach (e.g. under an accounts-per-rep cap, or when two
-    reps each hold one of the other's better-fit accounts)."""
-    improved = False
-    base = _cost(aggs, weights)
-    for x in range(len(order)):
-        aid = order[x]
-        i = assign[aid]
-        a = acct[aid]
-        oa = opp[aid]
-        for y in range(x + 1, len(order)):
-            bid = order[y]
-            j = assign[bid]
-            if j == i:
-                continue
-            b = acct[bid]
-            ob = opp[bid]
-            # both must be able to sit in the other's rep
-            if j not in elig[aid] or i not in elig[bid]:
-                continue
-            aggs[i].remove(a, oa)
-            aggs[j].remove(b, ob)
-            aggs[i].add(b, ob)
-            aggs[j].add(a, oa)
-            c = _cost(aggs, weights)
-            aggs[i].remove(b, ob)
-            aggs[j].remove(a, oa)
-            aggs[i].add(a, oa)
-            aggs[j].add(b, ob)
-            if c < base - 1e-12:
-                aggs[i].remove(a, oa)
-                aggs[j].remove(b, ob)
-                aggs[i].add(b, ob)
-                aggs[j].add(a, oa)
-                assign[aid], assign[bid] = j, i
-                base = c
-                improved = True
-                break  # account `aid` moved; restart its comparisons next pass
-    return improved
 
 
 def naive_carve(
     accounts: list[Account],
     reps: list[Rep],
     *,
-    potential_mix: dict | None = None,
     respect_segment_focus: bool | None = None,
     generalist_focus: str | None = None,
 ) -> list[Territory]:
     """Baseline: round-robin equal account *count* within each segment pool.
 
-    Deliberately ignores potential/geo/whitespace — it is the naive version of the
-    *same* constrained problem, so the scorecard's before/after isolates the
-    optimizer's contribution rather than the segment-focus structure.
+    Ignores pipeline entirely, so the scorecard's before/after isolates what
+    packing-to-quota buys over just splitting accounts evenly.
     """
-    mix = potential_mix or config.POTENTIAL_MIX
     respect = (
         config.RESPECT_SEGMENT_FOCUS if respect_segment_focus is None else respect_segment_focus
     )
@@ -286,7 +133,7 @@ def naive_carve(
         seg_accts = sorted((a for a in accounts if a.segment == seg), key=lambda a: a.account_id)
         for k, a in enumerate(seg_accts):
             assign[a.account_id] = pool[k % len(pool)]
-    return _build_territories(assign, accounts, reps, mix)
+    return _build_territories(assign, accounts, reps, config.POTENTIAL_MIX)
 
 
 def _build_territories(assign, accounts, reps, mix) -> list[Territory]:
@@ -313,8 +160,20 @@ def _build_territories(assign, accounts, reps, mix) -> list[Territory]:
 # ----------------------------------------------------------------------
 # Reporting helpers (used by evaluate + API/MCP)
 # ----------------------------------------------------------------------
+def _cov(xs: list[float]) -> float:
+    """Population coefficient of variation (sd / mean). 0 if mean is 0."""
+    n = len(xs)
+    if n == 0:
+        return 0.0
+    mean = sum(xs) / n
+    if mean == 0:
+        return 0.0
+    var = sum((x - mean) ** 2 for x in xs) / n
+    return math.sqrt(var) / mean
+
+
 def balance_score(territories: list[Territory]) -> float:
-    """CoV of territory potential across the team (lower = fairer)."""
+    """CoV of territory potential across the team (context, not the objective now)."""
     return _cov([t.potential for t in territories])
 
 
@@ -331,8 +190,9 @@ def off_home_share(
     accounts: list[Account],
     reps: list[Rep],
 ) -> float:
-    """Fraction of accounts assigned outside their rep's home region (the geo
-    term in the Stage-1 objective; 0 = every account sits in its rep's region)."""
+    """Fraction of accounts assigned outside their rep's home region (0 = fully
+    compact). Now a reported side effect of the home-region tiebreaker, not an
+    optimized objective."""
     region_of = {a.account_id: a.region for a in accounts}
     home_of = {r.rep_id: r.home_region for r in reps}
     total = off = 0
@@ -342,19 +202,3 @@ def off_home_share(
             if region_of[aid] != home_of[t.rep_id]:
                 off += 1
     return (off / total) if total else 0.0
-
-
-def combined_cost(
-    territories: list[Territory],
-    weights: dict,
-    accounts: list[Account],
-    reps: list[Rep],
-) -> float:
-    """The Stage-1 objective evaluated on finished territories (for reporting)."""
-    pots = [t.potential for t in territories]
-    wss = [t.whitespace for t in territories]
-    return (
-        weights["potential"] * _cov(pots)
-        + weights["geo"] * off_home_share(territories, accounts, reps)
-        + weights["whitespace"] * _cov(wss)
-    )

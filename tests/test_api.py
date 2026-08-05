@@ -1,4 +1,4 @@
-"""API smoke tests — dashboard, health probes, and the stage endpoints."""
+"""API smoke tests — dashboard, health probes, and the quota-first endpoints."""
 
 from fastapi.testclient import TestClient
 
@@ -16,97 +16,82 @@ def test_root_serves_dashboard_html():
 
 
 def test_api_index_json():
-    r = client.get("/api")
-    assert r.status_code == 200
-    body = r.json()
+    body = client.get("/api").json()
     assert body["service"] == "Territory & Quota Designer"
     assert body["dashboard"] == "/"
-    assert "/plan" in body["endpoints"]
+    assert "/plan" in body["endpoints"] and "/roles" in body["endpoints"]
 
 
-def test_health_ok():
-    r = client.get("/health")
-    assert r.status_code == 200 and r.json() == {"status": "ok"}
-
-
-def test_favicon_no_content():
+def test_health_and_favicon():
+    assert client.get("/health").json() == {"status": "ok"}
     assert client.get("/favicon.ico").status_code == 204
 
 
-def test_conversions_defaults_endpoint():
-    body = client.get("/conversions").json()
-    assert "Enterprise" in body["segments"]
-    assert body["avg_deal_key"] == "avg_deal_size"
-    assert "Negotiation->Won" in body["transitions"]
-    # defaults carry a rate per transition + a deal size for every segment
-    ent = body["defaults"]["Enterprise"]
-    assert ent["avg_deal_size"] > 0 and 0 < ent["Negotiation->Won"] <= 1
+def test_roles_endpoint():
+    body = client.get("/roles").json()
+    assert body["quota_to_ote"] == 5.0 and body["coverage_target"] == 3.0
+    assert {r["segment"] for r in body["roles"]} == {"Enterprise", "Mid-Market", "SMB"}
+    # quota = multiple x OTE for every role
+    assert all(abs(r["quota"] - body["quota_to_ote"] * r["ote"]) < 1 for r in body["roles"])
 
 
-def test_levels_endpoint():
-    body = client.get("/levels").json()
-    assert body["levels"] == ["ramping", "AE", "Sr. AE", "Sr. Strategic AE"]
-    assert body["multipliers"]["AE"] == 1.0
-    assert body["multipliers"]["ramping"] < 1.0 < body["multipliers"]["Sr. Strategic AE"]
-    assert sum(body["counts"].values()) == 12  # every rep placed at a level
+def test_conversions_and_comp_defaults():
+    conv = client.get("/conversions").json()
+    assert "Enterprise" in conv["segments"] and conv["avg_deal_key"] == "avg_deal_size"
+    comp = client.get("/comp/defaults").json()["defaults"]
+    assert "commission_rate" not in comp  # OTE-anchored now
+    assert comp["decelerator_multiplier"] < 1 < comp["accelerator_multiplier"]
 
 
-def test_comp_defaults_endpoint():
-    d = client.get("/comp/defaults").json()["defaults"]
-    assert 0 < d["commission_rate"] < 1
-    assert d["decelerator_multiplier"] < 1 < d["accelerator_multiplier"]
-    assert d["decelerator_threshold"] < d["accelerator_threshold"]
-
-
-def test_plan_returns_payout_curve_and_comp_reacts_to_decelerator():
-    base = client.post("/plan", json={}).json()
-    assert base["payout_curve"] and "comp_params" in base
-
-    def cos(plan, att):
-        return next(r["cost_of_sale"] for r in plan["comp"] if abs(r["attainment"] - att) < 1e-9)
-
-    # A steeper decelerator (bigger under-attainment penalty) is cheaper at 85%.
-    lean = client.post("/plan", json={"comp": {"decelerator_multiplier": 0.2}}).json()
-    assert cos(lean, 0.85) < cos(base, 0.85)
-
-
-def test_plan_endpoint_runs_the_chain():
+def test_plan_endpoint_shape():
     body = client.post("/plan", json={}).json()
-    assert body["summary"]["units"]["quota_period"] == "quarterly"
-    assert body["summary"]["n_territories"] == 12
+    sm = body["summary"]
+    assert sm["units"]["quota_period"] == "quarterly"
+    assert sm["n_territories"] == 12
+    assert sm["reps_covered"]["of"] == 12
+    assert sm["coverage_target"] == 3.0
+    assert set(sm["per_segment_capacity"]) == {"Enterprise", "Mid-Market", "SMB"}
+    assert "coverage_floor" in sm and "capacity_gap" in sm
     assert len(body["territories"]) == 12
-    assert len(body["comp"]) == 3
-    # territory rows now carry the rep's seniority level
-    assert all(t.get("level") for t in body["territories"])
+    row = body["territories"][0]
+    for k in ("role", "ote", "quota", "pipeline_coverage", "available_pipeline"):
+        assert k in row
+    assert len(body["payout_curve"]) == 16 and len(body["comp"]) == 3
 
 
-def test_plan_accepts_conversion_and_level_overrides():
-    # A segment conversion override + a per-level quota override both apply and the
-    # chain still returns a full plan (quotas re-normalize to the same target).
-    payload = {
-        "overrides": {"segment": {"Enterprise": {"Negotiation->Won": 0.2}}},
-        "level_multipliers": {"Sr. Strategic AE": 1.6},
-    }
-    base = client.post("/plan", json={}).json()
-    got = client.post("/plan", json=payload).json()
-    assert got["summary"]["n_territories"] == 12
-
-    def strat_quota(rows):
-        return {t["rep_id"]: t["quota"] for t in rows if t["level"] == "Sr. Strategic AE"}
-
-    strat_base, strat_now = strat_quota(base["territories"]), strat_quota(got["territories"])
-    assert strat_base and all(strat_now[r] > strat_base[r] for r in strat_base)
+def test_same_role_same_quota_over_the_wire():
+    rows = client.post("/plan", json={}).json()["territories"]
+    by_role: dict[str, set] = {}
+    for r in rows:
+        by_role.setdefault(r["role"], set()).add(r["quota"])
+    assert all(len(v) == 1 for v in by_role.values())
 
 
-def test_territory_detail_get_and_post_settings():
+def test_plan_accepts_ote_and_coverage_overrides():
+    base = client.post("/plan", json={}).json()["summary"]
+    got = client.post(
+        "/plan",
+        json={"ote_overrides": {"Enterprise": {"AE": 1_100_000}}, "coverage_target": 4.0},
+    ).json()["summary"]
+    assert got["coverage_target"] == 4.0
+    assert got["company_target"] > base["company_target"]  # richer Enterprise AE OTE
+    # a stiffer coverage target covers no more reps than 3x
+    assert got["reps_covered"]["optimized"] <= base["reps_covered"]["optimized"]
+
+
+def test_balance_and_quota_endpoints():
+    bal = client.post("/balance", json={}).json()
+    assert bal["coverage_target"] == 3.0 and "capacity_gap" in bal
+    assert bal["per_segment_capacity"]["SMB"]["coverable"] is False
+    q = client.post("/quota", json={}).json()
+    assert q["quota_to_ote"] == 5.0
+    assert all("role" in t and "ote" in t for t in q["territories"])
+
+
+def test_territory_detail_get_and_post():
     assert client.get("/territory/R-101").status_code == 200
     assert client.get("/territory/R-999").status_code == 404
-    # POST with settings recomputes the funnel under those weights
-    r = client.post(
-        "/territory/R-101", json={"weights": {"potential": 10, "geo": 85, "whitespace": 5}}
-    )
-    assert r.status_code == 200
-    d = r.json()
+    d = client.post("/territory/R-101", json={"coverage_target": 4.0}).json()
     assert set(d["waterfall"]["funnel"]) == {
         "required_sqls",
         "qualification",

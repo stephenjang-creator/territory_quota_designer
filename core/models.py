@@ -68,7 +68,8 @@ class Territory:
     # Stage 2
     quota: float | None = None
     quota_to_potential: float | None = None
-    fairness: dict | None = None  # {"deviation", "flag", "mean_ratio"}
+    ote: float | None = None  # on-target earnings for the rep's role (quota = mult * ote)
+    fairness: dict | None = None  # unused under standardized quotas; kept for shape compat
 
     # Stage 3 (reverse waterfall)
     required_pipeline: float | None = None
