@@ -53,7 +53,7 @@ A compact but complete slice of building a decision tool on top of a real domain
 - **RevOps / GTM domain modeling**: quota policy, capacity planning, reverse-waterfall
   funnel math, comp design and cost-of-sale, hiring capacity.
 - **A deterministic, tested engine**: every number the UI shows comes from pure Python
-  in `core/` (85 unit tests, `ruff` + `black` clean); a fixed seed reproduces the plan.
+  in `core/` (93 unit tests, `ruff` + `black` clean); a fixed seed reproduces the plan.
 - **Recommendations that resolve, not just report**: each fix is computed *and* returned
   as an applyable settings delta, with round-trip tests proving it clears the issue it
   targets (the re-tag lever even re-carves until *every* rep clears).
