@@ -19,7 +19,7 @@ from pydantic import BaseModel, Field
 
 import config
 import narrative
-from core import comp, evaluate, quota, recommend, views, waterfall
+from core import ask, comp, evaluate, quota, recommend, views, waterfall
 from core.dataio import load_all
 from core.plan import PlanSettings, merge_added_reps, run_plan
 
@@ -62,6 +62,21 @@ class ExplainRequest(BaseModel):
     question: str | None = None
 
 
+class AskRequest(PlanRequest):
+    """A natural-language question about the plan, over the current settings. `api_key`
+    (optional) is used for the one request and never stored or logged; without it the
+    deterministic demo router answers recognized questions."""
+
+    question: str = ""
+    api_key: str | None = None
+
+    def to_settings(self) -> PlanSettings:
+        d = self.model_dump()
+        d.pop("question", None)
+        d.pop("api_key", None)
+        return PlanSettings(**d)
+
+
 def _plan(req: PlanRequest):
     return run_plan(ACCOUNTS, REPS, CONVERSIONS, req.to_settings())
 
@@ -99,7 +114,7 @@ def api_index():
     return {
         "service": "Territory & Quota Designer",
         "description": "Balance territories, derive quotas, prove coverage via a "
-        "reverse waterfall, and model comp — deterministic core, human-in-the-loop LLM.",
+        "reverse waterfall, and model comp: deterministic core, human-in-the-loop LLM.",
         "units": config.UNITS,
         "docs": "/docs",
         "dashboard": "/",
@@ -115,6 +130,7 @@ def api_index():
             "/plan",
             "/territory/{rep_id}",
             "/explain",
+            "/ask",
         ],
     }
 
@@ -380,3 +396,13 @@ def territory_detail_for_settings(rep_id: str, req: PlanRequest):
 def explain_endpoint(req: ExplainRequest):
     """Optional plain-English rationale (Anthropic API); skips cleanly with no key."""
     return narrative.explain(req.kind, req.payload, req.question)
+
+
+@app.post("/ask")
+def ask_endpoint(req: AskRequest):
+    """Natural-language Q&A over the current plan. The deterministic router answers
+    recognized questions offline (no key); free-form questions use a Claude agent when
+    an API key is supplied. Every figure still comes from the engine."""
+    return ask.answer(
+        req.question, ACCOUNTS, REPS, CONVERSIONS, settings=req.to_settings(), api_key=req.api_key
+    )

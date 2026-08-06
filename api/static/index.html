@@ -122,6 +122,27 @@
   .band input{width:62px;text-align:right;padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;font-family:var(--mono);font-size:12.5px}
   .spin{color:var(--muted);font-size:13px;padding:8px 0}
   .clearlink{font-family:var(--mono);font-size:11px;color:var(--blue);cursor:pointer;margin-left:8px}
+  /* Ask box */
+  .askwrap{margin-bottom:34px}
+  .ask{padding:18px 20px 20px}
+  .askhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .keybtn{background:transparent;border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:11px;color:var(--muted);cursor:pointer;font-family:var(--mono)}
+  .keybtn.on{color:var(--good);border-color:var(--good)}
+  .askrow{display:flex;gap:10px}
+  .askrow input{flex:1;padding:11px 14px;border:1px solid var(--line);border-radius:11px;font-size:14px;background:var(--panel);color:var(--ink)}
+  .askrow input:focus{outline:none;border-color:var(--blue)}
+  #askBtn{padding:0 20px;border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:11px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+  #askBtn:disabled{opacity:.5;cursor:default}
+  .keyrow{display:flex;gap:8px;align-items:center;margin-top:10px}
+  .keyrow[hidden]{display:none}
+  .keyrow input{flex:1;padding:8px 12px;border:1px solid var(--line);border-radius:9px;font-size:12px;font-family:var(--mono);background:var(--panel);color:var(--ink)}
+  .keyrow button{padding:0 14px;border:1px solid var(--line);background:#fff;border-radius:9px;cursor:pointer;font-family:var(--mono);font-size:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .chip{background:var(--hair);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--sub);cursor:pointer}
+  .chip:hover{border-color:var(--blue);color:var(--blue)}
+  .askout{margin-top:14px;padding:14px 16px;border:1px solid var(--line2);border-radius:11px;background:var(--panel);font-size:14px;line-height:1.55;color:var(--ink2)}
+  .askout.err{color:var(--muted)}
+  .askout .src{margin-top:9px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -139,6 +160,29 @@
       <div id="hdrKnobs">quota -× OTE · coverage -×</div>
     </div>
   </header>
+
+  <!-- ASK -->
+  <section class="askwrap">
+    <div class="card pad ask">
+      <div class="askhead">
+        <div class="kicker">Ask the plan</div>
+        <button id="keyToggle" class="keybtn" title="Add an Anthropic API key for free-form questions">+ API key</button>
+      </div>
+      <div class="askrow">
+        <input id="askInput" type="text" autocomplete="off"
+          placeholder="e.g. which segment is most at risk? · what does R-125 need to hit quota?" />
+        <button id="askBtn">Ask</button>
+      </div>
+      <div id="keyRow" class="keyrow" hidden>
+        <input id="keyInput" type="password" autocomplete="off"
+          placeholder="sk-ant-… (used for this question only, never sent to storage or logged)" />
+        <button id="keySave">Save</button>
+        <span id="keyState" class="mono note"></span>
+      </div>
+      <div class="chips" id="askChips"></div>
+      <div id="askOut" class="askout" hidden></div>
+    </div>
+  </section>
 
   <!-- EXECUTIVE SUMMARY -->
   <section>
@@ -334,7 +378,8 @@ const SEV = {critical:"var(--bad)", warn:"var(--warn)", info:"var(--muted)", ok:
 
 // ---- client state (mirrors PlanRequest) ----
 const st = {mult:4, target:3, att:1, ote:{}, conv:{}, comp:null, hires:[], segOv:{}, retags:{}, sel:null,
-  repSort:{key:"pipeline_coverage", asc:true}, roleSort:{key:null, asc:true}};
+  repSort:{key:"pipeline_coverage", asc:true}, roleSort:{key:null, asc:true},
+  apiKey: sessionStorage.getItem("tqd_key") || ""};
 let ROLES=null, CONV=null, COMPD=null, timer=null;
 
 function settings(){
@@ -688,7 +733,66 @@ async function refresh(keepSel){
   if(st.sel) selectRep();
 }
 
+// ---- Ask the plan ----
+const ASK_EXAMPLES = [
+  "Which segment is most at risk?",
+  "How many reps should I hire, and in what priority?",
+  "What's the cost of increasing commissions by 10%?",
+  "What does R-125 need to hit quota?",
+];
+function renderChips(){
+  const box = $("#askChips"); box.innerHTML = "";
+  for(const q of ASK_EXAMPLES){
+    const c = document.createElement("span");
+    c.className = "chip"; c.textContent = q; c.onclick = ()=>askQuestion(q);
+    box.appendChild(c);
+  }
+}
+function renderAnswer(res){
+  const out = $("#askOut"); out.hidden = false; out.classList.remove("err");
+  if(res && res.answer){
+    const mode = res.mode==="live" ? ("live · "+(res.model||"")).trim() : "deterministic";
+    const used = (res.used && res.used.length) ? " · "+res.used.join(", ") : "";
+    out.innerHTML = esc(res.answer)+`<div class="src">answered ${mode}${used}</div>`;
+  } else {
+    out.classList.add("err");
+    out.textContent = (res && res.error) ? res.error : "No answer.";
+  }
+}
+async function askQuestion(q){
+  q = (q!=null ? q : $("#askInput").value).trim();
+  if(!q) return;
+  $("#askInput").value = q;
+  const btn = $("#askBtn"); btn.disabled = true; btn.textContent = "…";
+  const out = $("#askOut"); out.hidden = false; out.classList.remove("err"); out.textContent = "Thinking…";
+  try{
+    const body = settings(); body.question = q; if(st.apiKey) body.api_key = st.apiKey;
+    renderAnswer(await post("/ask", body));
+  }catch(e){ out.classList.add("err"); out.textContent = "Ask failed: "+e; }
+  finally{ btn.disabled = false; btn.textContent = "Ask"; }
+}
+function syncKeyUI(){
+  const on = !!st.apiKey;
+  $("#keyToggle").classList.toggle("on", on);
+  $("#keyToggle").textContent = on ? "✓ API key" : "+ API key";
+  $("#keyState").textContent = on ? "key set · free-form questions enabled" : "";
+}
+function wireAsk(){
+  renderChips();
+  $("#askBtn").onclick = ()=>askQuestion();
+  $("#askInput").addEventListener("keydown", e=>{ if(e.key==="Enter") askQuestion(); });
+  $("#keyToggle").onclick = ()=>{ const r=$("#keyRow"); r.hidden=!r.hidden;
+    if(!r.hidden){ $("#keyInput").value=st.apiKey; $("#keyInput").focus(); } };
+  $("#keySave").onclick = ()=>{
+    st.apiKey = $("#keyInput").value.trim();
+    if(st.apiKey) sessionStorage.setItem("tqd_key", st.apiKey); else sessionStorage.removeItem("tqd_key");
+    $("#keyRow").hidden = true; syncKeyUI();
+  };
+  syncKeyUI();
+}
+
 (async function init(){
+  wireAsk();
   try{ await loadRoles(); }catch(e){ $("#roleBody").innerHTML=`<tr><td colspan="4" class="spin">Couldn't load role defaults.</td></tr>`; }
   try{ await loadConversions(); }catch(e){}
   try{ await loadComp(); }catch(e){}
