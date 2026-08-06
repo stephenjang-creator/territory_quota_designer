@@ -23,7 +23,7 @@ from core import ask, comp, evaluate, quota, recommend, views, waterfall
 from core.dataio import load_all
 from core.plan import PlanSettings, merge_added_reps, run_plan
 
-app = FastAPI(title="Territory & Quota Designer", version="0.1.0")
+app = FastAPI(title="Sales Plan Designer", version="0.1.0")
 _STATIC = Path(__file__).parent / "static"
 
 ACCOUNTS, REPS, CONVERSIONS = load_all()
@@ -112,7 +112,7 @@ def dashboard():
 def api_index():
     """JSON index — the service description + endpoint map (also see /docs)."""
     return {
-        "service": "Territory & Quota Designer",
+        "service": "Sales Plan Designer",
         "description": "Balance territories, derive quotas, prove coverage via a "
         "reverse waterfall, and model comp: deterministic core, human-in-the-loop LLM.",
         "units": config.UNITS,

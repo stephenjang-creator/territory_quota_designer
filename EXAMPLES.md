@@ -1,4 +1,4 @@
-# EXAMPLES.md: talking to the Territory Designer over MCP
+# EXAMPLES.md: talking to the Sales Plan Designer over MCP
 
 Natural-language questions a RevOps planner might ask, and the tool call(s) each
 triggers. Tools return **structured JSON**; the agent narrates. Every number comes

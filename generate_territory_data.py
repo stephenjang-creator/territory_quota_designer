@@ -1,7 +1,7 @@
 """
 generate_territory_data.py
 --------------------------
-Synthetic data generator for the Territory & Quota Designer.
+Synthetic data generator for the Sales Plan Designer.
 
 Produces three internally-consistent datasets so the whole four-stage chain
 (balance -> quota -> reverse waterfall -> comp) has realistic inputs:

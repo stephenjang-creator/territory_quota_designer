@@ -1,6 +1,6 @@
 """
 agents/ask_agent.py: a standalone agent that answers questions by driving the
-Territory & Quota Designer MCP server.
+Sales Plan Designer MCP server.
 
 It spawns the project's own MCP server over stdio, discovers its read-only tools,
 and hands them to Claude in a small tool-use loop. Claude decides which tools to

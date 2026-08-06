@@ -11,7 +11,7 @@ def test_root_serves_dashboard_html():
     r = client.get("/")
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/html")
-    assert b"<title>Territory" in r.content
+    assert b"<title>Sales Plan Designer" in r.content
     # the redesigned dashboard: executive summary + recommended actions on top
     assert b'id="actions"' in r.content and b"Recommended actions" in r.content
     assert b'id="tiles"' in r.content and b'id="segbars"' in r.content
@@ -20,7 +20,7 @@ def test_root_serves_dashboard_html():
 
 def test_api_index_json():
     body = client.get("/api").json()
-    assert body["service"] == "Territory & Quota Designer"
+    assert body["service"] == "Sales Plan Designer"
     assert body["dashboard"] == "/"
     assert "/plan" in body["endpoints"] and "/roles" in body["endpoints"]
 

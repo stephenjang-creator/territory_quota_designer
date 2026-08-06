@@ -1,5 +1,5 @@
 """
-config.py — tunable knobs for the Territory & Quota Designer.
+config.py — tunable knobs for the Sales Plan Designer.
 
 Every weight, constraint, conversion default, and comp parameter the core reads
 lives here (or comes from the loaded CSVs). Nothing downstream hardcodes a magic
