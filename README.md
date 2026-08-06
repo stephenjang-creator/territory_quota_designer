@@ -187,6 +187,23 @@ target** (not just the segment aggregate), while the source stays covered and no
 moves. Applying a lever merges its delta into the settings and recomputes; an agent gets
 the identical fixes via `recommend_actions`.
 
+## Ask the plan in plain English
+
+At the top of the dashboard is an **Ask** box. Type a question and it answers from the
+same engine the rest of the tool uses, over whatever settings are currently applied:
+
+- *"What will R-125 need to hit quota?"* returns the rep's pipeline gap and the same-role fixes.
+- *"Which segment is most at risk?"* ranks the segments by pipeline vs. required.
+- *"How many reps should I hire, and in what priority?"* returns the safe hire plan and what to freeze.
+- *"What's the cost of increasing commissions by 10%?"* prices the change against on-target variable pay.
+
+**No API key required.** A deterministic router (`core/ask.py`) maps recognized questions
+straight to the engine's own functions and returns real, grounded numbers, so the demo works
+offline and every figure is auditable (each answer shows which function produced it). Add an
+**Anthropic API key** (top-right of the Ask box, used per-question and never stored on the
+server) and free-form questions route to a small Claude agent that calls the same functions as
+tools. The model picks tools and narrates; the deterministic core still owns every number.
+
 ## Plan hires against capacity
 
 The roster in the dashboard is **editable**: add a rep (a name, or **"TBH"** for an
@@ -279,6 +296,7 @@ Interactive docs at `/docs`.
 | `POST /comp` | Stage 4: payouts, cost-of-sale, scenarios, payout curve |
 | `POST /plan` | the whole chain **+ recommendations** in one call (the dashboard's hot path) |
 | `GET /territory/{rep_id}` | full single-territory detail (coverage + funnel) |
+| `POST /ask` | natural-language Q&A; deterministic router offline, Claude agent with a key |
 | `POST /explain` | optional LLM rationale; skips cleanly with no API key |
 
 Settings a request can send: `quota_to_ote`, `coverage_target`, `ote_overrides`
@@ -301,6 +319,16 @@ shows. See **[EXAMPLES.md](EXAMPLES.md)** for natural-language questions mapped 
 ```bash
 make mcp        # stdio (Claude Desktop / claude mcp)
 make mcp-http   # HTTP on $PORT, MCP_AUTH_TOKEN bearer auth (hosted use)
+```
+
+**A runnable agent** ships in `agents/ask_agent.py`: it spawns the MCP server over
+stdio, discovers the tools, and drives a Claude tool-use loop to answer a question end
+to end. It's the same human-in-the-loop split the dashboard's Ask box uses, shown
+against a real MCP transport instead of in-process calls:
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+python agents/ask_agent.py "how many reps should I hire, and in what priority?"
 ```
 
 ## Configuration
@@ -333,11 +361,13 @@ core/
   overrides.py               rep > segment > global conversion-rate resolution
   evaluate.py                capacity scorecard (work-back vs naive)
   recommend.py               recommended actions + applyable fixes (re-tag / overrides / autotune)
+  ask.py                     natural-language Ask: deterministic router + Claude agent
   plan.py                    run_plan orchestrator (quota → carve → waterfall → comp)
   views.py                   JSON-safe roll-up views (shared by API + MCP)
 api/main.py                  FastAPI app (serves the dashboard + JSON endpoints)
 api/static/index.html        self-contained interactive dashboard (served at /)
 mcp_server.py                MCP server (read-only tools over core)
+agents/ask_agent.py          runnable agent: drives the MCP server to answer a question
 tests/                       one file per module + /plan + API + MCP tool tests
 ```
 
