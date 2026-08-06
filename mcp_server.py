@@ -1,5 +1,5 @@
 """
-mcp_server.py — expose the Territory & Quota Designer as an MCP server.
+mcp_server.py — expose the Sales Plan Designer as an MCP server.
 
 Thin, READ-ONLY wrappers over the deterministic core (`core.balance / quota /
 waterfall / comp / evaluate`, reshaped through `core.views`). An agent can
@@ -617,7 +617,7 @@ def _http_app():
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Territory & Quota Designer MCP server")
+    ap = argparse.ArgumentParser(description="Sales Plan Designer MCP server")
     ap.add_argument(
         "--http", action="store_true", help="serve over streamable HTTP instead of stdio"
     )

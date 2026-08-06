@@ -1,6 +1,7 @@
-# Territory & Quota Designer
+# Sales Plan Designer
 
-**A quota-first sales-capacity planner for RevOps.** It standardizes quota by role,
+**A quota-first sales-plan designer for RevOps: territory, quota, capacity, and
+compensation in one model.** It standardizes quota by role,
 carves each rep's territory *backward* to support that quota, and flags every seller
 whose book can't generate the pipeline to hit their number, **before** the plan
 locks and comp letters go out. And it doesn't just diagnose: every finding comes with

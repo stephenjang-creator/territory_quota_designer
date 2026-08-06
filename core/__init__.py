@@ -1,5 +1,5 @@
 """
-core — the deterministic Territory & Quota Designer engine.
+core — the deterministic Sales Plan Designer engine.
 
 Four stages, each a pure, testable module:
     balance  -> quota  -> waterfall  -> comp
