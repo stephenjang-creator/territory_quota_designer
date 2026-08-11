@@ -143,6 +143,14 @@
   .askout{margin-top:14px;padding:14px 16px;border:1px solid var(--line2);border-radius:11px;background:var(--panel);font-size:14px;line-height:1.55;color:var(--ink2)}
   .askout.err{color:var(--muted)}
   .askout .src{margin-top:9px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--muted)}
+  /* Undo bar */
+  .undobar{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;z-index:60;display:flex;align-items:center;gap:14px;background:var(--ink);color:#fff;border-radius:12px;padding:10px 12px 10px 18px;box-shadow:0 8px 28px rgba(0,0,0,.20);font-size:13px;max-width:min(92vw,560px)}
+  .undobar[hidden]{display:none}
+  #undoMsg{color:#fff;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #undoBtn{background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:8px;padding:5px 15px;font-weight:600;cursor:pointer;font-size:12px;white-space:nowrap}
+  #undoBtn:hover{background:rgba(255,255,255,.14)}
+  .undobar .x{background:transparent;border:none;color:rgba(255,255,255,.65);cursor:pointer;font-size:17px;line-height:1;padding:0 2px}
+  .undobar .x:hover{color:#fff}
 </style>
 </head>
 <body>
@@ -365,6 +373,12 @@
   </section>
 </div>
 
+<div id="undoBar" class="undobar" hidden>
+  <span id="undoMsg" class="mono"></span>
+  <button id="undoBtn">Undo</button>
+  <button id="undoClose" class="x" title="keep changes and dismiss">×</button>
+</div>
+
 <script>
 const $ = s => document.querySelector(s);
 const money = x => x==null||!isFinite(x) ? "-" : (Math.abs(x)>=1e6 ? "$"+(x/1e6).toFixed(2)+"M" : "$"+Math.round(x/1000).toLocaleString()+"K");
@@ -379,7 +393,7 @@ const SEV = {critical:"var(--bad)", warn:"var(--warn)", info:"var(--muted)", ok:
 // ---- client state (mirrors PlanRequest) ----
 const st = {mult:4, target:3, att:1, ote:{}, conv:{}, comp:null, hires:[], segOv:{}, retags:{}, sel:null,
   repSort:{key:"pipeline_coverage", asc:true}, roleSort:{key:null, asc:true},
-  apiKey: sessionStorage.getItem("tqd_key") || ""};
+  apiKey: sessionStorage.getItem("tqd_key") || "", undo: []};
 let ROLES=null, CONV=null, COMPD=null, timer=null;
 
 function settings(){
@@ -405,8 +419,14 @@ async function post(path, body){
 const debounced = () => { clearTimeout(timer); timer=setTimeout(()=>refresh(true), 200); };
 
 // ---- Apply a recommendation lever's delta into state ----
-function applyDelta(d){
+// Snapshot only the settings an Apply can write, so Undo rewinds exactly those.
+function snapApply(){
+  return JSON.stringify({mult:st.mult, target:st.target, segOv:st.segOv,
+    retags:st.retags, hires:st.hires, comp:st.comp});
+}
+function applyDelta(d, label){
   if(!d || !Object.keys(d).length) return;
+  st.undo.push({label: label || "change", snap: snapApply()});  // capture pre-apply state
   if(d.quota_to_ote!=null){ st.mult=d.quota_to_ote; $("#mult").value=d.quota_to_ote; }
   if(d.coverage_target!=null){ st.target=d.coverage_target; $("#target").value=d.coverage_target; }
   if(d.segment_overrides) for(const [seg,ov] of Object.entries(d.segment_overrides)) st.segOv[seg]={...(st.segOv[seg]||{}),...ov};
@@ -414,6 +434,27 @@ function applyDelta(d){
   if(d.added_reps) st.hires = st.hires.concat(d.added_reps.map(h=>({name:h.name||"TBH",segment:h.segment||h.segment_focus,level:h.level})));
   if(d.comp){ st.comp={...d.comp}; syncCompInputs(st.comp); }
   refresh(true);
+  showUndo();
+}
+function undoLast(){
+  const u = st.undo.pop();
+  if(!u) return;
+  const o = JSON.parse(u.snap);
+  st.mult=o.mult; st.target=o.target; st.segOv=o.segOv; st.retags=o.retags; st.hires=o.hires; st.comp=o.comp;
+  $("#mult").value=st.mult; $("#target").value=st.target;
+  syncCompInputs(st.comp || COMPD);
+  refresh(true);
+  showUndo();
+}
+function shortLabel(s){
+  s = (s || "change").split(/[:(]/)[0].trim();
+  return s.length>52 ? s.slice(0,50)+"…" : s;
+}
+function showUndo(){
+  const bar=$("#undoBar"), n=st.undo.length;
+  if(!n){ bar.hidden=true; return; }
+  $("#undoMsg").textContent = (n>1 ? `Applied ${n} changes · ` : "Applied · ") + shortLabel(st.undo[n-1].label);
+  bar.hidden=false;
 }
 
 // ---- defaults ----
@@ -488,8 +529,11 @@ $("#resetAll").addEventListener("click", ()=>{
   st.ote={}; st.conv={}; st.comp=null; st.hires=[]; st.segOv={}; st.retags={};
   st.mult=ROLES.quota_to_ote; st.target=ROLES.coverage_target;
   $("#mult").value=st.mult; $("#target").value=st.target; if(COMPD) syncCompInputs(COMPD);
+  st.undo=[]; showUndo();
   refresh(true);
 });
+$("#undoBtn").addEventListener("click", undoLast);
+$("#undoClose").addEventListener("click", ()=>{ st.undo=[]; showUndo(); });
 
 // ---- per-segment overrides (editable) ----
 function renderSegOv(){
@@ -574,7 +618,8 @@ function renderActions(recs){
       <div class="levers">${levers}</div></div>`;
   }).join("");
   $("#actions").querySelectorAll("button[data-a]").forEach(b=>b.addEventListener("click", ()=>{
-    applyDelta(LAST_RECS[+b.dataset.a].levers[+b.dataset.l].apply);
+    const lv = LAST_RECS[+b.dataset.a].levers[+b.dataset.l];
+    applyDelta(lv.apply, lv.label);
   }));
 }
 let LAST_RECS=[];

@@ -185,7 +185,8 @@ applyable settings delta, same engine, nothing invented in the UI:
 surplus-segment accounts, changes their segment, and re-carves. It keeps moving
 accounts, **re-carving to verify at each step, until every target-segment rep clears the
 target** (not just the segment aggregate), while the source stays covered and no quota
-moves. Applying a lever merges its delta into the settings and recomputes; an agent gets
+moves. Applying a lever merges its delta into the settings and recomputes, and an
+**Undo** bar lets you roll back the last apply (or several) in one click; an agent gets
 the identical fixes via `recommend_actions`.
 
 ## Ask the plan in plain English
