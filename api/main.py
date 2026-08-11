@@ -131,6 +131,7 @@ def api_index():
             "/territory/{rep_id}",
             "/explain",
             "/ask",
+            "/recommend/refresh",
         ],
     }
 
@@ -405,4 +406,14 @@ def ask_endpoint(req: AskRequest):
     an API key is supplied. Every figure still comes from the engine."""
     return ask.answer(
         req.question, ACCOUNTS, REPS, CONVERSIONS, settings=req.to_settings(), api_key=req.api_key
+    )
+
+
+@app.post("/recommend/refresh")
+def recommend_refresh_endpoint(req: AskRequest):
+    """An AI re-read of the recommendations for the current settings (needs an API key;
+    the key is used for this request only, never stored or logged). The deterministic
+    recommendations still recompute on every change; this adds a prioritized take."""
+    return ask.refresh_recommendations(
+        ACCOUNTS, REPS, CONVERSIONS, settings=req.to_settings(), api_key=req.api_key
     )

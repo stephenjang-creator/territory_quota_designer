@@ -74,6 +74,39 @@ def test_ask_endpoint_shape():
     assert body["mode"] == "demo" and "SMB" in body["answer"]
 
 
+def test_recommend_refresh_without_key_prompts():
+    body = client.post("/recommend/refresh", json={}).json()
+    assert body["narrative"] is None and body["model"] is None
+    assert "API key" in (body["error"] or "")
+
+
+def test_refresh_recommendations_no_key(data, plan):
+    a, r, c = data
+    res = ask.refresh_recommendations(a, r, c, plan=plan)
+    assert res["narrative"] is None and "API key" in res["error"]
+
+
+def test_refresh_payload_reflects_config(data, plan):
+    from core import recommend as rec
+
+    a, r, c = data
+    recs = rec.build_recommendations(a, r, c, None, plan=plan)
+    from core.plan import PlanSettings
+
+    s = PlanSettings(
+        overrides={"segment": {"Enterprise": {"Negotiation->Won": 0.15}}},
+        added_reps=[{"name": "TBH", "segment": "SMB", "level": "AE"}],
+    )
+    p = ask._refresh_payload(plan, recs, s)
+    assert set(p["config_changes_from_default"]) >= {"conversion_overrides", "added_reps"}
+    assert [x["category"] for x in p["recommendations"]] == [
+        "pipeline",
+        "hiring",
+        "comp",
+        "sensitivity",
+    ]
+
+
 def test_ask_endpoint_uses_current_settings():
     # Lowering the SMB multiple makes the segment coverable, so it's no longer "short".
     body = client.post(
