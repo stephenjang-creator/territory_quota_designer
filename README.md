@@ -187,7 +187,10 @@ accounts, **re-carving to verify at each step, until every target-segment rep cl
 target** (not just the segment aggregate), while the source stays covered and no quota
 moves. Applying a lever merges its delta into the settings and recomputes, and an
 **Undo** bar lets you roll back the last apply (or several) in one click; an agent gets
-the identical fixes via `recommend_actions`.
+the identical fixes via `recommend_actions`. The deterministic levers always recompute on
+every change; add an **Anthropic API key** and a **Refresh with AI** button re-reads the
+current plan for a prioritized take that reflects whatever you changed (conversion rates,
+hires, any knob) while the engine still owns every number.
 
 ## Ask the plan in plain English
 
@@ -299,6 +302,7 @@ Interactive docs at `/docs`.
 | `POST /plan` | the whole chain **+ recommendations** in one call (the dashboard's hot path) |
 | `GET /territory/{rep_id}` | full single-territory detail (coverage + funnel) |
 | `POST /ask` | natural-language Q&A; deterministic router offline, Claude agent with a key |
+| `POST /recommend/refresh` | AI re-read of the recommendations for the current settings (needs a key) |
 | `POST /explain` | optional LLM rationale; skips cleanly with no API key |
 
 Settings a request can send: `quota_to_ote`, `coverage_target`, `ote_overrides`

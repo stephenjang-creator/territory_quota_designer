@@ -514,6 +514,104 @@ def _live(question, plan, accounts, reps, conversions, settings, api_key):
 
 
 # ----------------------------------------------------------------------
+# AI refresh of the recommendations (single-shot, grounded; needs a key)
+# ----------------------------------------------------------------------
+_REFRESH_SYSTEM = (
+    "You are a RevOps analyst re-reading a sales plan that was just recomputed from the "
+    "planner's current configuration. You are given the capacity numbers, the funnel "
+    "(win-rate) coverage, the deterministic recommendations already generated, and which "
+    "configuration values differ from the defaults. Write a short, prioritized read (3 to 5 "
+    "sentences): the single binding constraint right now, which recommended lever to act on "
+    "first and why, and how the planner's configuration changes shifted the picture (call out "
+    "conversion-rate changes, which move the funnel lens even when capacity is unchanged). "
+    "Ground every statement in the payload; never invent a number, and never propose a fix "
+    "that isn't among the recommendations."
+)
+
+
+def _refresh_payload(plan, recs, settings: PlanSettings) -> dict:
+    sc = plan.scorecard
+    below = sum(
+        1 for t in plan.territories if t.coverage_ratio is not None and t.coverage_ratio < 1.0
+    )
+    active: dict = {}
+    if settings.quota_to_ote is not None:
+        active["quota_to_ote"] = settings.quota_to_ote
+    if settings.coverage_target is not None:
+        active["coverage_target"] = settings.coverage_target
+    if settings.attainment != 1.0:
+        active["attainment"] = settings.attainment
+    if settings.ote_overrides:
+        active["ote_overrides"] = settings.ote_overrides
+    if settings.overrides:
+        active["conversion_overrides"] = settings.overrides
+    if settings.comp:
+        active["comp"] = settings.comp
+    if settings.added_reps:
+        active["added_reps"] = settings.added_reps
+    if settings.segment_overrides:
+        active["segment_overrides"] = settings.segment_overrides
+    if settings.account_retags:
+        active["account_retags_count"] = len(settings.account_retags)
+    return {
+        "company_target_quarterly": sc["company_target"],
+        "reps_covered": sc["reps_covered"],
+        "coverage_floor": sc["coverage_floor"]["optimized"],
+        "capacity_gap": sc["capacity_gap"]["optimized"],
+        "per_segment_capacity": sc["per_segment_capacity"],
+        "territories_below_1x_funnel_coverage": below,
+        "recommendations": [
+            {
+                "category": r["category"],
+                "severity": r["severity"],
+                "title": r["title"],
+                "levers": [lv["label"] for lv in r["levers"]],
+            }
+            for r in recs
+        ],
+        "config_changes_from_default": active or "none (defaults)",
+    }
+
+
+def refresh_recommendations(
+    accounts, reps, conversions, settings=None, api_key=None, plan=None
+) -> dict:
+    """An AI re-read of the recommendations for the current configuration. Needs a key
+    (per-request or env); without one, returns a clear prompt to add it. Never raises."""
+    settings = settings or PlanSettings()
+    if plan is None:
+        plan = run_plan(accounts, reps, conversions, settings)
+    recs = recommend.build_recommendations(accounts, reps, conversions, settings, plan=plan)
+    if not key_available(api_key):
+        return {
+            "narrative": None,
+            "model": None,
+            "error": "add an Anthropic API key to refresh the recommendations with AI",
+        }
+    payload = _refresh_payload(plan, recs, settings)
+    try:
+        import anthropic
+
+        client = anthropic.Anthropic(api_key=api_key) if api_key else anthropic.Anthropic()
+        resp = client.messages.create(
+            model=ASK_MODEL,
+            max_tokens=600,
+            system=_REFRESH_SYSTEM,
+            messages=[
+                {
+                    "role": "user",
+                    "content": "Refresh the recommendations for the current configuration.\n\n"
+                    + json.dumps(payload, default=str),
+                }
+            ],
+        )
+        text = "".join(b.text for b in resp.content if getattr(b, "type", None) == "text")
+        return {"narrative": text.strip(), "model": ASK_MODEL, "error": None}
+    except Exception as e:  # never fail the request over an optional AI call
+        return {"narrative": None, "model": ASK_MODEL, "error": f"refresh failed: {e}"}
+
+
+# ----------------------------------------------------------------------
 # Entry point
 # ----------------------------------------------------------------------
 def answer(question, accounts, reps, conversions, settings=None, api_key=None, plan=None) -> dict:
